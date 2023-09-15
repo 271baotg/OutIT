@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,25 +16,31 @@ import java.util.Collection;
 @Table(name = "student")
 @Data
 @AllArgsConstructor
+@ToString
 @NoArgsConstructor
 public class Student implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     int id;
-    @Column(name = "fullName")
-    String fullName;
-    @Column(name = "username")
+
+    @Column(name = "username", unique = true, nullable = false)
     String username;
-    @Column(name = "password")
+
+    @Column(name = "password", nullable = false)
     String password;
-    @Column(name = "class")
+    @Column(name = "full_name")
+    String fullName;
+    @Column(name = "email")
+    String email;
+    @Column(name = "class_name")
     String className;
 
-    public Student(String fullName, String username, String password, String className) {
-        this.fullName = fullName;
+    public Student(String username, String password, String fullName, String email, String className) {
         this.username = username;
         this.password = password;
+        this.fullName = fullName;
+        this.email = email;
         this.className = className;
     }
 

@@ -2,6 +2,7 @@ package com.course_management.services;
 
 import com.course_management.model.Student;
 import com.course_management.repository.StudentRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.Optional;
 @Service
 public class StudentServiceImpl implements StudentService{
 
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
 
     public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;

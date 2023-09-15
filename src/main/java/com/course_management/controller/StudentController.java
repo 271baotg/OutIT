@@ -10,35 +10,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
 public class StudentController {
 
-    private StudentService studentService;
+    private final StudentService studentService;
 
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
-    @GetMapping("/students")
-    public List<Student> findALlStudent(){
+    @GetMapping("students")
+    public List<Student> findAllStudent(){
         return studentService.findAll();
     }
-    @GetMapping("/students/{id}")
+    @GetMapping("students/{id}")
     public Student findStudentById(@PathVariable int id){
         return studentService.findById(id);
     }
 
-    @PutMapping("/students")
+    @PutMapping("students")
     public Student updateStudent(@RequestBody Student student){
         return studentService.update(student);
     }
 
-    @PostMapping("/students")
+    @PostMapping("students")
     public Student createStudent(@RequestBody Student student){
         return studentService.create(student);
     }
 
-    @DeleteMapping("/students/{id}")
+    @DeleteMapping("students/{id}")
     public void deleteById(@PathVariable int id){
         studentService.deleteById(id);
     }
