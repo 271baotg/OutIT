@@ -27,22 +27,22 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public AuthResponse register(RegisterRequest request){
-        try {
-            String raw_password = request.getPassword();
-            Student student = new Student(request.getUsername(),
-                    passwordEncoder.encode(raw_password),
-                    request.getEmail(),
-                    request.getFullName(),
-                    request.getClassName());
+    public AuthResponse register(RegisterRequest request) {
+        String raw_password = request.getPassword();
+        Student student = new Student(request.getUsername(),
+                passwordEncoder.encode(raw_password),
+                request.getFullName(),
+                request.getEmail(),
+                request.getClassName());
 
-            studentRepository.save(student);
-            return new AuthResponse(jwtServices.generateToken(student));
+        if (studentRepository.findStudentByUsername(request.getUsername()).isPresent()) {
+            return new AuthResponse("User exist");
         }
-        catch (DataIntegrityViolationException e){
-            throw new DuplicateKeyException("User name found");
+
+        studentRepository.save(student);
+        return new AuthResponse(jwtServices.generateToken(student));
     }
-    }
+
 
     public AuthResponse login(LoginRequest request){
         Authentication authToken = new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword());
