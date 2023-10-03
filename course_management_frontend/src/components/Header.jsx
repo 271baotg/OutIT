@@ -1,16 +1,20 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import styled from "styled-components";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   background-color: transparent;
-  padding-top: 35px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  min-height: 80px;
   color: var(--text-color);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
 const LoginButton = styled.div`
   text-align: center;
+  line-height: 1;
   padding: 0.5em;
   appearance: none;
   background-color: var(--button-color);

@@ -1,16 +1,14 @@
 import React from "react";
 import { useContext, useEffect } from "react";
-import { AuthContext } from "../auth/AuthProvider";
-import { useNavigate, Outlet } from "react-router-dom";
+import AuthContext from "../auth/AuthProvider";
+import { Outlet, useLocation, Navigate } from "react-router-dom";
 
 const ProtectedRoutes = () => {
-  const { token } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { auth } = useContext(AuthContext);
+  const location = useLocation();
 
   useEffect(() => {
-    if (token == null) {
-      navigate("/login");
-    }
+    console.log(auth);
   }, []);
 
   return <Outlet />;

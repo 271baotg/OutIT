@@ -1,15 +1,68 @@
-import React, { useEffect, useRef, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { login } from "../api/authservice";
+import AuthContext from "../auth/AuthProvider";
+import { FaInfoCircle } from "react-icons/fa";
+import { Navigate, useNavigate } from "react-router-dom";
+import background from "../Images/login_background.svg";
 
 const Wrapper = styled.div`
+  height: calc(100% - 85px);
+`;
+
+const Content = styled.div`
   height: 100%;
 `;
 
 const LoginPanel = styled.div`
   background-color: var(--main-color);
   color: var(--text-color);
-  padding: 100px 40px;
+  padding-top: 100px;
+  padding-left: 40px;
+  padding-right: 40px;
+
+  .instructions {
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    border-radius: 0.5rem;
+    background: #000;
+    color: #fff;
+    padding: 0.5rem;
+    position: relative;
+    bottom: -10px;
+  }
+
+  .offscreen {
+    position: absolute;
+    left: -9999px;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .valid {
+    color: limegreen;
+    margin-left: 0.25rem;
+  }
+
+  .invalid {
+    color: red;
+    margin-left: 0.25rem;
+  }
+
+  .instructions > svg {
+    margin-right: 0.25rem;
+  }
+
+  .errmsg {
+    background-color: lightpink;
+    color: firebrick;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
 
   .form-group {
     position: relative;
@@ -161,19 +214,37 @@ const LoginButton = styled.button`
 `;
 
 const Login = () => {
+  const navigate = useNavigate();
+
+  const USER_REGEX = /^[0-9]{8}$/;
+  const PWD_REGEX = /^(?!.*\s).{8,24}$/;
+
+  const { auth, setAuth } = useContext(AuthContext);
   const usernameRef = useRef();
   const passwordRef = useRef();
 
-  const [username, setUsername] = useState();
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+
+  const [validName, setValidUsername] = useState(false);
+  const [userFocus, setUserFocus] = useState(false);
+  const [passwordFocus, setPasswordFocus] = useState(false);
+  const [validPassword, setValidPassword] = useState(false);
 
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
       const response = await login(username, password);
-      console.log(response.data);
+      console.log(response.data.token);
+      setAuth({
+        username: username,
+        password: password,
+        token: response.data.token,
+      });
+      alert("You're succesfully signed in !");
+      navigate("/dashboard");
     } catch (error) {
       setError(error);
       console.log(error);
@@ -185,13 +256,24 @@ const Login = () => {
   }, [username, password]);
 
   useEffect(() => {
+    setValidUsername(USER_REGEX.test(username));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [username]);
+
+  useEffect(() => {
+    setValidPassword(PWD_REGEX.test(password));
+  }, [password]);
+
+  useEffect(() => {
     usernameRef.current.focus();
   }, []);
 
   return (
     <Wrapper className="container-fluid m-0 p-0">
-      <div className="row vh-100 m-0">
-        <div className="col-md-6 d-none d-md-block p-0"></div>
+      <Content className="row m-0">
+        <div className="col-md-6 d-none d-md-block p-5  text-center">
+          <img className="mw-100" src={background} alt="" />
+        </div>
 
         <LoginPanel className="col-md-6  m-0 row">
           <div className="col-3"></div>
@@ -203,15 +285,34 @@ const Login = () => {
               <div className="form-group">
                 <input
                   onChange={(e) => setUsername(e.target.value)}
-                  type="number"
+                  type="text"
                   name="studentID"
                   value={username}
                   ref={usernameRef}
                   className="form-style"
                   placeholder="Your StudentID"
+                  aria-invalid={validName ? "false" : "true"}
+                  aria-describedby="uidnote"
                   autoComplete="off"
+                  onFocus={() => setUserFocus(true)}
+                  onBlur={() => setUserFocus(false)}
                 />
                 <i className="input-icon uil uil-at"></i>
+                <p
+                  id="uidnote"
+                  className={
+                    userFocus && username && !validName
+                      ? "instructions"
+                      : "offscreen"
+                  }
+                >
+                  <FaInfoCircle></FaInfoCircle>
+                  Only 8 character.
+                  <br />
+                  Having format: 21xxxxxx, 20xxxxxx,...
+                  <br />
+                  Only input number, no text included.
+                </p>
               </div>
 
               <label className="mt-5">Password</label>
@@ -223,9 +324,27 @@ const Login = () => {
                   ref={passwordRef}
                   className="form-style"
                   placeholder="Your Password"
+                  aria-invalid={validPassword ? "false" : "true"}
+                  aria-describedby="passwordnote"
                   autoComplete="off"
+                  onFocus={() => setPasswordFocus(true)}
+                  onBlur={() => setPasswordFocus(false)}
                 />
                 <i className="input-icon uil uil-lock-alt"></i>
+                <p
+                  id="passwordnote"
+                  className={
+                    passwordFocus && password && !validPassword
+                      ? "instructions"
+                      : "offscreen"
+                  }
+                >
+                  <FaInfoCircle></FaInfoCircle>
+                  8 to 24 characters.
+                  <br />
+                  Do not contains blank space.
+                  <br />
+                </p>
               </div>
               <div className="d-flex flex-column mt-4">
                 <LoginButton type="submit">Login Now</LoginButton>
@@ -235,7 +354,7 @@ const Login = () => {
 
           <div className="col-3 "></div>
         </LoginPanel>
-      </div>
+      </Content>
     </Wrapper>
   );
 };

@@ -1,33 +1,31 @@
 import axios, { AxiosHeaders } from "axios";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
-export const AuthContext = createContext();
+const AuthContext = createContext({});
 
-const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const setCurrentToken = (newToken) => {
-    setToken(newToken);
-  };
+export const AuthProvider = ({ children }) => {
+  const [auth, setAuth] = useState({});
 
   useEffect(() => {
-    console.log(token);
-  }, []);
+    console.log(auth);
+  }, [auth]);
 
   useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-      localStorage.setItem("token", token);
+    if (auth.token) {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + auth.token;
+      localStorage.setItem("token", auth.token);
     } else {
       delete axios.defaults.headers.common["Authorization"];
       localStorage.removeItem("token");
     }
-  }, [token]);
-
-  const contextValue = useMemo(() => ({ token, setCurrentToken }), [token]);
+  }, [auth.token]);
 
   return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ auth, setAuth }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 
-export default AuthProvider;
+export default AuthContext;

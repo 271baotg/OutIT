@@ -1,12 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import styled from "styled-components";
 import background from "../Images/welcome.svg";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header";
+import { useContext } from "react";
+import AuthContext from "../auth/AuthProvider";
 
 const Wrapper = styled.div`
   width: 100vw;
-  min-height: 100vh;
+  min-height: calc(100% - 85px);
   background-color: var(--main-color);
 `;
 
@@ -50,25 +52,28 @@ const LearnMoreButton = styled.div`
   }
 `;
 
-const Content = styled.div`
-  margin-top: 150px;
-`;
+const Content = styled.div``;
 
 const TextHighlight = styled.span`
   color: var(--button-color);
 `;
 const Welcome = () => {
+  const { auth } = useContext(AuthContext);
+
+  if (auth.username) {
+    return <Navigate to="/dashboard" />;
+  }
+
   return (
-    <Wrapper className="container-fluid p-0 m-0">
-      <Header></Header>
-      <Content className="container-fluid row">
-        <div className="col-lg-6 p-5 mt-4">
+    <Wrapper className="container-fluid p-0">
+      <Content className="container-fluid row pt-5">
+        <div className="col-lg-6 pt-5 p-5">
           <h1 className="display-3">
             Welcome to <TextHighlight>OutIT</TextHighlight>, a website help you
             get Out of UIT faster.
           </h1>
 
-          <div className="d-flex">
+          <div className="d-flex mt-5">
             <LearnMoreButton>Create Account </LearnMoreButton>
           </div>
         </div>

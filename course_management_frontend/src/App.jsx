@@ -1,7 +1,10 @@
-import {createBrowserRouter, RouterProvider, createRoutesFromElements, Route} from "react-router-dom";
-import Dashboard from "./components/Dashboard";
-import ProtectedRoutes from "./routes/ProtectedRoutes";
-import AuthProvider from "./auth/AuthProvider";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  createRoutesFromElements,
+  Route,
+} from "react-router-dom";
+import { AuthProvider } from "./auth/AuthProvider";
 import Routes from "./routes/Routes";
 import GlobalStyle from "./globalStyle";
 
@@ -17,12 +20,12 @@ import GlobalStyle from "./globalStyle";
 // );
 
 function App() {
-   
-   
-  return <AuthProvider>
-         <GlobalStyle/>
-         < Routes/>
-      </AuthProvider>
+  return (
+    <AuthProvider>
+      <GlobalStyle />
+      <Routes />
+    </AuthProvider>
+  );
 }
 
 export default App;

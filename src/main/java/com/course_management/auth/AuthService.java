@@ -1,5 +1,7 @@
 package com.course_management.auth;
+import com.course_management.model.Role;
 import com.course_management.model.Student;
+import com.course_management.repository.RolesRepository;
 import com.course_management.repository.StudentRepository;
 import com.course_management.security.JwtServices;
 import lombok.AllArgsConstructor;
@@ -16,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +30,7 @@ public class AuthService {
     private final UserDetailsService service;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final RolesRepository rolesRepository;
 
     public AuthResponse register(RegisterRequest request) {
         String raw_password = request.getPassword();
@@ -34,10 +39,15 @@ public class AuthService {
                 request.getFullName(),
                 request.getEmail(),
                 request.getClassName());
-
         if (studentRepository.findStudentByUsername(request.getUsername()).isPresent()) {
             return new AuthResponse("User exist");
         }
+
+        Set<Role> roleDefault = new HashSet<>();
+        Role userRole = rolesRepository.findRoleByName("user").get();
+        roleDefault.add(userRole);
+        student.setRoles(roleDefault);
+
 
         studentRepository.save(student);
         return new AuthResponse(jwtServices.generateToken(student));
