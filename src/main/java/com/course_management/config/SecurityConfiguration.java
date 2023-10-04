@@ -2,7 +2,6 @@ package com.course_management.config;
 
 
 import com.course_management.security.JwtAuthenticationFilter;
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,19 +23,24 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtFilter;
     private final AuthenticationProvider authProvider;
 
+
+
     @Bean
     public SecurityFilterChain jwtFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/auth/**").permitAll();
-                    auth.requestMatchers("/students/**").hasAnyRole("admin");
-                    auth.anyRequest().authenticated();
-
-                })
                 .sessionManagement( session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/auth/**").permitAll();
+                    auth.requestMatchers("/students/**").hasAuthority("admin");
+                    auth.anyRequest().authenticated();
+
+                })
                 .authenticationProvider(authProvider)
+                .exceptionHandling( ex ->
+                        ex.accessDeniedHandler(new CustomAccessDeniedHandler())
+                        .authenticationEntryPoint(new JwtAuthenticationEntryEndpoint()))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
