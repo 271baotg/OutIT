@@ -14,7 +14,6 @@ const Wrapper = styled.div`
 
 const LoginButton = styled.div`
   text-align: center;
-  line-height: 1;
   padding: 0.5em;
   appearance: none;
   background-color: var(--button-color);
@@ -29,7 +28,6 @@ const LoginButton = styled.div`
   margin: 0;
   min-width: 0;
   outline: none;
-  text-align: center;
   text-decoration: none;
   transition: all 300ms cubic-bezier(0.23, 1, 0.32, 1);
   user-select: none;

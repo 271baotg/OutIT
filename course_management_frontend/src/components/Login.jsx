@@ -4,11 +4,11 @@ import styled from "styled-components";
 import { login } from "../api/authservice";
 import AuthContext from "../auth/AuthProvider";
 import { FaInfoCircle } from "react-icons/fa";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import background from "../Images/login_background.svg";
 
 const Wrapper = styled.div`
-  height: calc(100% - 85px);
+  height: calc(100% - 80px);
 `;
 
 const Content = styled.div`
@@ -78,7 +78,7 @@ const LoginPanel = styled.div`
     width: 100%;
     font-weight: 500;
     border-radius: 8px;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 22px;
     letter-spacing: 0.5px;
     outline: none;
@@ -215,6 +215,7 @@ const LoginButton = styled.button`
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const USER_REGEX = /^[0-9]{8}$/;
   const PWD_REGEX = /^(?!.*\s).{8,24}$/;
@@ -266,6 +267,8 @@ const Login = () => {
 
   useEffect(() => {
     usernameRef.current.focus();
+    if(auth)
+      navigate("/dashboard", {state: {from: location}, replace: true})
   }, []);
 
   return (

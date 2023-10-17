@@ -7,7 +7,7 @@ import { useContext } from "react";
 import AuthContext from "../auth/AuthProvider";
 
 const Wrapper = styled.div`
-  width: 100vw;
+
   min-height: calc(100% - 85px);
   background-color: var(--main-color);
 `;
@@ -60,7 +60,7 @@ const TextHighlight = styled.span`
 const Welcome = () => {
   const { auth } = useContext(AuthContext);
 
-  if (auth.username) {
+  if (auth) {
     return <Navigate to="/dashboard" />;
   }
 
@@ -68,7 +68,7 @@ const Welcome = () => {
     <Wrapper className="container-fluid p-0">
       <Content className="container-fluid row pt-5">
         <div className="col-lg-6 pt-5 p-5">
-          <h1 className="display-3">
+          <h1 className="display-5">
             Welcome to <TextHighlight>OutIT</TextHighlight>, a website help you
             get Out of UIT faster.
           </h1>

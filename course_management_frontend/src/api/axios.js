@@ -6,6 +6,10 @@ const instance =  axios.create({
     baseURL: 'http://localhost:8081'
 })
 
+
+export const axiosPrivate = axios.create({
+  baseURL: 'http://localhost:8081'
+})
 axios.interceptors.request.use(function (config) {
     // Do something before request is sent
     return config;
