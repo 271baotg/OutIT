@@ -220,21 +220,21 @@ const Login = () => {
   const USER_REGEX = /^[0-9]{8}$/;
   const PWD_REGEX = /^(?!.*\s).{8,24}$/;
 
-  const { auth, setAuth } = useContext(AuthContext);
-  const usernameRef = useRef();
-  const passwordRef = useRef();
+  const { auth , setAuth} = useContext(AuthContext)
+  const usernameRef = React.useRef<HTMLInputElement>(null);
+  const passwordRef = React.useRef<HTMLInputElement>(null);
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<boolean>(false);
 
-  const [validName, setValidUsername] = useState(false);
-  const [userFocus, setUserFocus] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
-  const [validPassword, setValidPassword] = useState(false);
+  const [validName, setValidUsername] = useState<boolean>(false);
+  const [userFocus, setUserFocus] = useState<boolean>(false);
+  const [passwordFocus, setPasswordFocus] = useState<boolean>(false);
+  const [validPassword, setValidPassword] = useState<boolean>(false);
 
-  const submitHandler = async (e) => {
+  const submitHandler = async (e : React.ChangeEvent<any>) => {
     e.preventDefault();
     try {
       const response = await login(username, password);
@@ -247,7 +247,7 @@ const Login = () => {
       alert("You're succesfully signed in !");
       navigate("/dashboard");
     } catch (error) {
-      setError(error);
+      setError(JSON.stringify(error));
       console.log(error);
     }
   };
@@ -266,7 +266,9 @@ const Login = () => {
   }, [password]);
 
   useEffect(() => {
-    usernameRef.current.focus();
+    if(usernameRef.current!=null){
+      usernameRef.current.focus();
+    }
     if(auth)
       navigate("/dashboard", {state: {from: location}, replace: true})
   }, []);

@@ -1,21 +1,23 @@
 import axios, { AxiosHeaders } from "axios";
-import { createContext, useEffect, useState } from "react";
+import { ChildContextProvider, ReactComponentElement, ReactElement, ReactNode, ReactPropTypes, createContext, useEffect, useState } from "react";
 import { json, useLocation } from "react-router-dom";
 
-const AuthContext = createContext({});
+const AuthContext = createContext({} as AuthContextType);
 
 
-export const AuthProvider = ({ children }) => {
+interface Props {
+  children: React.ReactNode;
+}
+
+export const AuthProvider : React.FC<Props>= ({ children }) => {
 
   const initialAuth = () => {
     if(sessionStorage.getItem("auth")){
-      return JSON.parse(sessionStorage.getItem("auth"));
+      return JSON.parse(sessionStorage.getItem("auth")!);
     }
   }
 
-
-
-  const [auth, setAuth] = useState(initialAuth);
+  const [auth, setAuth] = useState<AuthObject|null>(initialAuth);
 
   useEffect(() => {
     if(auth){

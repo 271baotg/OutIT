@@ -5,6 +5,7 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import { useContext } from "react";
 import AuthContext from "../auth/AuthProvider";
+import React from "react";
 
 const Wrapper = styled.div`
 
@@ -58,9 +59,10 @@ const TextHighlight = styled.span`
   color: var(--button-color);
 `;
 const Welcome = () => {
-  const { auth } = useContext(AuthContext);
+  const {auth}  = useContext(AuthContext);
 
   if (auth) {
+    console.log(auth)
     return <Navigate to="/dashboard" />;
   }
 

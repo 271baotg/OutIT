@@ -7,6 +7,7 @@ import {
 import { AuthProvider } from "./auth/AuthProvider";
 import Routes from "./routes/Routes";
 import GlobalStyle from "./globalStyle";
+import React from "react";
 
 // const router = createBrowserRouter(
 //    createRoutesFromElements(

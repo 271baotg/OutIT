@@ -56,7 +56,7 @@ const Header = () => {
   const location = useLocation().pathname;
   const navigate = useNavigate();
 
-  const handlerLoginButton = (e) => {
+  const handlerLoginButton = () => {
     navigate("/login");
   };
 

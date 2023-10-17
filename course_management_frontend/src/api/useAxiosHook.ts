@@ -4,11 +4,11 @@ import AuthContext from "../auth/AuthProvider";
 
 
 const useAxiosPrivate = () => {
-    const {auth} = useContext(AuthContext);
+    const {auth}  = useContext(AuthContext);
 
     useEffect(() => {
         const request = axiosPrivate.interceptors.request.use(function (config) {
-            if(!config.headers[`Authorization`]){
+            if(!config.headers[`Authorization`]&&auth?.token){
                 config.headers[`Authorization`] = `Bearer ${auth.token}`
             }
             return config;
@@ -18,7 +18,7 @@ const useAxiosPrivate = () => {
           });
 
 
-          const response = axios.interceptors.response.use(function (response) {
+          const response = axiosPrivate.interceptors.response.use(function (response) {
             // Any status code that lie within the range of 2xx cause this function to trigger
             // Do something with response data
             return response.data;

@@ -4,7 +4,7 @@ import AuthContext from "../auth/AuthProvider";
 import { Outlet, useLocation, Navigate } from "react-router-dom";
 
 const ProtectedRoutes = () => {
-  const { auth } = useContext(AuthContext);
+  const {auth}  = useContext(AuthContext);
   const location = useLocation();
 
   useEffect(() => {

@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../auth/AuthProvider";
 import Login from "../components/Login";
 import ProtectedRoutes from "./ProtectedRoutes";
 import {
