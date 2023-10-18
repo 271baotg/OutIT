@@ -12,6 +12,7 @@ import {
 import Welcome from "../components/Welcome";
 import Header from "../components/Header";
 import { Layout } from "../components/Layout";
+import Dashboard from "../components/Dashboard/Dashboard";
 
 const Routes = () => {
   // const notAuthenticatedOnlyRoutes = [
@@ -65,7 +66,7 @@ const Routes = () => {
         <Route path="/" element={<Welcome />} />
         <Route path="login" element={<Login />} />
         <Route element={<ProtectedRoutes />}>
-          <Route path="dashboard" element={<div>Dashboard</div>} />
+          <Route path="dashboard" element={<Dashboard/>} />
         </Route>
       </Route>
     )

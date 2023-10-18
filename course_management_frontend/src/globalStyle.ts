@@ -21,6 +21,16 @@ export default createGlobalStyle`
 --text-color: #1d282b;
 --button-color: #b85043;
 --second-color: #eba04a;
+--white-text-color: #ddd;
+
+
+--background-color: #faedcd;
+--sub-text-color: #fefae0;
+--bar-color: #ccd5ae;
+--light-bar-color: #e9edc9;
+--heavy-color: #d4a373;
+--transition-speed: 600ms;
+
 
 /* Gaps */
 --gap-11xl: 30px;
