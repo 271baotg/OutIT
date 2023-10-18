@@ -3,13 +3,13 @@ import styled from "styled-components";
 import SideBar from "../SideBar";
 import Content from "../Content";
 
-const Dashboard = () => {
+const About = () => {
   return (
     <div className="container-fluid gx-0 m-0 h-100">
       <SideBar />
-      <Content>Dashboard</Content>
+      <Content>About</Content>
     </div>
   );
 };
 
-export default Dashboard;
+export default About;

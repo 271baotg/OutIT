@@ -13,6 +13,9 @@ import Welcome from "../components/Welcome";
 import Header from "../components/Header";
 import { Layout } from "../components/Layout";
 import Dashboard from "../components/Dashboard/Dashboard";
+import Course from "../components/Course/Course";
+import Plan from "../components/Plan/Plan";
+import About from "../components/About/About";
 
 const Routes = () => {
   // const notAuthenticatedOnlyRoutes = [
@@ -66,7 +69,10 @@ const Routes = () => {
         <Route path="/" element={<Welcome />} />
         <Route path="login" element={<Login />} />
         <Route element={<ProtectedRoutes />}>
-          <Route path="dashboard" element={<Dashboard/>} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="course" element={<Course />} />
+          <Route path="plan" element={<Plan />} />
+          <Route path="about" element={<About />} />
         </Route>
       </Route>
     )

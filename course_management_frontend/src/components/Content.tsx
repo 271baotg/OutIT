@@ -1,10 +1,10 @@
-import React from "react";
+import React, { Children } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
   height: 100%;
-  margin-left: 5rem;
-  padding: 1rem;
+  margin-left: 3rem;
+  transition: var(--transition-speed) ease-out;
   background-color: var(--background-color);
 
   @media only screen and (max-width: 600px) {
@@ -12,8 +12,8 @@ const Wrapper = styled.div`
   }
 `;
 
-const Content = () => {
-  return <Wrapper>Content</Wrapper>;
+const Content: React.FC<React.PropsWithChildren> = ({ children }) => {
+  return <Wrapper>{children}</Wrapper>;
 };
 
 export default Content;

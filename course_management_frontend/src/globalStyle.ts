@@ -10,6 +10,8 @@ export default createGlobalStyle`
 :root {
 
 
+
+
 /* font sizes */
 --link-small-size: 14px;
 --link-size: 15px;
