@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import SideBar from "../SideBar";
 import Content from "../Content";
+import CourseTable from "./CourseTable";
 
 const Wrapper = styled.div``;
 
@@ -33,7 +34,9 @@ const Course = () => {
           <h1 className="mb-lg">Course</h1>
           <Widget className="row"></Widget>
           <div className="row h-100">
-            <LeftCol className="col-sm-12 col-md-6"></LeftCol>
+            <LeftCol className="col-sm-12 col-md-6">
+              <CourseTable />
+            </LeftCol>
             <RightCol className="col-sm-12 col-md-6"></RightCol>
           </div>
         </Layout>

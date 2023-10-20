@@ -1,0 +1,105 @@
+.row {
+  background-color: #1e9de6 !important;
+  border-radius: 8px;
+}
+
+.row:hover {
+  background-color: #3e64ff;
+  color: #eee;
+  cursor: pointer;
+}
+
+.table_container {
+  max-height: 400px; /* Set the maximum height as per your requirements */
+  overflow: auto; /* Add a vertical scrollbar when content exceeds the max height */
+}
+
+.table {
+  border-collapse: collapse;
+  margin: 0;
+  font-size: 0.9em;
+  min-width: 400px;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.table_container::-webkit-scrollbar {
+  width: 5px; /* Set the width of the scrollbar */
+}
+
+.table_container::-webkit-scrollbar-thumb {
+  background-color: #009879; /* Set the color of the scrollbar thumb */
+  border-radius: 6px; /* Set the border radius of the thumb */
+}
+
+.table_container::-webkit-scrollbar-track {
+  background: #f3f3f3; /* Set the color of the scrollbar track */
+}
+
+.smallCheckbox {
+  width: 20px; /* Set the width of the checkbox */
+  height: 20px; /* Set the height of the checkbox */
+  margin: 0; /* Remove any margin around the checkbox */
+  padding: 0; /* Remove any padding inside the checkbox */
+}
+/* Define styles for the custom animation when checked */
+
+.table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.table thead {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+  position: sticky;
+  top: 0; /* Stick the header row to the top of the container */
+  z-index: 1; /* Ensure the header is on top of other elements */
+}
+
+.table th,
+.table td {
+  padding: 12px 15px;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+.table tbody tr:hover {
+  font-weight: bold;
+  color: #009879;
+  cursor: pointer;
+}
+
+/* Responsive styles for smaller screens */
+@media screen and (max-width: 600px) {
+  .table {
+    font-size: 0.5em; /* Reduce font size for smaller screens */
+  }
+  .table_container::-webkit-scrollbar {
+    height: 5px; /* Set the height of the horizontal scrollbar */
+  }
+
+  .table_container::-webkit-scrollbar-thumb {
+    background-color: #009879; /* Set the color of the horizontal scrollbar thumb */
+    border-radius: 6px; /* Set the border radius of the horizontal thumb */
+  }
+
+  .table_container::-webkit-scrollbar-track {
+    background: #f3f3f3; /* Set the color of the horizontal scrollbar track */
+  }
+}

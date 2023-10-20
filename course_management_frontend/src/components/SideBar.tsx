@@ -14,6 +14,7 @@ const NavWrapper = styled.nav`
     bottom: 0;
     width: 100vw;
     height: 3rem;
+    z-index: 1;
 
     .navbar {
       flex-direction: row;
