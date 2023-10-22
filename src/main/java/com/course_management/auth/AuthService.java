@@ -59,6 +59,7 @@ public class AuthService {
         Authentication authToken = new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword());
         authenticationManager.authenticate(authToken);
         UserDetails student = service.loadUserByUsername(request.getUsername());
+        
         return new AuthResponse(jwtServices.generateToken(student));
     }
 

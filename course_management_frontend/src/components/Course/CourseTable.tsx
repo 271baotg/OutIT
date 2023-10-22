@@ -29,56 +29,6 @@ const CourseTable = () => {
               <td>4</td>
               <td>Done</td>
             </tr>
-            <tr>
-              <td>
-                <input type="checkbox" className={styles.smallCheckbox} />
-              </td>
-              <td>SE358</td>
-              <td>Phương pháp phát triển phần mềm hướng đối tượng</td>
-              <td>CN</td>
-              <td>4</td>
-              <td>Done</td>
-            </tr>
-            <tr>
-              <td>
-                <input type="checkbox" className={styles.smallCheckbox} />
-              </td>
-              <td>SE358</td>
-              <td>Phương pháp phát triển phần mềm hướng đối tượng</td>
-              <td>CN</td>
-              <td>4</td>
-              <td>Done</td>
-            </tr>
-            <tr>
-              <td>
-                <input type="checkbox" className={styles.smallCheckbox} />
-              </td>
-              <td>SE358</td>
-              <td>Phương pháp phát triển phần mềm hướng đối tượng</td>
-              <td>CN</td>
-              <td>4</td>
-              <td>Done</td>
-            </tr>
-            <tr>
-              <td>
-                <input type="checkbox" className={styles.smallCheckbox} />
-              </td>
-              <td>SE358</td>
-              <td>Phương pháp phát triển phần mềm hướng đối tượng</td>
-              <td>CN</td>
-              <td>4</td>
-              <td>Done</td>
-            </tr>
-            <tr>
-              <td>
-                <input type="checkbox" className={styles.smallCheckbox} />
-              </td>
-              <td>SE358</td>
-              <td>Phương pháp phát triển phần mềm hướng đối tượng</td>
-              <td>CN</td>
-              <td>4</td>
-              <td>Done</td>
-            </tr>
           </tbody>
         </table>
       </div>

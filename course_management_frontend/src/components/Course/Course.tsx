@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import SideBar from "../SideBar";
 import Content from "../Content";
 import CourseTable from "./CourseTable";
+import { axiosPrivate } from "../../api/axios";
+import { useAxiosPrivate } from "../../api/useAxiosHook";
 
 const Wrapper = styled.div``;
 
@@ -26,6 +28,23 @@ const RightCol = styled.div`
 `;
 
 const Course = () => {
+  const [courseList, setCourseList] = useState<Course[]>([]);
+  const axiosPrivate = useAxiosPrivate();
+
+  useEffect(() => {
+    const loadCourse = async () => {
+      try {
+        const response = await axiosPrivate.get("http://localhost:8081/course");
+        console.log(response);
+        return response;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    loadCourse();
+  }, []);
+
   return (
     <Wrapper className="container-fluid gx-0 m-0 h-100">
       <SideBar></SideBar>
