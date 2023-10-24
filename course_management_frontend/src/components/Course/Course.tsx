@@ -34,9 +34,14 @@ const Course = () => {
   useEffect(() => {
     const loadCourse = async () => {
       try {
-        const response = await axiosPrivate.get("http://localhost:8081/course");
+        const response: Course[] = await axiosPrivate({
+          method: "get",
+          url: "http://localhost:8081/course",
+        });
         console.log(response);
-        return response;
+        const list = response as Course[];
+        console.log("List course: " + list);
+        setCourseList(list);
       } catch (error) {
         console.log(error);
       }
@@ -44,6 +49,10 @@ const Course = () => {
 
     loadCourse();
   }, []);
+
+  useEffect(() => {
+    console.log("Course list: " + JSON.stringify(courseList));
+  }, [courseList]);
 
   return (
     <Wrapper className="container-fluid gx-0 m-0 h-100">
@@ -53,10 +62,10 @@ const Course = () => {
           <h1 className="mb-lg">Course</h1>
           <Widget className="row"></Widget>
           <div className="row h-100">
-            <LeftCol className="col-sm-12 col-md-6">
-              <CourseTable />
+            <LeftCol className="col-sm-12 col-md-8">
+              <CourseTable data={courseList} />
             </LeftCol>
-            <RightCol className="col-sm-12 col-md-6"></RightCol>
+            <RightCol className="col-sm-12 col-md-4"></RightCol>
           </div>
         </Layout>
       </Content>
