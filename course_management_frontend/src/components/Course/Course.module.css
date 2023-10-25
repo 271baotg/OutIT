@@ -1,0 +1,14 @@
+.header-text {
+  background: transparent;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  margin: 0;
+  outline: none;
+  padding: 0;
+  text-align: left;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  vertical-align: baseline;
+  z-index: auto;
+}

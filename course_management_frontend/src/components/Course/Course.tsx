@@ -5,6 +5,7 @@ import Content from "../Content";
 import CourseTable from "./CourseTable";
 import { axiosPrivate } from "../../api/axios";
 import { useAxiosPrivate } from "../../api/useAxiosHook";
+import styles from "./Course.module.css";
 
 const Wrapper = styled.div``;
 
@@ -22,9 +23,31 @@ const Widget = styled.div`
 
 const LeftCol = styled.div`
   background-color: var(--heavy-color);
+  height: 100%;
 `;
 const RightCol = styled.div`
   background-color: #fff;
+  height: 100%;
+`;
+
+const InfoPanel = styled.div`
+  background-color: #ddd;
+  width: 100%;
+  min-height: 80%;
+  margin-top: 3rem;
+  padding: 2rem;
+`;
+
+const StatusBar = styled.div`
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+`;
+
+const Divider = styled.hr`
+  background-color: #fff;
+  margin: 1rem 0;
 `;
 
 const Course = () => {
@@ -65,7 +88,21 @@ const Course = () => {
             <LeftCol className="col-sm-12 col-md-8">
               <CourseTable data={courseList} />
             </LeftCol>
-            <RightCol className="col-sm-12 col-md-4"></RightCol>
+            <RightCol className="col-sm-12 col-md-4">
+              <InfoPanel>
+                <StatusBar>
+                  <div className={styles.header_text}>
+                    <div>
+                      <h3>Your Plan</h3>
+                      <div>
+                        <span>Current: 23</span>
+                      </div>
+                    </div>
+                  </div>
+                </StatusBar>
+                <Divider />
+              </InfoPanel>
+            </RightCol>
           </div>
         </Layout>
       </Content>

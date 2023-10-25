@@ -6,9 +6,13 @@ interface TableProps {
   data: Course[];
 }
 
+const Wrapper = styled.div`
+  height: 80%;
+`;
+
 const CourseTable: React.FC<TableProps> = (props) => {
   return (
-    <div className="container rounded mt-5 bg-white p-md-5">
+    <Wrapper className="container rounded mt-5 bg-white p-md-5">
       <section className={`${styles.theader}`}>
         <div className="h3 display-6">Course List</div>
         <form
@@ -56,7 +60,7 @@ const CourseTable: React.FC<TableProps> = (props) => {
           </tbody>
         </table>
       </div>
-    </div>
+    </Wrapper>
   );
 };
 
