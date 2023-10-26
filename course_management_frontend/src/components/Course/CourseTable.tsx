@@ -7,6 +7,20 @@ interface TableProps {
 }
 
 const Wrapper = styled.div`
+  color: #212529;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  font-family: montserrat, sans-serif;
+  line-height: 1.6;
+  box-sizing: border-box;
+  display: block !important;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.937rem;
+  text-transform: uppercase;
+  border: 2px solid #34444c;
+  background: #fff;
+  box-shadow: 4px 4px 0 #34444c;
   height: 80%;
 `;
 

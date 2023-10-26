@@ -1,0 +1,65 @@
+.plan_table_container {
+  width: 100%;
+  max-height: 90%;
+  flex-grow: 1;
+  background-color: #ff0000;
+}
+
+.plan_table {
+  width: 100%;
+  max-height: 100%;
+  border-collapse: collapse; /* Remove the space between bordering cells */
+  font-size: 12px;
+}
+
+.plan_table th,
+td {
+  border: 1px solid black;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.plan_table th {
+  background-color: transparent;
+  border-top: 0;
+}
+
+.plan_table th:first-child {
+  width: 60%;
+}
+
+.plan_table th:nth-child(2),
+.plan_table th:nth-child(3) {
+  width: 20%;
+}
+
+.plan_table th {
+  border: none; /* Remove left border for the th elements except the first one */
+}
+
+.plan_table tbody td {
+  border-right: none; /* Remove right border for all td elements in the tbody */
+  border-left: none; /* Remove left border for all td elements in the tbody */
+  margin-bottom: 2rem;
+}
+.tag {
+  border-left: 0.2rem solid #ff0000; /* Red color border on the left side */
+  height: 1.5rem;
+}
+
+.code {
+  display: flex;
+  align-self: center;
+}
+
+.animate {
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  transition: all 0.3s;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden; /* Chrome and Safari */
+  -moz-backface-visibility: hidden; /* Firefox */
+  -ms-backface-visibility: hidden; /* Internet Explorer */
+}

@@ -6,6 +6,7 @@ import CourseTable from "./CourseTable";
 import { axiosPrivate } from "../../api/axios";
 import { useAxiosPrivate } from "../../api/useAxiosHook";
 import styles from "./Course.module.css";
+import PlanTable from "./PlanTable";
 
 const Wrapper = styled.div``;
 
@@ -22,7 +23,7 @@ const Widget = styled.div`
 `;
 
 const LeftCol = styled.div`
-  background-color: var(--heavy-color);
+  background-color: #fff;
   height: 100%;
 `;
 const RightCol = styled.div`
@@ -31,11 +32,27 @@ const RightCol = styled.div`
 `;
 
 const InfoPanel = styled.div`
+  display: flex; /* Use flexbox to control child elements */
+  flex-direction: column; /* Stack child elements vertically */
   background-color: #ddd;
   width: 100%;
   min-height: 80%;
+  max-height: 80%;
   margin-top: 3rem;
   padding: 2rem;
+  color: #212529;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  font-family: montserrat, sans-serif;
+  line-height: 1.6;
+  box-sizing: border-box;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.937rem;
+  text-transform: uppercase;
+  border: 2px solid #34444c;
+  background: #fff;
+  box-shadow: 4px 4px 0 #34444c;
 `;
 
 const StatusBar = styled.div`
@@ -89,7 +106,7 @@ const Course = () => {
               <CourseTable data={courseList} />
             </LeftCol>
             <RightCol className="col-sm-12 col-md-4">
-              <InfoPanel>
+              <InfoPanel className="container rounded mt-5 bg-white p-md-5 d-flex">
                 <StatusBar>
                   <div className={styles.header_text}>
                     <div>
@@ -101,6 +118,7 @@ const Course = () => {
                   </div>
                 </StatusBar>
                 <Divider />
+                <PlanTable></PlanTable>
               </InfoPanel>
             </RightCol>
           </div>
