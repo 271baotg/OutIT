@@ -36,7 +36,7 @@ const InfoPanel = styled.div`
   flex-direction: column; /* Stack child elements vertically */
   background-color: #ddd;
   width: 100%;
-  min-height: 80%;
+  height: 80%;
   max-height: 80%;
   margin-top: 3rem;
   padding: 2rem;
@@ -69,6 +69,7 @@ const Divider = styled.hr`
 
 const Course = () => {
   const [courseList, setCourseList] = useState<Course[]>([]);
+  const [selectedList, setSelectedList] = useState<Course[]>([]);
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
@@ -94,6 +95,10 @@ const Course = () => {
     console.log("Course list: " + JSON.stringify(courseList));
   }, [courseList]);
 
+  useEffect(() => {
+    console.log("Selected course:" + selectedList.length);
+  }, [selectedList]);
+
   return (
     <Wrapper className="container-fluid gx-0 m-0 h-100">
       <SideBar></SideBar>
@@ -103,7 +108,11 @@ const Course = () => {
           <Widget className="row"></Widget>
           <div className="row h-100">
             <LeftCol className="col-sm-12 col-md-8">
-              <CourseTable data={courseList} />
+              <CourseTable
+                data={courseList}
+                checklist={selectedList}
+                setchecklist={setSelectedList}
+              />
             </LeftCol>
             <RightCol className="col-sm-12 col-md-4">
               <InfoPanel className="container rounded mt-5 bg-white p-md-5 d-flex">
@@ -118,7 +127,7 @@ const Course = () => {
                   </div>
                 </StatusBar>
                 <Divider />
-                <PlanTable></PlanTable>
+                <PlanTable data={selectedList}></PlanTable>
               </InfoPanel>
             </RightCol>
           </div>

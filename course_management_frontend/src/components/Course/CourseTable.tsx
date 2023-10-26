@@ -1,9 +1,11 @@
-import React, { SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import styles from "./CourseTable.module.css";
 
 interface TableProps {
   data: Course[];
+  checklist: Course[];
+  setchecklist: Dispatch<SetStateAction<Course[]>>;
 }
 
 const Wrapper = styled.div`
@@ -25,6 +27,14 @@ const Wrapper = styled.div`
 `;
 
 const CourseTable: React.FC<TableProps> = (props) => {
+  const onCheckHandler = (course: Course) => {
+    if (props.checklist.includes(course)) {
+      props.setchecklist(props.checklist.filter((c) => c !== course));
+    } else {
+      props.setchecklist([...props.checklist, course]);
+    }
+  };
+
   return (
     <Wrapper className="container rounded mt-5 bg-white p-md-5">
       <section className={`${styles.theader}`}>
@@ -59,9 +69,13 @@ const CourseTable: React.FC<TableProps> = (props) => {
           <tbody>
             {props.data.map((course) => {
               return (
-                <tr>
+                <tr key={course.id}>
                   <td>
-                    <input type="checkbox" className={styles.smallCheckbox} />
+                    <input
+                      type="checkbox"
+                      className={styles.smallCheckbox}
+                      onChange={() => onCheckHandler(course)}
+                    />
                   </td>
                   <td>{course.code}</td>
                   <td>{course.name}</td>

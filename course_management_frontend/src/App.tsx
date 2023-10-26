@@ -8,7 +8,7 @@ import { AuthProvider } from "./auth/AuthProvider";
 import Routes from "./routes/Routes";
 import GlobalStyle from "./globalStyle";
 import React from "react";
-
+import { ChakraProvider } from "@chakra-ui/react";
 // const router = createBrowserRouter(
 //    createRoutesFromElements(
 //       <Route path='/' element={<Welcome/>}>
@@ -22,10 +22,12 @@ import React from "react";
 
 function App() {
   return (
-    <AuthProvider>
-      <GlobalStyle />
-      <Routes />
-    </AuthProvider>
+    <ChakraProvider>
+      <AuthProvider>
+        <GlobalStyle />
+        <Routes />
+      </AuthProvider>
+    </ChakraProvider>
   );
 }
 
