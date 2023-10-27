@@ -1,11 +1,21 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import styled from "styled-components";
 import styles from "./CourseTable.module.css";
+import { useDebounce } from "./hooks/useDebounce";
+import { useAxiosPrivate } from "../../api/useAxiosHook";
 
 interface TableProps {
   data: Course[];
   checklist: Course[];
   setchecklist: Dispatch<SetStateAction<Course[]>>;
+  setQuery: Dispatch<SetStateAction<string>>;
+  query: string;
 }
 
 const Wrapper = styled.div`
@@ -27,9 +37,13 @@ const Wrapper = styled.div`
 `;
 
 const CourseTable: React.FC<TableProps> = (props) => {
+  const onQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
+    props.setQuery(e.target.value);
+  };
+
   const onCheckHandler = (course: Course) => {
-    if (props.checklist.includes(course)) {
-      props.setchecklist(props.checklist.filter((c) => c !== course));
+    if (props.checklist.some((item) => item.id === course.id)) {
+      props.setchecklist(props.checklist.filter((c) => c.id !== course.id));
     } else {
       props.setchecklist([...props.checklist, course]);
     }
@@ -49,6 +63,8 @@ const CourseTable: React.FC<TableProps> = (props) => {
             id="search"
             type="search"
             placeholder="Search..."
+            value={props.query}
+            onChange={onQueryChange}
             autoFocus
             required
           />
@@ -68,6 +84,10 @@ const CourseTable: React.FC<TableProps> = (props) => {
           </thead>
           <tbody>
             {props.data.map((course) => {
+              const isChecked = props.checklist.some(
+                (item) => item.id === course.id
+              );
+
               return (
                 <tr key={course.id}>
                   <td>
@@ -75,6 +95,7 @@ const CourseTable: React.FC<TableProps> = (props) => {
                       type="checkbox"
                       className={styles.smallCheckbox}
                       onChange={() => onCheckHandler(course)}
+                      checked={isChecked}
                     />
                   </td>
                   <td>{course.code}</td>

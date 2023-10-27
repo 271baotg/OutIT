@@ -22,7 +22,7 @@ const PlanTable: React.FC<componentprops> = (props) => {
         <tbody>
           {props.data.map((course) => {
             return (
-              <tr>
+              <tr key={course.id}>
                 <td className="px-2 p-2">
                   <div className="d-flex gap-2">
                     <div className={styles.tag}></div>

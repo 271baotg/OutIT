@@ -7,6 +7,7 @@ import { axiosPrivate } from "../../api/axios";
 import { useAxiosPrivate } from "../../api/useAxiosHook";
 import styles from "./Course.module.css";
 import PlanTable from "./PlanTable";
+import { useDebounce } from "./hooks/useDebounce";
 
 const Wrapper = styled.div``;
 
@@ -71,7 +72,49 @@ const Course = () => {
   const [courseList, setCourseList] = useState<Course[]>([]);
   const [selectedList, setSelectedList] = useState<Course[]>([]);
   const axiosPrivate = useAxiosPrivate();
+  const [query, setQuery] = useState<string>("");
+  const debounce = useDebounce<string>(query, 500);
 
+  //Gọi API Search sử dụng Debounce
+  useEffect(() => {
+    const search = async (query: string) => {
+      try {
+        if (query === "") {
+          const loadCourse = async () => {
+            try {
+              const response: Course[] = await axiosPrivate({
+                method: "get",
+                url: "http://localhost:8081/course",
+              });
+              console.log(response);
+              const list = response as Course[];
+              setCourseList(list);
+            } catch (error) {
+              console.log(error);
+            }
+          };
+
+          loadCourse();
+          return;
+        }
+
+        const response: Course[] = await axiosPrivate({
+          method: "get",
+          url: "http://localhost:8081/course/search",
+          params: {
+            query: query,
+          },
+        });
+        console.log("Search result: " + JSON.stringify(response));
+        setCourseList(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    search(query);
+  }, [debounce]);
+
+  //Gọi API lấy toàn bộ danh sách môn học
   useEffect(() => {
     const loadCourse = async () => {
       try {
@@ -81,7 +124,6 @@ const Course = () => {
         });
         console.log(response);
         const list = response as Course[];
-        console.log("List course: " + list);
         setCourseList(list);
       } catch (error) {
         console.log(error);
@@ -112,6 +154,8 @@ const Course = () => {
                 data={courseList}
                 checklist={selectedList}
                 setchecklist={setSelectedList}
+                query={query}
+                setQuery={setQuery}
               />
             </LeftCol>
             <RightCol className="col-sm-12 col-md-4">
