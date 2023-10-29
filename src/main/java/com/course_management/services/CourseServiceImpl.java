@@ -19,4 +19,9 @@ public class CourseServiceImpl implements CourseService{
     public List<Course> findAll() {
         return courseRepository.findAll();
     }
+
+    @Override
+    public List<Course> ftsByQuery(String query) {
+        return courseRepository.ftsByQuery(query);
+    }
 }

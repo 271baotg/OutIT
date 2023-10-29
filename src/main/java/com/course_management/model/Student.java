@@ -1,6 +1,7 @@
 package com.course_management.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,7 +16,6 @@ import java.util.stream.Collectors;
 @Table(name = "student")
 @Data
 @AllArgsConstructor
-@ToString
 @NoArgsConstructor
 public class Student implements UserDetails {
     @Id
@@ -41,6 +41,11 @@ public class Student implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "student",
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH})
+    @JsonManagedReference
+    private List<Enrollment> enrollmentList;
+
     public Student(String username, String password, String fullName, String email, String className) {
         this.username = username;
         this.password = password;
@@ -57,6 +62,29 @@ public class Student implements UserDetails {
 
 
 
+    public void addEnrollment(Enrollment enrollment){
+        if(this.enrollmentList == null){
+            enrollmentList = new ArrayList<>();
+        }
+
+        enrollmentList.add(enrollment);
+        enrollment.setStudent(this);
+    }
+
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", className='" + className + '\'' +
+                ", roles=" + roles +
+                ", enrollmentList=" + enrollmentList +
+                '}';
+    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -77,4 +105,5 @@ public class Student implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

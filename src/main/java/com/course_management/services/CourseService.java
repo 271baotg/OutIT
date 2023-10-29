@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CourseService {
     List<Course> findAll();
+    List<Course> ftsByQuery(String query);
 }

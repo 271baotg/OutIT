@@ -1,5 +1,7 @@
 package com.course_management.services;
 
+import com.course_management.model.Course;
+import com.course_management.model.Enrollment;
 import com.course_management.model.Student;
 import org.springframework.stereotype.Service;
 
@@ -12,4 +14,6 @@ public interface StudentService {
     void deleteById(int id);
     Student update(Student student);
     Student create(Student student);
+
+    Student updateEnroll(String username, List<Enrollment> enrollmentList);
 }

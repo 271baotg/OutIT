@@ -47,7 +47,7 @@ public class SecurityConfiguration {
 
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/auth/**").permitAll();
-                    auth.requestMatchers("/students/**").hasAuthority("admin");
+                    auth.requestMatchers("/students/**").hasAnyAuthority("admin","user");
                     auth.anyRequest().authenticated();
 
                 })

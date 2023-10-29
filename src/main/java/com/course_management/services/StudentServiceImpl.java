@@ -1,5 +1,6 @@
 package com.course_management.services;
 
+import com.course_management.model.Enrollment;
 import com.course_management.model.Student;
 import com.course_management.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,18 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public Student create(Student student) {
         student.setId(0);
+        return studentRepository.save(student);
+    }
+
+    @Override
+    public Student updateEnroll(String username, List<Enrollment> enrollmentList) {
+        Student student = new Student();
+        if(studentRepository.findStudentByUsername(username).isPresent()){
+            student = studentRepository.findStudentByUsername(username).get();
+        }
+        for(Enrollment enrol: enrollmentList){
+            student.addEnrollment(enrol);
+        }
         return studentRepository.save(student);
     }
 }

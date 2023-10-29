@@ -2,15 +2,12 @@ package com.course_management.controller;
 
 import com.course_management.model.Course;
 import com.course_management.services.CourseService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/course")
 public class CourseController {
     private final CourseService courseService;
 
@@ -19,8 +16,13 @@ public class CourseController {
     }
 
 
-    @GetMapping("/course")
+    @GetMapping()
     public List<Course> loadAllCourse(){
         return courseService.findAll();
+    }
+
+    @GetMapping("search")
+    public List<Course> searchCourse(@RequestParam("query") String query){
+        return courseService.ftsByQuery(query);
     }
 }
