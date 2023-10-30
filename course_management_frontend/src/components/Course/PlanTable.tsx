@@ -2,12 +2,15 @@
 import React from "react";
 import styles from "./PlanTable.module.css";
 import { Badge } from "@chakra-ui/react";
+import PlanRow from "./PlanRow";
 
 type componentprops = {
   data: Course[];
 };
 
 const PlanTable: React.FC<componentprops> = (props) => {
+  const typeChuyenNghiep: String[] = ["CN", "CSN", "CNTC", "CNCS", "CSNN"];
+
   return (
     <div className={styles.plan_table_container}>
       <table className={styles.plan_table}>
@@ -30,21 +33,16 @@ const PlanTable: React.FC<componentprops> = (props) => {
                   </div>
                 </td>
                 <td className="px-2 p-2">
-                  <Badge colorScheme="green" className={styles.dropdown}>
-                    <button
-                      type="button"
-                      className="dropdown-toggle"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      {course.type}
-                    </button>
-                    <ul className="dropdown-menu animate">
-                      <li>
-                        <div className="dropdown-item animate">TC</div>
-                      </li>
-                    </ul>
-                  </Badge>
+                  {!typeChuyenNghiep.includes(course.type) && (
+                    <Badge colorScheme="green" className={styles.dropdown}>
+                      <button type="button" aria-expanded="false">
+                        {course.type}
+                      </button>
+                    </Badge>
+                  )}
+                  {typeChuyenNghiep.includes(course.type) && (
+                    <PlanRow data={course}></PlanRow>
+                  )}
                 </td>
                 <td>{course.total}</td>
                 <td></td>

@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import styles from "./CourseTable.module.css";
-import { useDebounce } from "./hooks/useDebounce";
+import { useDebounce } from "../../hooks/useDebounce";
 import { useAxiosPrivate } from "../../api/useAxiosHook";
 
 interface TableProps {

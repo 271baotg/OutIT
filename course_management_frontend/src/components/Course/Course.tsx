@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Progress, calc } from "@chakra-ui/react";
 import styled from "styled-components";
 import SideBar from "../SideBar";
 import Content from "../Content";
@@ -7,7 +8,9 @@ import { axiosPrivate } from "../../api/axios";
 import { useAxiosPrivate } from "../../api/useAxiosHook";
 import styles from "./Course.module.css";
 import PlanTable from "./PlanTable";
-import { useDebounce } from "./hooks/useDebounce";
+import { useDebounce } from "../../hooks/useDebounce";
+import { inherits } from "util";
+import ProgressBar from "./ProgressBar";
 
 const Wrapper = styled.div``;
 
@@ -57,9 +60,9 @@ const InfoPanel = styled.div`
 `;
 
 const StatusBar = styled.div`
+  width: 100%;
   align-items: center;
-  display: flex;
-  flex-wrap: wrap;
+
   justify-content: space-between;
 `;
 
@@ -74,6 +77,7 @@ const Course = () => {
   const axiosPrivate = useAxiosPrivate();
   const [query, setQuery] = useState<string>("");
   const debounce = useDebounce<string>(query, 500);
+  const [currentValue, setCurrentValue] = useState(70);
 
   //Gọi API Search sử dụng Debounce
   useEffect(() => {
@@ -163,10 +167,8 @@ const Course = () => {
                 <StatusBar>
                   <div className={styles.header_text}>
                     <div>
-                      <h3>Your Plan</h3>
-                      <div>
-                        <span>Current: 23</span>
-                      </div>
+                      <h3 className="text-start">Your Plan</h3>
+                      <ProgressBar data={selectedList} />
                     </div>
                   </div>
                 </StatusBar>
