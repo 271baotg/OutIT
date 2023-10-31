@@ -1,5 +1,6 @@
 .plan_table_container {
   max-height: 60%;
+  height: 60%;
   background-color: #fff;
   overflow: scroll;
   overflow: overlay;

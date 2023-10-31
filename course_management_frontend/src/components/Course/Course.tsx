@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Progress, calc } from "@chakra-ui/react";
+import { Progress, Button, Stack } from "@chakra-ui/react";
 import styled from "styled-components";
 import SideBar from "../SideBar";
 import Content from "../Content";
@@ -9,7 +9,7 @@ import { useAxiosPrivate } from "../../api/useAxiosHook";
 import styles from "./Course.module.css";
 import PlanTable from "./PlanTable";
 import { useDebounce } from "../../hooks/useDebounce";
-import { inherits } from "util";
+import { FaCheck, FaTrash } from "react-icons/fa6";
 import ProgressBar from "./ProgressBar";
 
 const Wrapper = styled.div``;
@@ -137,13 +137,9 @@ const Course = () => {
     loadCourse();
   }, []);
 
-  useEffect(() => {
-    console.log("Course list: " + JSON.stringify(courseList));
-  }, [courseList]);
-
-  useEffect(() => {
-    console.log("Selected course:" + selectedList.length);
-  }, [selectedList]);
+  const onResetHandler = () => {
+    setSelectedList([]);
+  };
 
   return (
     <Wrapper className="container-fluid gx-0 m-0 h-100">
@@ -174,6 +170,30 @@ const Course = () => {
                 </StatusBar>
                 <Divider />
                 <PlanTable data={selectedList}></PlanTable>
+                <Stack
+                  direction="row"
+                  style={{
+                    display: "flex",
+                    justifyContent: "end",
+                    paddingTop: "1rem",
+                  }}
+                >
+                  <Button
+                    leftIcon={<FaCheck />}
+                    colorScheme="green"
+                    variant="solid"
+                  >
+                    Create Plan
+                  </Button>
+                  <Button
+                    onClick={onResetHandler}
+                    rightIcon={<FaTrash />}
+                    colorScheme="red"
+                    variant="outline"
+                  >
+                    Reset
+                  </Button>
+                </Stack>
               </InfoPanel>
             </RightCol>
           </div>
