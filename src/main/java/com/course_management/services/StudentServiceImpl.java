@@ -6,8 +6,11 @@ import com.course_management.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService{
@@ -58,5 +61,15 @@ public class StudentServiceImpl implements StudentService{
             student.addEnrollment(enrol);
         }
         return studentRepository.save(student);
+    }
+
+    @Override
+    public List<Enrollment> findEnrollmentByTerm(String username, int term) {
+        if(studentRepository.findStudentByUsername(username).isPresent()) {
+            Student student = studentRepository.findStudentByUsername(username).get();
+            List<Enrollment> list = student.getEnrollmentList();
+            return list.stream().filter(enrollment -> enrollment.getTerm()==term).collect(Collectors.toList());
+        }
+        return Collections.emptyList(); // Return an empty list if the student is not found.
     }
 }

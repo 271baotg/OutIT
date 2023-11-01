@@ -43,8 +43,13 @@ public class StudentController {
         studentService.deleteById(id);
     }
 
-    @PutMapping("students/enroll/{username}")
+    @PutMapping("enroll/{username}")
     public Student updateEnrollment(@PathVariable String username, @RequestBody List<Enrollment> enrollmentList){
         return studentService.updateEnroll(username,enrollmentList);
+    }
+
+    @GetMapping("enroll/{username}")
+    public List<Enrollment> getEnrollmentByTerm(@PathVariable(value = "username") String username, @RequestParam(value = "term") Integer term){
+        return studentService.findEnrollmentByTerm(username,term);
     }
 }
