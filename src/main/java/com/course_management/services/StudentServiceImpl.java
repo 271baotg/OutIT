@@ -1,23 +1,26 @@
 package com.course_management.services;
 
+import com.course_management.dto.TermDTO;
 import com.course_management.model.Enrollment;
 import com.course_management.model.Student;
+import com.course_management.repository.EnrollmentRepository;
 import com.course_management.repository.StudentRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService{
 
+    private final EnrollmentRepository enrollmentRepository;
+
     private final StudentRepository studentRepository;
 
-    public StudentServiceImpl(StudentRepository studentRepository) {
+    public StudentServiceImpl(EnrollmentRepository enrollmentRepository, StudentRepository studentRepository) {
+        this.enrollmentRepository = enrollmentRepository;
         this.studentRepository = studentRepository;
     }
 
@@ -72,4 +75,22 @@ public class StudentServiceImpl implements StudentService{
         }
         return Collections.emptyList(); // Return an empty list if the student is not found.
     }
+
+    @Override
+    public List<TermDTO> findAllTerm(String username) {
+        List<TermDTO> result = new ArrayList<>();
+        List<Integer> listTerm;
+        if(studentRepository.findAllTerm(username).isPresent())
+        {
+             listTerm = studentRepository.findAllTerm(username).get();
+             for(int term : listTerm){
+                 TermDTO temp = new TermDTO(term,enrollmentRepository.getTotal(username,term));
+                 result.add(temp);
+             }
+             return result;
+        }
+        else return Collections.emptyList();
+    }
+
+
 }

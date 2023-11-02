@@ -1,6 +1,7 @@
 package com.course_management.controller;
 
 
+import com.course_management.dto.TermDTO;
 import com.course_management.model.Enrollment;
 import com.course_management.model.Student;
 import com.course_management.services.StudentService;
@@ -52,4 +53,11 @@ public class StudentController {
     public List<Enrollment> getEnrollmentByTerm(@PathVariable(value = "username") String username, @RequestParam(value = "term") Integer term){
         return studentService.findEnrollmentByTerm(username,term);
     }
+
+    @GetMapping("enroll/terms/{username}")
+    public List<TermDTO> getAllTerm(@PathVariable(value = "username") String username){
+        List<TermDTO> listTerm =  studentService.findAllTerm(username);
+        return listTerm;
+    }
+
 }

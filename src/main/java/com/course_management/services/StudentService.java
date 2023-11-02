@@ -1,5 +1,6 @@
 package com.course_management.services;
 
+import com.course_management.dto.TermDTO;
 import com.course_management.model.Course;
 import com.course_management.model.Enrollment;
 import com.course_management.model.Student;
@@ -18,4 +19,6 @@ public interface StudentService {
     Student updateEnroll(String username, List<Enrollment> enrollmentList);
 
     List<Enrollment> findEnrollmentByTerm(String username, int term);
+
+    List<TermDTO> findAllTerm(String username);
 }
