@@ -21,4 +21,6 @@ public interface StudentService {
     List<Enrollment> findEnrollmentByTerm(String username, int term);
 
     List<TermDTO> findAllTerm(String username);
+
+    List<Enrollment> getAllEnrollment(String username);
 }

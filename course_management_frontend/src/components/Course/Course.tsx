@@ -17,7 +17,7 @@ import { useAxiosPrivate } from "../../api/useAxiosHook";
 import styles from "./Course.module.css";
 import PlanTable from "./PlanTable";
 import { useDebounce } from "../../hooks/useDebounce";
-import { FaCheck, FaTrash } from "react-icons/fa6";
+import { FaCheck, FaTrash, FaArrowLeft } from "react-icons/fa6";
 import ProgressBar from "./ProgressBar";
 import { relative } from "path";
 import TermBox from "./TermBox";
@@ -88,6 +88,26 @@ const InfoPanel = styled.div`
   box-shadow: 4px 4px 0 #34444c;
 `;
 
+const EditPanel = styled.div`
+  display: flex; /* Use flexbox to control child elements */
+  flex-direction: column; /* Stack child elements vertically */
+  background-color: #ddd;
+  width: 100%;
+  height: 100%;
+  max-height: "calc(100% - 3rem)";
+  padding: 2rem;
+  color: #212529;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  font-family: montserrat, sans-serif;
+  line-height: 1.6;
+  box-sizing: border-box;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.937rem;
+  text-transform: uppercase;
+`;
+
 const StatusBar = styled.div`
   width: 100%;
   align-items: center;
@@ -112,6 +132,7 @@ const Course = () => {
   const [listTerm, setListTerm] = useState<Term[]>([]);
   const [selectedTerm, setSelectedTerm] = useState<number>(0);
   const [flipState, setFlipState] = useState<boolean>(false);
+  const [allEnrollment, setAllEnrollment] = useState<Enrollment[]>([]);
 
   const getTranslateY = () => {
     if (flipState) {
@@ -124,11 +145,29 @@ const Course = () => {
       setFlipState(true);
       console.log(selectedTerm);
     }
+
+    const loadCourseByTerm = async () => {
+      try {
+        const response: Course[] = await axiosPrivate({
+          url: `http://localhost:8081/enroll/${auth?.username}`,
+          method: "get",
+          params: {
+            term: selectedTerm,
+          },
+        });
+        console.log(`Term ${selectedTerm}: ${JSON.stringify(response)}`);
+        setSelectedList(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    loadCourseByTerm();
   }, [selectedTerm]);
 
   //Gọi API lấy danh sách học kì và tổng môn mỗi kì
   useEffect(() => {
     setSelectedList([]);
+    setFlipState(false);
     if (tabIndex === 1) {
       const loadTerm = async () => {
         try {
@@ -137,7 +176,6 @@ const Course = () => {
             method: "get",
           });
           setListTerm(response);
-
           console.log(response);
         } catch (error) {
           console.log(error);
@@ -189,13 +227,27 @@ const Course = () => {
 
   //Gọi API lấy toàn bộ danh sách môn học
   useEffect(() => {
+    const loadAllEnrollment = async () => {
+      try {
+        const allEnerolment: Enrollment[] = await axiosPrivate({
+          url: "http://localhost:8081/enroll",
+          method: "get",
+          params: {
+            username: auth?.username,
+          },
+        });
+
+        console.log(`All Enrollment: ${JSON.stringify(allEnerolment)}`);
+        setAllEnrollment(allEnerolment);
+      } catch (error) {}
+    };
+
     const loadCourse = async () => {
       try {
         const response: Course[] = await axiosPrivate({
           method: "get",
           url: "http://localhost:8081/course",
         });
-        console.log(response);
         const list = response as Course[];
         setCourseList(list);
       } catch (error) {
@@ -204,7 +256,12 @@ const Course = () => {
     };
 
     loadCourse();
+    loadAllEnrollment();
   }, []);
+
+  useEffect(() => {
+    console.log(`Selected Course: ${JSON.stringify(selectedList)}`);
+  }, [selectedList]);
 
   const onResetHandler = () => {
     setSelectedList([]);
@@ -308,6 +365,7 @@ const Course = () => {
                       height: "calc(100% - 3rem)",
                       display: "flex",
                       position: "relative",
+                      justifyContent: "center",
                     }}
                   >
                     <Card
@@ -323,7 +381,7 @@ const Course = () => {
                           >
                             {listTerm.map((term) => {
                               return (
-                                <div className="col">
+                                <div key={term.term} className="col">
                                   <TermBox
                                     data={term}
                                     selectedTerm={selectedTerm}
@@ -335,7 +393,64 @@ const Course = () => {
                           </div>
                         </div>
                       </div>
-                      <div className={styles.back_card}></div>
+                      <div className={styles.back_card}>
+                        <EditPanel className="container rounded bg-white p-md-3 d-flex">
+                          <StatusBar>
+                            <div className={styles.header_text}>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  justifyContent: "space-between",
+                                }}
+                              >
+                                <h3 className="text-start">
+                                  Term {selectedTerm}
+                                </h3>
+                                <button
+                                  className={styles.back_button}
+                                  onClick={() => {
+                                    setFlipState(false);
+                                    setSelectedTerm(0);
+                                  }}
+                                >
+                                  <FaArrowLeft
+                                    style={{ paddingRight: "4px" }}
+                                  />
+                                  Back
+                                </button>
+                              </div>
+                            </div>
+                            <ProgressBar data={selectedList} />
+                          </StatusBar>
+                          <Divider />
+                          <PlanTable data={selectedList}></PlanTable>
+                          <Stack
+                            direction="row"
+                            style={{
+                              display: "flex",
+                              justifyContent: "end",
+                              paddingTop: "1rem",
+                            }}
+                          >
+                            <Button
+                              leftIcon={<FaCheck />}
+                              colorScheme="green"
+                              variant="solid"
+                            >
+                              Create Plan
+                            </Button>
+                            <Button
+                              onClick={onResetHandler}
+                              rightIcon={<FaTrash />}
+                              colorScheme="red"
+                              variant="outline"
+                            >
+                              Reset
+                            </Button>
+                          </Stack>
+                        </EditPanel>
+                      </div>
                     </Card>
                   </TabPanel>
                 </TabPanels>

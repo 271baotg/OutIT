@@ -36,7 +36,42 @@
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  background: var(--button-color);
   color: #333;
   transform: rotateY(180deg);
+}
+
+.back_button {
+  visibility: visible;
+  box-sizing: border-box;
+  font-family: inherit;
+  appearance: none;
+  cursor: pointer;
+  height: 43px;
+  line-height: 1;
+
+  padding: 0 10px;
+  position: relative;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  user-select: none;
+  width: auto;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.937rem;
+  text-transform: uppercase;
+  border: 1px solid #34444c;
+  background: #fff;
+  box-shadow: 3px 3px 0 #34444c;
+  border-radius: 0;
+  color: inherit;
+}
+
+.back_button:hover {
+  background-color: #34444c; /* Change the background color on hover */
+  color: #fff; /* Change the text color on hover */
+  box-shadow: none; /* Remove the box shadow on hover */
+  transform: translate(-3px, -3px);
 }

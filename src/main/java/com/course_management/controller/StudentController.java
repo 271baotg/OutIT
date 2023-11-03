@@ -54,6 +54,11 @@ public class StudentController {
         return studentService.findEnrollmentByTerm(username,term);
     }
 
+    @GetMapping("enroll")
+    public List<Enrollment> getAllEnrollment(@RequestParam(value = "username") String username) {
+        return studentService.getAllEnrollment(username);
+    }
+
     @GetMapping("enroll/terms/{username}")
     public List<TermDTO> getAllTerm(@PathVariable(value = "username") String username){
         List<TermDTO> listTerm =  studentService.findAllTerm(username);

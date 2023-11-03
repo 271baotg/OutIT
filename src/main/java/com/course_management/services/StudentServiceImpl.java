@@ -92,5 +92,14 @@ public class StudentServiceImpl implements StudentService{
         else return Collections.emptyList();
     }
 
+    @Override
+    public List<Enrollment> getAllEnrollment(String username) {
+        Student student = new Student();
+        if(studentRepository.findStudentByUsername(username).isPresent()){
+            student = studentRepository.findStudentByUsername(username).get();
+        }
+        return student.getEnrollmentList();
+    }
+
 
 }
