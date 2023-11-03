@@ -61,10 +61,6 @@
   margin-bottom: 2rem;
 }
 
-.table tbody tr:nth-of-type(even) {
-  background-color: #f3f3f3;
-}
-
 .table tbody tr:last-of-type {
   border-bottom: 2px solid #009879;
 }
@@ -113,6 +109,10 @@ button {
   z-index: 1;
   position: relative;
 }
+
+.row_disabled {
+}
+
 /* .search_form button {
   display: none;
   position: absolute;

@@ -167,7 +167,10 @@ const Course = () => {
   //Gọi API lấy danh sách học kì và tổng môn mỗi kì
   useEffect(() => {
     setSelectedList([]);
-    setFlipState(false);
+    if (tabIndex === 0) {
+      setFlipState(false);
+      setSelectedTerm(0);
+    }
     if (tabIndex === 1) {
       const loadTerm = async () => {
         try {
@@ -277,6 +280,7 @@ const Course = () => {
           <div className="row h-100">
             <LeftCol className="col-sm-12 col-md-8">
               <CourseTable
+                allEnrollment={allEnrollment}
                 data={courseList}
                 checklist={selectedList}
                 setchecklist={setSelectedList}

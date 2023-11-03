@@ -9,6 +9,7 @@ import styled from "styled-components";
 import styles from "./CourseTable.module.css";
 import { useDebounce } from "../../hooks/useDebounce";
 import { useAxiosPrivate } from "../../api/useAxiosHook";
+import { Badge } from "@chakra-ui/react";
 
 interface TableProps {
   data: Course[];
@@ -16,6 +17,7 @@ interface TableProps {
   setchecklist: Dispatch<SetStateAction<Course[]>>;
   setQuery: Dispatch<SetStateAction<string>>;
   query: string;
+  allEnrollment: Enrollment[];
 }
 
 const Wrapper = styled.div`
@@ -42,8 +44,8 @@ const CourseTable: React.FC<TableProps> = (props) => {
   };
 
   const onCheckHandler = (course: Course) => {
-    if (props.checklist.some((item) => item.id === course.id)) {
-      props.setchecklist(props.checklist.filter((c) => c.id !== course.id));
+    if (props.checklist.some((item) => item.code === course.code)) {
+      props.setchecklist(props.checklist.filter((c) => c.code !== course.code));
     } else {
       props.setchecklist([...props.checklist, course]);
     }
@@ -85,7 +87,7 @@ const CourseTable: React.FC<TableProps> = (props) => {
           <tbody>
             {props.data.map((course) => {
               const isChecked = props.checklist.some(
-                (item) => item.id === course.id
+                (item) => item.code === course.code
               );
 
               return (
@@ -102,7 +104,30 @@ const CourseTable: React.FC<TableProps> = (props) => {
                   <td>{course.name}</td>
                   <td>{course.type}</td>
                   <td>{course.total}</td>
-                  <td>Done</td>
+                  {props.allEnrollment.some(
+                    (enrollment) => enrollment.code === course.code
+                  ) && (
+                    <td>
+                      <Badge variant="solid" colorScheme="green">
+                        TERM{" "}
+                        {
+                          props.allEnrollment.find(
+                            (enrollment) => enrollment.code === course.code
+                          )?.term
+                        }{" "}
+                        : DONE
+                      </Badge>
+                    </td>
+                  )}
+                  {!props.allEnrollment.some(
+                    (enrollment) => enrollment.code === course.code
+                  ) && (
+                    <td>
+                      <Badge variant="solid" colorScheme="red">
+                        Available
+                      </Badge>
+                    </td>
+                  )}
                 </tr>
               );
             })}
