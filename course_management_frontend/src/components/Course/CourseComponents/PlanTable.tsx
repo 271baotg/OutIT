@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import styles from "./PlanTable.module.css";
+import styles from "../styles/PlanTable.module.css";
 import { Badge } from "@chakra-ui/react";
 import PlanRow from "./PlanRow";
 

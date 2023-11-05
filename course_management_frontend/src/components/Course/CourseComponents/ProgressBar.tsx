@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./ProgressBar.module.css";
+import styles from "../styles/ProgressBar.module.css";
 import { color } from "framer-motion";
 
 type componentProp = {

@@ -32,7 +32,7 @@ const NavWrapper = styled.nav`
   @media only screen and (min-width: 600px) {
     top: 0;
     width: 3rem;
-    height: 100vh;
+    height: 100%;
     .nav-item {
       width: 100%;
     }

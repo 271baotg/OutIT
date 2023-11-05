@@ -1,5 +1,5 @@
 import { Badge } from "@chakra-ui/react";
-import styles from "./PlanTable.module.css";
+import styles from "../styles/PlanTable.module.css";
 import React, { MouseEventHandler, useState } from "react";
 
 type componentProps = {

@@ -1,10 +1,14 @@
-interface AuthObject  {
-    username: string,
-    password: string,
-    token: string
-  }
+import { Dispatch, SetStateAction } from "react";
 
-type AuthContextType = {
-    auth: AuthObject | null;
-    setAuth: React.Dispatch<React.SetStateAction<AuthObject | null>>;
-  };
+export interface AuthObject {
+  username: string;
+  password: string;
+  token: string;
+}
+
+export type AuthContextType = {
+  auth: AuthObject | null;
+  setAuth: React.Dispatch<React.SetStateAction<AuthObject | null>>;
+  // modalOpen: Boolean;
+  // setModalOpen: Dispatch<SetStateAction<Boolean>>;
+};

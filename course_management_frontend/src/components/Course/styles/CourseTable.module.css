@@ -111,6 +111,8 @@ button {
 }
 
 .row_disabled {
+  background-color: #a5e4c0;
+  pointer-events: none;
 }
 
 /* .search_form button {

@@ -39,7 +39,6 @@ td {
   background-color: var(--second-color);
   color: black;
   border-top: 0;
-  z-index: 1;
 }
 
 .plan_table th:first-child {

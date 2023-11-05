@@ -6,10 +6,10 @@ import React, {
   useState,
 } from "react";
 import styled from "styled-components";
-import styles from "./CourseTable.module.css";
-import { useDebounce } from "../../hooks/useDebounce";
-import { useAxiosPrivate } from "../../api/useAxiosHook";
-import { Badge } from "@chakra-ui/react";
+import styles from "../styles/CourseTable.module.css";
+import { useDebounce } from "../../../hooks/useDebounce";
+import { useAxiosPrivate } from "../../../hooks/useAxiosHook";
+import { Badge, Input } from "@chakra-ui/react";
 
 interface TableProps {
   data: Course[];
@@ -18,6 +18,7 @@ interface TableProps {
   setQuery: Dispatch<SetStateAction<string>>;
   query: string;
   allEnrollment: Enrollment[];
+  selectedTerm: number;
 }
 
 const Wrapper = styled.div`
@@ -61,13 +62,20 @@ const CourseTable: React.FC<TableProps> = (props) => {
           role="search"
         >
           <label htmlFor="search">Search for stuff</label>
-          <input
+          {/* <input
             id="search"
             type="search"
             placeholder="Search..."
             value={props.query}
             onChange={onQueryChange}
             autoFocus
+            required
+          /> */}
+          <Input
+            value={props.query}
+            onChange={onQueryChange}
+            autoFocus
+            placeholder="Search for course..."
             required
           />
         </form>
@@ -90,8 +98,18 @@ const CourseTable: React.FC<TableProps> = (props) => {
                 (item) => item.code === course.code
               );
 
+              const isDisable = props.allEnrollment.some(
+                (item) =>
+                  item.code === course.code &&
+                  !isChecked &&
+                  item.term !== props.selectedTerm
+              );
+
               return (
-                <tr key={course.id}>
+                <tr
+                  key={course.id}
+                  className={isDisable && styles.row_disabled}
+                >
                   <td>
                     <input
                       type="checkbox"

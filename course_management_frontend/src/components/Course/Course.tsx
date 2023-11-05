@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Progress,
   Button,
@@ -11,22 +12,22 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import styled from "styled-components";
 import SideBar from "../SideBar";
 import Content from "../Content";
-import CourseTable from "./CourseTable";
+import CourseTable from "./CourseComponents/CourseTable";
 import { axiosPrivate } from "../../api/axios";
-import { useAxiosPrivate } from "../../api/useAxiosHook";
-import styles from "./Course.module.css";
-import PlanTable from "./PlanTable";
+import { useAxiosPrivate } from "../../hooks/useAxiosHook";
+import styles from "./styles/Course.module.css";
+import PlanTable from "./CourseComponents/PlanTable";
 import { useDebounce } from "../../hooks/useDebounce";
 import { FaCheck, FaTrash, FaArrowLeft } from "react-icons/fa6";
-import ProgressBar from "./ProgressBar";
+import ProgressBar from "./CourseComponents/ProgressBar";
 import { relative } from "path";
-import TermBox from "./TermBox";
+import TermBox from "./CourseComponents/TermBox";
 import AuthContext from "../../auth/AuthProvider";
+import Modal from "../Modal";
 
 const Wrapper = styled.div``;
 
 const Layout = styled.div`
-  padding-top: 2rem;
   h1 {
     margin-bottom: 2rem;
   }
@@ -127,12 +128,12 @@ const Course = () => {
   const axiosPrivate = useAxiosPrivate();
   const [query, setQuery] = useState<string>("");
   const debounce = useDebounce<string>(query, 500);
-  const [currentValue, setCurrentValue] = useState(70);
   const [tabIndex, setTabIndex] = useState(0);
   const [listTerm, setListTerm] = useState<Term[]>([]);
   const [selectedTerm, setSelectedTerm] = useState<number>(0);
   const [flipState, setFlipState] = useState<boolean>(false);
   const [allEnrollment, setAllEnrollment] = useState<Enrollment[]>([]);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const getTranslateY = () => {
     if (flipState) {
@@ -272,11 +273,14 @@ const Course = () => {
 
   return (
     <Wrapper className="container-fluid gx-0 m-0 h-100">
+      <AnimatePresence initial={false} onExitComplete={() => null}>
+        {modalOpen && (
+          <Modal isOpen={modalOpen} handleClose={() => setModalOpen(false)} />
+        )}
+      </AnimatePresence>
       <SideBar></SideBar>
       <Content>
         <Layout className="container-fluid h-100">
-          <h1 className="mb-lg">Course</h1>
-          <Widget className="row"></Widget>
           <div className="row h-100">
             <LeftCol className="col-sm-12 col-md-8">
               <CourseTable
@@ -286,6 +290,7 @@ const Course = () => {
                 setchecklist={setSelectedList}
                 query={query}
                 setQuery={setQuery}
+                selectedTerm={selectedTerm}
               />
             </LeftCol>
             <RightCol className="col-sm-12 col-md-4">
@@ -349,6 +354,9 @@ const Course = () => {
                           leftIcon={<FaCheck />}
                           colorScheme="green"
                           variant="solid"
+                          onClick={() =>
+                            modalOpen ? setModalOpen(false) : setModalOpen(true)
+                          }
                         >
                           Create Plan
                         </Button>
@@ -383,15 +391,29 @@ const Course = () => {
                             className="row row-cols-3 px-4 gy-2"
                             style={{ height: "30%" }}
                           >
-                            {listTerm.map((term) => {
+                            {listTerm.map((term, i) => {
                               return (
-                                <div key={term.term} className="col">
+                                <motion.div
+                                  key={term.term}
+                                  className="col"
+                                  initial={{
+                                    opacity: 0,
+                                    translateX: i % 2 === 0 ? -50 : 50,
+                                    translateY: -50,
+                                  }}
+                                  animate={{
+                                    opacity: 1,
+                                    translateX: 0,
+                                    translateY: 0,
+                                  }}
+                                  transition={{ duration: 0.3, delay: i * 0.2 }}
+                                >
                                   <TermBox
                                     data={term}
                                     selectedTerm={selectedTerm}
                                     setSelectedTerm={setSelectedTerm}
                                   />
-                                </div>
+                                </motion.div>
                               );
                             })}
                           </div>
@@ -438,9 +460,17 @@ const Course = () => {
                             }}
                           >
                             <Button
+                              as={motion.div}
+                              whileHover={{ scale: 1.1 }}
+                              whileTap={{ scale: 0.9 }}
                               leftIcon={<FaCheck />}
                               colorScheme="green"
                               variant="solid"
+                              onClick={() =>
+                                modalOpen
+                                  ? setModalOpen(false)
+                                  : setModalOpen(true)
+                              }
                             >
                               Create Plan
                             </Button>
