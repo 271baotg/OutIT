@@ -9,6 +9,4 @@ export interface AuthObject {
 export type AuthContextType = {
   auth: AuthObject | null;
   setAuth: React.Dispatch<React.SetStateAction<AuthObject | null>>;
-  // modalOpen: Boolean;
-  // setModalOpen: Dispatch<SetStateAction<Boolean>>;
 };

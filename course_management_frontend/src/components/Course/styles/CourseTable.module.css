@@ -20,7 +20,7 @@
 }
 
 .table_container::-webkit-scrollbar-thumb {
-  background-color: #009879; /* Set the color of the scrollbar thumb */
+  background-color: #000000; /* Set the color of the scrollbar thumb */
   border-radius: 6px; /* Set the border radius of the thumb */
 }
 
@@ -37,7 +37,7 @@
 /* Define styles for the custom animation when checked */
 
 .table thead {
-  background-color: #009879;
+  background-color: #000000;
   color: #ffffff;
   text-align: left;
   font-weight: bold;
@@ -160,7 +160,7 @@ button {
   }
 
   .table_container::-webkit-scrollbar-thumb {
-    background-color: #009879; /* Set the color of the horizontal scrollbar thumb */
+    background-color: #000000; /* Set the color of the horizontal scrollbar thumb */
     border-radius: 6px; /* Set the border radius of the horizontal thumb */
   }
 

@@ -4,6 +4,8 @@ import { MouseEventHandler, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
+import { CloseButton, ModalCloseButton } from "@chakra-ui/react";
+import TypeChart from "./Course/CourseComponents/TypeChart";
 
 const dropIn = {
   hidden: {
@@ -48,17 +50,39 @@ const errorAppearance = {
 };
 
 const Dialog = styled(motion.dialog)`
-  width: 50%;
-  height: 50%;
-
+  width: 70%;
+  height: 80%;
   background-color: white;
+  padding: 0;
   margin: auto;
-  padding: 0 2rem;
-  border-radius: 1rem;
+  border-radius: 0.7rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative; // Ensure this is set to 'relative'
+
+  @media (max-width: 768px) {
+    // Adjust the max-width as needed
+    width: 90%; // Change the width for mobile devices
+    height: 60%; // Adjust the height for mobile devices
+    border-radius: 0.7rem; // Remove border-radius for mobile devices if needed
+    /* Add more mobile-specific styles as needed */
+  }
+`;
+
+const DialogHeader = styled.div`
+  width: 100%;
+  height: 2rem;
+  background-color: black;
+  border-radius: 0.2rem 0.2rem 0 0;
+  display: flex;
+  justify-content: end;
+`;
+
+const Title = styled.div`
+  padding: 1rem;
+  width: 100%;
+  align-items: center;
 `;
 
 interface modalProps {
@@ -79,14 +103,40 @@ const Modal: React.FC<modalProps> = (props) => {
     <Backdrop onClick={props.handleClose}>
       <Dialog
         onClick={(e) => e.stopPropagation()}
-        className="modal orange-gradient"
-        variants={errorAppearance}
+        className="modal"
+        variants={dropIn}
         initial="hidden"
         animate="visible"
         exit="exit"
       >
-        <p>This Is The Modal</p>
-        <button onClick={props.handleClose}>Close</button>
+        <DialogHeader>
+          <CloseButton
+            colorScheme="orange"
+            onClick={props.handleClose}
+            size="md"
+          />
+        </DialogHeader>
+        <div
+          className="container flex-grow-1 w-100"
+          style={{ backgroundColor: "white" }}
+        >
+          <div className="row">
+            <Title>
+              <p>
+                Please review all your course and credits before moving to next
+                step
+              </p>
+            </Title>
+          </div>
+          <div className="row" style={{ height: "35%" }}>
+            <div className="col" style={{ backgroundColor: "#ddd" }}></div>
+          </div>
+          <div className="row" style={{ height: "50%" }}>
+            <div className="col" style={{ padding: "1rem" }}>
+              <TypeChart />
+            </div>
+          </div>
+        </div>
       </Dialog>
     </Backdrop>,
     document.getElementById("portal")!
