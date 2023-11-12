@@ -1,9 +1,10 @@
 import { Badge } from "@chakra-ui/react";
 import styles from "../styles/PlanTable.module.css";
-import React, { MouseEventHandler, useState } from "react";
+import React, { MouseEventHandler, useEffect, useState } from "react";
 
 type componentProps = {
   data: Course;
+  onTypeChange: Function;
 };
 
 const PlanRow: React.FC<componentProps> = (props) => {
@@ -12,6 +13,7 @@ const PlanRow: React.FC<componentProps> = (props) => {
 
   const handleItemSelect = (value: String) => {
     setCurrentType(value);
+    props.onTypeChange(value);
   };
 
   return (
@@ -26,7 +28,7 @@ const PlanRow: React.FC<componentProps> = (props) => {
       </button>
       <ul className="dropdown-menu animate">
         {typeChuyenNghiep
-          .filter((item) => item != current)
+          .filter((item) => item !== current)
           .map((value) => {
             return (
               <li>

@@ -88,6 +88,7 @@ const Title = styled.div`
 interface modalProps {
   isOpen: Boolean;
   handleClose: MouseEventHandler;
+  data: Course[];
 }
 
 const Modal: React.FC<modalProps> = (props) => {
@@ -99,6 +100,12 @@ const Modal: React.FC<modalProps> = (props) => {
   //     document.body.style.overflow = "auto";
   //   }
   // }, [props.isOpen]);
+  const mainType = ["CN", "CSN", "CSNN", "ĐC", "CNTC"];
+
+  useEffect(() => {
+    console.log("Plan: " + JSON.stringify(props.data));
+  }, []);
+
   return createPortal(
     <Backdrop onClick={props.handleClose}>
       <Dialog

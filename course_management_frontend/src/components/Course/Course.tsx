@@ -134,6 +134,7 @@ const Course = () => {
   const [flipState, setFlipState] = useState<boolean>(false);
   const [allEnrollment, setAllEnrollment] = useState<Enrollment[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [planList, setPlanList] = useState<Course[]>([]);
 
   const getTranslateY = () => {
     if (flipState) {
@@ -275,7 +276,11 @@ const Course = () => {
     <Wrapper className="container-fluid gx-0 m-0 h-100">
       <AnimatePresence initial={false} onExitComplete={() => null}>
         {modalOpen && (
-          <Modal isOpen={modalOpen} handleClose={() => setModalOpen(false)} />
+          <Modal
+            data={selectedList}
+            isOpen={modalOpen}
+            handleClose={() => setModalOpen(false)}
+          />
         )}
       </AnimatePresence>
       <SideBar></SideBar>
@@ -341,7 +346,11 @@ const Course = () => {
                         </div>
                       </StatusBar>
                       <Divider />
-                      <PlanTable data={selectedList}></PlanTable>
+                      <PlanTable
+                        data={selectedList}
+                        planList={planList}
+                        setPlanList={setPlanList}
+                      ></PlanTable>
                       <Stack
                         direction="row"
                         style={{
@@ -450,7 +459,11 @@ const Course = () => {
                             <ProgressBar data={selectedList} />
                           </StatusBar>
                           <Divider />
-                          <PlanTable data={selectedList}></PlanTable>
+                          <PlanTable
+                            data={selectedList}
+                            planList={planList}
+                            setPlanList={setPlanList}
+                          ></PlanTable>
                           <Stack
                             direction="row"
                             style={{
