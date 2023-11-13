@@ -19,6 +19,15 @@ export default createGlobalStyle`
 --display-display-1-size: 72px;
 
 /* Colors */
+--cn-type-color: #ff6464;
+--csn-type-color: #ffbd67;
+--dc-type-color: #2d4059;
+--csnn-type-color: #5be7a9;
+--cntc-type-color: #3ec1d3;
+--other-type-color: #448ef6;
+
+
+
 --main-color: #e4ebd4;
 --text-color: #1d282b;
 --button-color: #b85043;

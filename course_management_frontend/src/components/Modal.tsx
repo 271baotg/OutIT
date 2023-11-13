@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
 import Backdrop from "../components/Backdrop";
-import { MouseEventHandler, useEffect } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import { CloseButton, ModalCloseButton } from "@chakra-ui/react";
 import TypeChart from "./Course/CourseComponents/TypeChart";
+import { Type } from "../model/TypeAndTotal";
 
 const dropIn = {
   hidden: {
@@ -101,10 +102,53 @@ const Modal: React.FC<modalProps> = (props) => {
   //   }
   // }, [props.isOpen]);
   const mainType = ["CN", "CSN", "CSNN", "ĐC", "CNTC"];
+  const [typeList, setTypeList] = useState<Type[]>([]);
+  const [displayType, setDisplayType] = useState<Type[]>([
+    { type: "others", total: 0 },
+  ]);
 
   useEffect(() => {
     console.log("Plan: " + JSON.stringify(props.data));
+    props.data.map((course) => {
+      const existingType = typeList.some((item) => item.type === course.type);
+      if (existingType) {
+        typeList?.map((item) =>
+          item.type == course.type
+            ? { ...item, total: (item.total += course.total) }
+            : item
+        );
+      } else {
+        const temp: Type = new Type(course.type, course.total);
+        typeList.push(temp);
+      }
+    });
   }, []);
+
+  useEffect(() => {
+    console.log("Type List" + JSON.stringify(typeList));
+  }, [typeList]);
+  useEffect(() => {
+    console.log("Display Type: " + JSON.stringify(displayType));
+  }, [displayType]);
+
+  useEffect(() => {
+    let updateList: Type[] = [];
+    typeList.forEach((item) => {
+      const isMainType = mainType.some((element) => item.type === element);
+      console.log(isMainType);
+      if (isMainType) {
+        updateList.push(item);
+      } else {
+        const updatedDisplay = displayType.map((element) =>
+          element.type === "others"
+            ? { ...element, total: (element.total += item.total) }
+            : element
+        );
+        setDisplayType(updatedDisplay);
+      }
+    });
+    setDisplayType([...displayType, ...updateList]);
+  }, [typeList]);
 
   return createPortal(
     <Backdrop onClick={props.handleClose}>
@@ -140,7 +184,7 @@ const Modal: React.FC<modalProps> = (props) => {
           </div>
           <div className="row" style={{ height: "50%" }}>
             <div className="col" style={{ padding: "1rem" }}>
-              <TypeChart />
+              <TypeChart listType={displayType} />
             </div>
           </div>
         </div>

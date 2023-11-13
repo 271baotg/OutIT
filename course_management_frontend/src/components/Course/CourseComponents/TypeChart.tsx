@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TypeBar from "./TypeBar";
+import { Type } from "../../../model/TypeAndTotal";
 
-const TypeChart = () => {
+interface componentProps {
+  listType: Type[];
+}
+
+const TypeChart: React.FC<componentProps> = (props) => {
+  const mainType: string[] = ["CN", "CSN", "CNTC", "ĐC", "CSNN"];
+
   return (
     <div
       style={{
@@ -10,17 +17,13 @@ const TypeChart = () => {
         display: "flex",
         flexDirection: "column",
         padding: "0.5rem",
-        background: "#fff",
+        background: "#ffffff",
         border: "1px solid #ddd",
         borderRadius: "0.7rem",
         overflow: "auto",
       }}
     >
-      <TypeBar />
-      <TypeBar />
-      <TypeBar />
-      <TypeBar />
-      <TypeBar />
+      {props.listType.map((type) => type.total != 0 && <TypeBar data={type} />)}
     </div>
   );
 };

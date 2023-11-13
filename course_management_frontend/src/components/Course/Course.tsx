@@ -277,7 +277,7 @@ const Course = () => {
       <AnimatePresence initial={false} onExitComplete={() => null}>
         {modalOpen && (
           <Modal
-            data={selectedList}
+            data={planList}
             isOpen={modalOpen}
             handleClose={() => setModalOpen(false)}
           />
