@@ -93,18 +93,12 @@ const Title = styled.div`
 interface modalProps {
   isOpen: Boolean;
   handleClose: MouseEventHandler;
+  isSecondModalOpen: Boolean;
+  handleSecondModal: MouseEventHandler;
   data: Course[];
 }
 
 const Modal: React.FC<modalProps> = (props) => {
-  // useEffect(() => {
-  //   // Add or remove the "overflow: hidden" style on the body element
-  //   if (props.isOpen) {
-  //     document.body.style.overflow = "hidden";
-  //   } else {
-  //     document.body.style.overflow = "auto";
-  //   }
-  // }, [props.isOpen]);
   const mainType = ["CN", "CSN", "CSNN", "ĐC", "CNTC"];
   const [typeList, setTypeList] = useState<Type[]>([]);
   const [displayType, setDisplayType] = useState<Type[]>([
@@ -227,6 +221,7 @@ const Modal: React.FC<modalProps> = (props) => {
                   leftIcon={<FaArrowAltCircleRight />}
                   colorScheme="green"
                   variant="solid"
+                  onClick={props.handleSecondModal}
                 >
                   Continue
                 </Button>

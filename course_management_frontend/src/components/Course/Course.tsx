@@ -24,6 +24,7 @@ import { relative } from "path";
 import TermBox from "./CourseComponents/TermBox";
 import AuthContext from "../../auth/AuthProvider";
 import Modal from "../Modal";
+import NormalModal from "../NormalModal";
 
 const Wrapper = styled.div``;
 
@@ -134,6 +135,7 @@ const Course = () => {
   const [flipState, setFlipState] = useState<boolean>(false);
   const [allEnrollment, setAllEnrollment] = useState<Enrollment[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [secondModalOpen, setSecondModalOpen] = useState(false);
   const [planList, setPlanList] = useState<Course[]>([]);
 
   const getTranslateY = () => {
@@ -141,6 +143,15 @@ const Course = () => {
       return "rotateY(180deg)";
     }
   };
+
+  useEffect(() => {
+    // Add or remove the "overflow: hidden" style on the body element
+    if (modalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [modalOpen]);
 
   useEffect(() => {
     if (selectedTerm !== 0) {
@@ -272,6 +283,21 @@ const Course = () => {
     setSelectedList([]);
   };
 
+  const handleModal = () => {
+    const total = selectedList.reduce((sum, item) => (sum += item.total), 0);
+    if (total < 14) {
+      setSecondModalOpen(true);
+      setModalOpen(false);
+    }
+    if (total >= 14 && total <= 30 && !modalOpen) {
+      setModalOpen(true);
+      setSecondModalOpen(false);
+    } else if (total >= 14 && total <= 30 && modalOpen) {
+      setModalOpen(false);
+      setSecondModalOpen(true);
+    }
+  };
+
   return (
     <Wrapper className="container-fluid gx-0 m-0 h-100">
       <AnimatePresence initial={false} onExitComplete={() => null}>
@@ -280,6 +306,15 @@ const Course = () => {
             data={planList}
             isOpen={modalOpen}
             handleClose={() => setModalOpen(false)}
+            isSecondModalOpen={secondModalOpen}
+            handleSecondModal={handleModal}
+          />
+        )}
+        {secondModalOpen && (
+          <NormalModal
+            data={planList}
+            isOpen={secondModalOpen}
+            handleClose={() => setSecondModalOpen(false)}
           />
         )}
       </AnimatePresence>
@@ -363,9 +398,7 @@ const Course = () => {
                           leftIcon={<FaCheck />}
                           colorScheme="green"
                           variant="solid"
-                          onClick={() =>
-                            modalOpen ? setModalOpen(false) : setModalOpen(true)
-                          }
+                          onClick={handleModal}
                         >
                           Create Plan
                         </Button>
@@ -484,11 +517,7 @@ const Course = () => {
                               leftIcon={<FaCheck />}
                               colorScheme="green"
                               variant="solid"
-                              onClick={() =>
-                                modalOpen
-                                  ? setModalOpen(false)
-                                  : setModalOpen(true)
-                              }
+                              onClick={handleModal}
                             >
                               Create Plan
                             </Button>
