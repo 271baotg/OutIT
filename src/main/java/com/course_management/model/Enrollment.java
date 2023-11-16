@@ -26,8 +26,11 @@ public class Enrollment {
     @JsonBackReference
     private Student student;
 
-    @Column(name = "course_code")
-    private String course_code;
+    @Column(name = "code")
+    private String code;
+
+    @Column(name="name")
+    private String name;
 
     @Column(name = "type")
     private String type;
@@ -39,8 +42,9 @@ public class Enrollment {
     @Column(name = "term")
     private int term;
 
-    public Enrollment(String course_code, String type, int total, int term) {
-        this.course_code = course_code;
+    public Enrollment(String code, String name, String type, int total, int term) {
+        this.code = code;
+        this.name = name;
         this.type = type;
         this.total = total;
         this.term = term;
@@ -50,7 +54,8 @@ public class Enrollment {
     public String toString() {
         return "Enrollment{" +
                 "id=" + id +
-                ", course_code='" + course_code + '\'' +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", total=" + total +
                 ", term=" + term +

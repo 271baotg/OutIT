@@ -35,6 +35,11 @@ const TypeBar: React.FC<componentProps> = (props) => {
     hidden: { width: "0%" },
     visible: { width: `${percentage}%` },
   };
+
+  const tooltipVariant = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+  };
   return (
     <div className={styles.wrapper}>
       <div
@@ -42,7 +47,8 @@ const TypeBar: React.FC<componentProps> = (props) => {
           fontSize: "0.8rem",
           fontWeight: "bold",
           textTransform: "uppercase",
-          color: "#000",
+          color: "#fff",
+          marginBottom: "1.5rem",
         }}
       >
         {getTitle()}
@@ -67,7 +73,16 @@ const TypeBar: React.FC<componentProps> = (props) => {
           animate="visible"
           variants={fillVariant}
           transition={{ duration: 1, delay: 1, type: "tween" }}
-        ></motion.div>
+        >
+          <motion.span
+            variants={tooltipVariant}
+            transition={{ duration: 2 }}
+            className={styles.tooltip}
+            style={{ backgroundColor: getColor(), border: "1px solid #ffffff" }}
+          >
+            {props.data.total} tín chỉ
+          </motion.span>
+        </motion.div>
       </motion.div>
     </div>
   );

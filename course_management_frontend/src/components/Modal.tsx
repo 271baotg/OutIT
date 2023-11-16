@@ -1,12 +1,16 @@
 import { motion } from "framer-motion";
 import Backdrop from "../components/Backdrop";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { MouseEventHandler, SetStateAction, useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
-import { CloseButton, ModalCloseButton } from "@chakra-ui/react";
+import { Button, CloseButton, ModalCloseButton, Stack } from "@chakra-ui/react";
 import TypeChart from "./Course/CourseComponents/TypeChart";
 import { Type } from "../model/TypeAndTotal";
+import CourseTable from "./Course/CourseComponents/CourseTable";
+import ModalCourseTable from "./Course/CourseComponents/ModalCourseTable";
+import { FaCheck } from "react-icons/fa6";
+import { FaArrowAltCircleRight, FaTrash } from "react-icons/fa";
 
 const dropIn = {
   hidden: {
@@ -51,7 +55,7 @@ const errorAppearance = {
 };
 
 const Dialog = styled(motion.dialog)`
-  width: 70%;
+  width: 60%;
   height: 80%;
   background-color: white;
   padding: 0;
@@ -65,7 +69,7 @@ const Dialog = styled(motion.dialog)`
   @media (max-width: 768px) {
     // Adjust the max-width as needed
     width: 90%; // Change the width for mobile devices
-    height: 60%; // Adjust the height for mobile devices
+    height: 85%; // Adjust the height for mobile devices
     border-radius: 0.7rem; // Remove border-radius for mobile devices if needed
     /* Add more mobile-specific styles as needed */
   }
@@ -169,7 +173,7 @@ const Modal: React.FC<modalProps> = (props) => {
         </DialogHeader>
         <div
           className="container flex-grow-1 w-100"
-          style={{ backgroundColor: "white" }}
+          style={{ backgroundColor: "white", overflow: "hidden" }}
         >
           <div className="row">
             <Title>
@@ -179,12 +183,54 @@ const Modal: React.FC<modalProps> = (props) => {
               </p>
             </Title>
           </div>
-          <div className="row" style={{ height: "35%" }}>
-            <div className="col" style={{ backgroundColor: "#ddd" }}></div>
+          <div
+            className="row"
+            style={{ height: "35%", padding: "0 1rem 1rem 1rem" }}
+          >
+            <div
+              className="col"
+              style={{
+                maxHeight: "100%",
+                borderRadius: "10px", // Set border radius for the div
+                padding: "1rem",
+              }}
+            >
+              <ModalCourseTable data={props.data}></ModalCourseTable>
+            </div>
           </div>
-          <div className="row" style={{ height: "50%" }}>
-            <div className="col" style={{ padding: "1rem" }}>
+          <div
+            className="row"
+            style={{ height: "65%", padding: "0 1rem 1rem 1rem" }}
+          >
+            <div className="col" style={{ maxHeight: "80%" }}>
               <TypeChart listType={displayType} />
+              <Stack
+                direction="row"
+                style={{
+                  display: "flex",
+                  justifyContent: "end",
+                  paddingTop: "1rem",
+                }}
+              >
+                <Button
+                  bgColor={"black"}
+                  color={"white"}
+                  variant="solid"
+                  onClick={props.handleClose}
+                >
+                  Back
+                </Button>
+                <Button
+                  as={motion.div}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  leftIcon={<FaArrowAltCircleRight />}
+                  colorScheme="green"
+                  variant="solid"
+                >
+                  Continue
+                </Button>
+              </Stack>
             </div>
           </div>
         </div>

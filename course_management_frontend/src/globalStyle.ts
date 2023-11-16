@@ -21,7 +21,7 @@ export default createGlobalStyle`
 /* Colors */
 --cn-type-color: #ff6464;
 --csn-type-color: #ffbd67;
---dc-type-color: #2d4059;
+--dc-type-color: #ea78f5;
 --csnn-type-color: #5be7a9;
 --cntc-type-color: #3ec1d3;
 --other-type-color: #448ef6;
