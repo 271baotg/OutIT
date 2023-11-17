@@ -38,7 +38,7 @@ const PlanTable: React.FC<componentprops> = (props) => {
   const handleTypeChange = (code: string, newType: string) => {
     // Find the course in the planList and update its type
     const updatedPlanList = props.planList.map((course) =>
-      course.code == code ? { ...course, type: newType } : course
+      course.code === code ? { ...course, type: newType } : course
     );
     props.setPlanList(updatedPlanList);
   };

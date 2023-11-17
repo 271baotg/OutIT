@@ -35,14 +35,16 @@ public class Enrollment {
     @Column(name = "type")
     private String type;
 
-    @Column(name="total")
-    private int total;
-
 
     @Column(name = "term")
     private int term;
 
-    public Enrollment(String code, String name, String type, int total, int term) {
+    @Column(name="total")
+    private int total;
+
+
+
+    public Enrollment(String code, String name, String type, int term, int total) {
         this.code = code;
         this.name = name;
         this.type = type;
@@ -57,8 +59,8 @@ public class Enrollment {
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
-                ", total=" + total +
                 ", term=" + term +
+                ", total=" + total +
                 '}';
     }
 }

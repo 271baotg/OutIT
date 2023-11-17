@@ -5,6 +5,7 @@ import com.course_management.model.Enrollment;
 import com.course_management.model.Student;
 import com.course_management.repository.EnrollmentRepository;
 import com.course_management.repository.StudentRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -55,15 +56,18 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public Student updateEnroll(String username, List<Enrollment> enrollmentList) {
+    @Transactional
+    public List<Enrollment> updateEnrollByTerm(String username, Integer term, List<Enrollment> enrollmentList) {
         Student student = new Student();
         if(studentRepository.findStudentByUsername(username).isPresent()){
             student = studentRepository.findStudentByUsername(username).get();
+            enrollmentRepository.deleteAllByStudentAndTerm(student,term);
         }
-        for(Enrollment enrol: enrollmentList){
-            student.addEnrollment(enrol);
+        for(Enrollment enroll: enrollmentList){
+            student.addEnrollment(enroll);
         }
-        return studentRepository.save(student);
+        return studentRepository.save(student).getEnrollmentList();
+
     }
 
     @Override

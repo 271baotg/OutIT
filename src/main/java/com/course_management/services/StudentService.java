@@ -16,7 +16,7 @@ public interface StudentService {
     Student update(Student student);
     Student create(Student student);
 
-    Student updateEnroll(String username, List<Enrollment> enrollmentList);
+    List<Enrollment> updateEnrollByTerm(String username, Integer term, List<Enrollment> enrollmentList);
 
     List<Enrollment> findEnrollmentByTerm(String username, int term);
 

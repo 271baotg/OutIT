@@ -10,6 +10,7 @@ import styles from "../styles/CourseTable.module.css";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { useAxiosPrivate } from "../../../hooks/useAxiosHook";
 import { Badge, Input } from "@chakra-ui/react";
+import { Enrollment } from "../../../model/Enrollment";
 
 interface TableProps {
   data: Course[];
@@ -93,12 +94,12 @@ const CourseTable: React.FC<TableProps> = (props) => {
             </tr>
           </thead>
           <tbody>
-            {props.data.map((course) => {
-              const isChecked = props.checklist.some(
+            {props.data?.map((course) => {
+              const isChecked = props.checklist?.some(
                 (item) => item.code === course.code
               );
 
-              const isDisable = props.allEnrollment.some(
+              const isDisable = props.allEnrollment?.some(
                 (item) =>
                   item.code === course.code &&
                   !isChecked &&

@@ -1,16 +1,37 @@
-import React, { MouseEventHandler } from "react";
+import React, {
+  Dispatch,
+  MouseEventHandler,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { createPortal } from "react-dom";
 import Backdrop from "./Backdrop";
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { motion, color } from "framer-motion";
 import { FaCheckCircle } from "react-icons/fa";
-import { FaTriangleExclamation } from "react-icons/fa6";
-import { Button, Stack } from "@chakra-ui/react";
+import {
+  FaBookmark,
+  FaCircleQuestion,
+  FaFloppyDisk,
+  FaTriangleExclamation,
+} from "react-icons/fa6";
+import { Button, Spinner, Stack } from "@chakra-ui/react";
+import { useAxiosPrivate } from "../hooks/useAxiosHook";
+import { Enrollment } from "../model/Enrollment";
+import AuthContext from "../auth/AuthProvider";
+import { AxiosInstance } from "axios";
 
 interface modalProps {
   isOpen: Boolean;
   handleClose: MouseEventHandler;
   data: Course[];
+  listTerm: Term[];
+  setEnrollment: Dispatch<SetStateAction<Enrollment[]>>;
+  allEnrollment: Enrollment[];
+  axiosPrivate: AxiosInstance;
+  onReload: Function;
 }
 
 const dropIn = {
@@ -57,7 +78,7 @@ const errorAppearance = {
 
 const Dialog = styled(motion.dialog)`
   width: 30%;
-  height: 40%;
+  height: 48%;
   background-color: white;
   padding: 0;
   margin: auto;
@@ -79,6 +100,7 @@ const Dialog = styled(motion.dialog)`
 const DialogHeader = styled.div`
   width: 100%;
   height: 2rem;
+  margin-bottom: 1rem;
   background-color: #000000;
   border-radius: 0.2rem 0.2rem 0 0;
   display: flex;
@@ -88,6 +110,71 @@ const DialogHeader = styled.div`
 const NormalModal: React.FC<modalProps> = (props) => {
   const total = props.data.reduce((sum, item) => (sum += item.total), 0);
   const isValid = total >= 14 ? true : false;
+
+  const availableTerm = () => {
+    const sortedList = props.listTerm.sort((a, b) => a.term - b.term);
+
+    for (let index = 0; index < sortedList.length; index++) {
+      let expectedTerm = index + 1;
+      if (sortedList[index].term !== expectedTerm) {
+        // Missing term found
+        return expectedTerm;
+      }
+    }
+    return sortedList.length + 1;
+  };
+
+  const listEnroll: Enrollment[] = props.data.map(
+    (course) =>
+      new Enrollment(
+        course.code,
+        course.name,
+        course.type,
+        availableTerm(),
+        course.total
+      )
+  );
+  const [loading, setLoading] = useState(false);
+  const { auth } = useContext(AuthContext);
+
+  const handleSave = async () => {
+    try {
+      const response: Course[] = await props.axiosPrivate({
+        method: "get",
+        url: "http://localhost:8081/course",
+      });
+      const list = response as Course[];
+      console.log(list);
+    } catch (error) {
+      console.log(error);
+    }
+    try {
+      // Set loading to true before making the API request
+      setLoading(true);
+      const response: Enrollment[] = await props.axiosPrivate({
+        method: "put",
+        url: "http://localhost:8081/enroll",
+        params: {
+          username: auth?.username,
+          term: availableTerm(),
+        },
+        data: listEnroll,
+      });
+      console.log(response);
+      props.setEnrollment(response);
+      props.onReload();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // Set loading to false after the API request is completed (whether it succeeds or fails)
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    console.log("List term: " + JSON.stringify(props.listTerm));
+    console.log("Available term: " + availableTerm());
+  }, []);
 
   return createPortal(
     <Backdrop onClick={props.handleClose}>
@@ -100,38 +187,127 @@ const NormalModal: React.FC<modalProps> = (props) => {
         exit="exit"
       >
         <DialogHeader></DialogHeader>
-        <div
-          className="container flex-grow-1 w-100"
-          style={{ backgroundColor: "white", overflow: "hidden" }}
-        >
-          <div className="row align-items-center text-center">
-            <FaTriangleExclamation
-              style={{ fontSize: "3.5rem", color: "red" }}
-            />
-            <h3 style={{ fontWeight: "700", color: "red" }}>WARNING</h3>
-            <p>Vui lòng đăng kí đủ 14 tín chỉ để tiếp tục</p>
-            <p>
-              <span style={{ fontWeight: "bold" }}>Số tín chỉ hiện tại:</span>{" "}
-              {total}
-            </p>
-            <Stack width={"100%"} alignItems={"center"}>
-              <Button
-                width={"30%"}
-                bgColor={"black"}
-                _hover={{ bgColor: "black" }}
-                color={"white"}
-                noOfLines={1}
-                transition="filter 0.3s"
-                // as={motion.div}
-                // whileHover={{ scale: 1.1 }}
-                // whileTap={{ scale: 0.9 }}
-                onClick={props.handleClose}
-              >
-                Back
-              </Button>
-            </Stack>
+        {loading ? (
+          <div
+            className="text-center"
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            {" "}
+            <div>
+              {" "}
+              <Spinner
+                size="xl"
+                thickness="5px"
+                speed="0.65s"
+                emptyColor="black"
+                color="orange"
+              />
+            </div>
+            <p>Saving...</p>
           </div>
-        </div>
+        ) : (
+          <>
+            {!isValid && (
+              <div
+                className="container flex-grow-1 w-100"
+                style={{ backgroundColor: "white", padding: "1.5rem" }}
+              >
+                <div className="row align-items-center text-center">
+                  <FaTriangleExclamation
+                    style={{ fontSize: "3.5rem", color: "red" }}
+                  />
+                  <h3 style={{ fontWeight: "700", color: "red" }}>WARNING</h3>
+                  <p>Vui lòng đăng kí đủ 14 tín chỉ để tiếp tục</p>
+                  <p>
+                    <span style={{ fontWeight: "bold" }}>
+                      Số tín chỉ hiện tại:
+                    </span>{" "}
+                    {total}
+                  </p>
+                  <Stack width={"100%"} alignItems={"center"}>
+                    <Button
+                      width={"30%"}
+                      bgColor={"black"}
+                      _hover={{ bgColor: "black" }}
+                      color={"white"}
+                      noOfLines={1}
+                      transition="filter 0.3s"
+                      onClick={props.handleClose}
+                    >
+                      Back
+                    </Button>
+                  </Stack>
+                </div>
+              </div>
+            )}
+            {isValid && (
+              <div
+                className="container w-100"
+                style={{
+                  backgroundColor: "white",
+                  overflow: "hidden",
+                }}
+              >
+                <div className="row align-items-center text-center">
+                  <FaCircleQuestion
+                    style={{ fontSize: "3.5rem", color: "orange" }}
+                  />
+                  <h3 style={{ fontWeight: "700", color: "orange" }}>
+                    CONFIRM
+                  </h3>
+                  {availableTerm() === props.listTerm.length + 1 ? (
+                    <p>
+                      Bạn có muốn tạo mới và lưu danh sách vào học kì{" "}
+                      {availableTerm()}
+                    </p>
+                  ) : (
+                    <div>
+                      <p>Bạn đang còn thiếu học kì {availableTerm()}</p>
+                      <p>
+                        {" "}
+                        <span style={{ fontWeight: "bold" }}>
+                          Danh sách sẽ được lưu vào học kì:
+                        </span>{" "}
+                        {availableTerm()}
+                      </p>
+                    </div>
+                  )}
+                  <p>
+                    <span style={{ fontWeight: "bold" }}>
+                      Số tín chỉ hiện tại:
+                    </span>{" "}
+                    {total}
+                  </p>
+                  <Stack width={"100%"} alignItems={"center"}>
+                    <Button
+                      width={"30%"}
+                      bgColor={"black"}
+                      _hover={{ bgColor: "black" }}
+                      color={"white"}
+                      noOfLines={1}
+                      transition="filter 0.3s"
+                      onClick={handleSave}
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      colorScheme="grey"
+                      variant="link"
+                      onClick={props.handleClose}
+                    >
+                      Back
+                    </Button>
+                  </Stack>
+                </div>
+              </div>
+            )}
+          </>
+        )}
       </Dialog>
     </Backdrop>,
     document.getElementById("portal")!

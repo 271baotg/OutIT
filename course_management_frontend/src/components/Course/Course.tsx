@@ -25,6 +25,8 @@ import TermBox from "./CourseComponents/TermBox";
 import AuthContext from "../../auth/AuthProvider";
 import Modal from "../Modal";
 import NormalModal from "../NormalModal";
+import { Enrollment } from "../../model/Enrollment";
+import { loadAllCourse, loadAllEnrollment } from "../../api/courseService";
 
 const Wrapper = styled.div``;
 
@@ -144,6 +146,22 @@ const Course = () => {
     }
   };
 
+  const reloadCourse = async () => {
+    try {
+      const response = await loadAllCourse(axiosPrivate);
+      console.log("Response from loadCourse:", response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const refreshAllState = () => {
+    setPlanList([]);
+    setTabIndex(0);
+    setSelectedTerm(0);
+    setSelectedList([]);
+    setSecondModalOpen(false);
+  };
   useEffect(() => {
     // Add or remove the "overflow: hidden" style on the body element
     if (modalOpen) {
@@ -177,28 +195,12 @@ const Course = () => {
     loadCourseByTerm();
   }, [selectedTerm]);
 
-  //Gọi API lấy danh sách học kì và tổng môn mỗi kì
+  //Làm trống selected list khi thay đổi tab
   useEffect(() => {
     setSelectedList([]);
     if (tabIndex === 0) {
       setFlipState(false);
       setSelectedTerm(0);
-    }
-    if (tabIndex === 1) {
-      const loadTerm = async () => {
-        try {
-          const response: Term[] = await axiosPrivate({
-            url: `http://localhost:8081/enroll/terms/${auth?.username}`,
-            method: "get",
-          });
-          setListTerm(response);
-          console.log(response);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      loadTerm();
     }
   }, [tabIndex]);
 
@@ -241,9 +243,10 @@ const Course = () => {
     search(query);
   }, [debounce]);
 
-  //Gọi API lấy toàn bộ danh sách môn học
+  //Lấy danh sách học kì, danh sách đăng kí, danh sách tất cả môn
   useEffect(() => {
-    const loadAllEnrollment = async () => {
+    //Lấy danh sách toàn bộ khóa đã đăng kí
+    const loadEnrollment = async () => {
       try {
         const allEnerolment: Enrollment[] = await axiosPrivate({
           url: "http://localhost:8081/enroll",
@@ -258,6 +261,7 @@ const Course = () => {
       } catch (error) {}
     };
 
+    //Lấy danh sách toàn bộ khóa học
     const loadCourse = async () => {
       try {
         const response: Course[] = await axiosPrivate({
@@ -270,9 +274,23 @@ const Course = () => {
         console.log(error);
       }
     };
+    //Lấy danh sách các kì và tổng số tín chỉ mỗi kì
+    const loadTerm = async () => {
+      try {
+        const response: Term[] = await axiosPrivate({
+          url: `http://localhost:8081/enroll/terms/${auth?.username}`,
+          method: "get",
+        });
+        setListTerm(response);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
+    loadTerm();
     loadCourse();
-    loadAllEnrollment();
+    loadEnrollment();
   }, []);
 
   useEffect(() => {
@@ -315,6 +333,11 @@ const Course = () => {
             data={planList}
             isOpen={secondModalOpen}
             handleClose={() => setSecondModalOpen(false)}
+            onReload={refreshAllState}
+            listTerm={listTerm}
+            setEnrollment={setAllEnrollment}
+            allEnrollment={allEnrollment}
+            axiosPrivate={axiosPrivate}
           />
         )}
       </AnimatePresence>
