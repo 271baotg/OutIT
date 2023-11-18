@@ -48,7 +48,8 @@ const PlanTable: React.FC<componentprops> = (props) => {
       <table className={styles.plan_table}>
         <thead>
           <tr>
-            <th></th>
+            <th>Name</th>
+            <th>Code</th>
             <th>Type</th>
             <th>Total</th>
             <th></th>
@@ -58,12 +59,14 @@ const PlanTable: React.FC<componentprops> = (props) => {
           {props.planList.map((course) => {
             return (
               <tr key={course.id}>
+                <td>{course.name}</td>
                 <td className="px-2 p-2">
                   <div className="d-flex gap-2">
                     <div className={styles.tag}></div>
                     <div className="code">{course.code}</div>
                   </div>
                 </td>
+
                 <td className="px-2 p-2">
                   {!typeChuyenNghiep.includes(course.type) && (
                     <Badge colorScheme="green" className={styles.dropdown}>

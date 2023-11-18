@@ -155,12 +155,75 @@ const Course = () => {
     }
   };
 
+  //Get All Enrollment
+  const loadEnrollment = async () => {
+    try {
+      const allEnerolment: Enrollment[] = await axiosPrivate({
+        url: "http://localhost:8081/enroll",
+        method: "get",
+        params: {
+          username: auth?.username,
+        },
+      });
+
+      console.log(`All Enrollment: ${JSON.stringify(allEnerolment)}`);
+      setAllEnrollment(allEnerolment);
+    } catch (error) {}
+  };
+
+  //Get all course of selected term
+  const loadCourseByTerm = async () => {
+    try {
+      const response: Course[] = await axiosPrivate({
+        url: `http://localhost:8081/enroll/${auth?.username}`,
+        method: "get",
+        params: {
+          term: selectedTerm,
+        },
+      });
+      console.log(`Term ${selectedTerm}: ${JSON.stringify(response)}`);
+      setSelectedList(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //Lấy danh sách toàn bộ khóa học
+  const loadCourse = async () => {
+    try {
+      const response: Course[] = await axiosPrivate({
+        method: "get",
+        url: "http://localhost:8081/course",
+      });
+      const list = response as Course[];
+      setCourseList(list);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //Lấy danh sách các kì và tổng số tín chỉ mỗi kì
+  const loadTerm = async () => {
+    try {
+      const response: Term[] = await axiosPrivate({
+        url: `http://localhost:8081/enroll/terms/${auth?.username}`,
+        method: "get",
+      });
+      setListTerm(response);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const refreshAllState = () => {
     setPlanList([]);
     setTabIndex(0);
     setSelectedTerm(0);
     setSelectedList([]);
-    setSecondModalOpen(false);
+    loadEnrollment();
+    setFlipState(false);
+    loadTerm();
   };
   useEffect(() => {
     // Add or remove the "overflow: hidden" style on the body element
@@ -171,27 +234,12 @@ const Course = () => {
     }
   }, [modalOpen]);
 
+  //Load all course when a term is selected
   useEffect(() => {
     if (selectedTerm !== 0) {
       setFlipState(true);
       console.log(selectedTerm);
     }
-
-    const loadCourseByTerm = async () => {
-      try {
-        const response: Course[] = await axiosPrivate({
-          url: `http://localhost:8081/enroll/${auth?.username}`,
-          method: "get",
-          params: {
-            term: selectedTerm,
-          },
-        });
-        console.log(`Term ${selectedTerm}: ${JSON.stringify(response)}`);
-        setSelectedList(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     loadCourseByTerm();
   }, [selectedTerm]);
 
@@ -209,20 +257,6 @@ const Course = () => {
     const search = async (query: string) => {
       try {
         if (query === "") {
-          const loadCourse = async () => {
-            try {
-              const response: Course[] = await axiosPrivate({
-                method: "get",
-                url: "http://localhost:8081/course",
-              });
-              console.log(response);
-              const list = response as Course[];
-              setCourseList(list);
-            } catch (error) {
-              console.log(error);
-            }
-          };
-
           loadCourse();
           return;
         }
@@ -245,49 +279,6 @@ const Course = () => {
 
   //Lấy danh sách học kì, danh sách đăng kí, danh sách tất cả môn
   useEffect(() => {
-    //Lấy danh sách toàn bộ khóa đã đăng kí
-    const loadEnrollment = async () => {
-      try {
-        const allEnerolment: Enrollment[] = await axiosPrivate({
-          url: "http://localhost:8081/enroll",
-          method: "get",
-          params: {
-            username: auth?.username,
-          },
-        });
-
-        console.log(`All Enrollment: ${JSON.stringify(allEnerolment)}`);
-        setAllEnrollment(allEnerolment);
-      } catch (error) {}
-    };
-
-    //Lấy danh sách toàn bộ khóa học
-    const loadCourse = async () => {
-      try {
-        const response: Course[] = await axiosPrivate({
-          method: "get",
-          url: "http://localhost:8081/course",
-        });
-        const list = response as Course[];
-        setCourseList(list);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    //Lấy danh sách các kì và tổng số tín chỉ mỗi kì
-    const loadTerm = async () => {
-      try {
-        const response: Term[] = await axiosPrivate({
-          url: `http://localhost:8081/enroll/terms/${auth?.username}`,
-          method: "get",
-        });
-        setListTerm(response);
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     loadTerm();
     loadCourse();
     loadEnrollment();
@@ -335,9 +326,8 @@ const Course = () => {
             handleClose={() => setSecondModalOpen(false)}
             onReload={refreshAllState}
             listTerm={listTerm}
-            setEnrollment={setAllEnrollment}
-            allEnrollment={allEnrollment}
             axiosPrivate={axiosPrivate}
+            selectedTerm={selectedTerm}
           />
         )}
       </AnimatePresence>
@@ -371,14 +361,14 @@ const Course = () => {
               >
                 <TabList>
                   <Tab
-                    _selected={{ backgroundColor: "orange" }}
+                    _selected={{ backgroundColor: "black", color: "white" }}
                     className={styles.tab_label}
                   >
                     New Plan
                   </Tab>
 
                   <Tab
-                    _selected={{ backgroundColor: "orange" }}
+                    _selected={{ backgroundColor: "black", color: "white" }}
                     className={styles.tab_label}
                   >
                     Edit mode

@@ -23,17 +23,6 @@ import { Enrollment } from "../model/Enrollment";
 import AuthContext from "../auth/AuthProvider";
 import { AxiosInstance } from "axios";
 
-interface modalProps {
-  isOpen: Boolean;
-  handleClose: MouseEventHandler;
-  data: Course[];
-  listTerm: Term[];
-  setEnrollment: Dispatch<SetStateAction<Enrollment[]>>;
-  allEnrollment: Enrollment[];
-  axiosPrivate: AxiosInstance;
-  onReload: Function;
-}
-
 const dropIn = {
   hidden: {
     x: "-100vw",
@@ -107,22 +96,35 @@ const DialogHeader = styled.div`
   justify-content: end;
 `;
 
+interface modalProps {
+  isOpen: Boolean;
+  handleClose: MouseEventHandler;
+  data: Course[];
+  listTerm: Term[];
+  axiosPrivate: AxiosInstance;
+  onReload: Function;
+  selectedTerm: number;
+}
+
 const NormalModal: React.FC<modalProps> = (props) => {
   const total = props.data.reduce((sum, item) => (sum += item.total), 0);
-  const isValid = total >= 14 ? true : false;
 
   const availableTerm = () => {
-    const sortedList = props.listTerm.sort((a, b) => a.term - b.term);
-
-    for (let index = 0; index < sortedList.length; index++) {
-      let expectedTerm = index + 1;
-      if (sortedList[index].term !== expectedTerm) {
-        // Missing term found
-        return expectedTerm;
+    if (props.selectedTerm === 0) {
+      const sortedList = props.listTerm.sort((a, b) => a.term - b.term);
+      for (let index = 0; index < sortedList.length; index++) {
+        let expectedTerm = index + 1;
+        if (sortedList[index].term !== expectedTerm) {
+          // Missing term found
+          return expectedTerm;
+        }
       }
+      return sortedList.length + 1;
     }
-    return sortedList.length + 1;
+    return props.selectedTerm;
   };
+
+  const isValid = total >= 14 && availableTerm() <= 8 ? true : false;
 
   const listEnroll: Enrollment[] = props.data.map(
     (course) =>
@@ -136,21 +138,14 @@ const NormalModal: React.FC<modalProps> = (props) => {
   );
   const [loading, setLoading] = useState(false);
   const { auth } = useContext(AuthContext);
+  const [requestCompleted, setRequestCompleted] = useState(false);
 
   const handleSave = async () => {
     try {
-      const response: Course[] = await props.axiosPrivate({
-        method: "get",
-        url: "http://localhost:8081/course",
-      });
-      const list = response as Course[];
-      console.log(list);
-    } catch (error) {
-      console.log(error);
-    }
-    try {
       // Set loading to true before making the API request
       setLoading(true);
+
+      //Update the enrollment by term
       const response: Enrollment[] = await props.axiosPrivate({
         method: "put",
         url: "http://localhost:8081/enroll",
@@ -161,7 +156,7 @@ const NormalModal: React.FC<modalProps> = (props) => {
         data: listEnroll,
       });
       console.log(response);
-      props.setEnrollment(response);
+      setRequestCompleted(true);
       props.onReload();
     } catch (error) {
       console.log(error);
@@ -187,6 +182,7 @@ const NormalModal: React.FC<modalProps> = (props) => {
         exit="exit"
       >
         <DialogHeader></DialogHeader>
+
         {loading ? (
           <div
             className="text-center"
@@ -212,99 +208,180 @@ const NormalModal: React.FC<modalProps> = (props) => {
           </div>
         ) : (
           <>
-            {!isValid && (
-              <div
-                className="container flex-grow-1 w-100"
-                style={{ backgroundColor: "white", padding: "1.5rem" }}
+            {requestCompleted ? (
+              <motion.div
+                variants={errorAppearance}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
               >
-                <div className="row align-items-center text-center">
-                  <FaTriangleExclamation
-                    style={{ fontSize: "3.5rem", color: "red" }}
-                  />
-                  <h3 style={{ fontWeight: "700", color: "red" }}>WARNING</h3>
-                  <p>Vui lòng đăng kí đủ 14 tín chỉ để tiếp tục</p>
-                  <p>
-                    <span style={{ fontWeight: "bold" }}>
-                      Số tín chỉ hiện tại:
-                    </span>{" "}
-                    {total}
-                  </p>
-                  <Stack width={"100%"} alignItems={"center"}>
-                    <Button
-                      width={"30%"}
-                      bgColor={"black"}
-                      _hover={{ bgColor: "black" }}
-                      color={"white"}
-                      noOfLines={1}
-                      transition="filter 0.3s"
-                      onClick={props.handleClose}
+                <div
+                  className="container w-100"
+                  style={{ backgroundColor: "white" }}
+                >
+                  <div className="row align-items-center text-center">
+                    <FaCheckCircle
+                      style={{ fontSize: "3.5rem", color: "green" }}
+                    />
+                    <h3 style={{ fontWeight: "700", color: "green" }}>
+                      SUCCESS
+                    </h3>
+                    <p
+                      style={{ fontWeight: "bold", textTransform: "uppercase" }}
                     >
-                      Back
-                    </Button>
-                  </Stack>
-                </div>
-              </div>
-            )}
-            {isValid && (
-              <div
-                className="container w-100"
-                style={{
-                  backgroundColor: "white",
-                  overflow: "hidden",
-                }}
-              >
-                <div className="row align-items-center text-center">
-                  <FaCircleQuestion
-                    style={{ fontSize: "3.5rem", color: "orange" }}
-                  />
-                  <h3 style={{ fontWeight: "700", color: "orange" }}>
-                    CONFIRM
-                  </h3>
-                  {availableTerm() === props.listTerm.length + 1 ? (
-                    <p>
-                      Bạn có muốn tạo mới và lưu danh sách vào học kì{" "}
-                      {availableTerm()}
+                      Chúc mừng!
                     </p>
-                  ) : (
-                    <div>
-                      <p>Bạn đang còn thiếu học kì {availableTerm()}</p>
-                      <p>
-                        {" "}
-                        <span style={{ fontWeight: "bold" }}>
-                          Danh sách sẽ được lưu vào học kì:
-                        </span>{" "}
-                        {availableTerm()}
-                      </p>
-                    </div>
-                  )}
-                  <p>
-                    <span style={{ fontWeight: "bold" }}>
-                      Số tín chỉ hiện tại:
-                    </span>{" "}
-                    {total}
-                  </p>
-                  <Stack width={"100%"} alignItems={"center"}>
-                    <Button
-                      width={"30%"}
-                      bgColor={"black"}
-                      _hover={{ bgColor: "black" }}
-                      color={"white"}
-                      noOfLines={1}
-                      transition="filter 0.3s"
-                      onClick={handleSave}
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      colorScheme="grey"
-                      variant="link"
-                      onClick={props.handleClose}
-                    >
-                      Back
-                    </Button>
-                  </Stack>
+                    <p>Danh sách môn học của bạn đã cập nhật thành công.</p>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
+            ) : (
+              <>
+                {!isValid && availableTerm() <= 8 && (
+                  <div
+                    className="container flex-grow-1 w-100"
+                    style={{ backgroundColor: "white", padding: "1.5rem" }}
+                  >
+                    <div className="row align-items-center text-center">
+                      <FaTriangleExclamation
+                        style={{ fontSize: "3.5rem", color: "red" }}
+                      />
+                      <h3 style={{ fontWeight: "700", color: "red" }}>
+                        WARNING
+                      </h3>
+                      <p>Vui lòng đăng kí đủ 14 tín chỉ để tiếp tục</p>
+                      <p>
+                        <span style={{ fontWeight: "bold" }}>
+                          Số tín chỉ hiện tại:
+                        </span>{" "}
+                        {total}
+                      </p>
+
+                      <Stack width={"100%"} alignItems={"center"}>
+                        <Button
+                          width={"30%"}
+                          bgColor={"black"}
+                          _hover={{ bgColor: "black" }}
+                          color={"white"}
+                          noOfLines={1}
+                          transition="filter 0.3s"
+                          onClick={props.handleClose}
+                        >
+                          Back
+                        </Button>
+                      </Stack>
+                    </div>
+                  </div>
+                )}
+                {!isValid && availableTerm() > 8 && (
+                  <div
+                    className="container flex-grow-1 w-100"
+                    style={{ backgroundColor: "white", padding: "1.5rem" }}
+                  >
+                    <div className="row align-items-center text-center">
+                      <FaTriangleExclamation
+                        style={{ fontSize: "3.5rem", color: "red" }}
+                      />
+                      <h3 style={{ fontWeight: "700", color: "red" }}>
+                        WARNING
+                      </h3>
+                      <p style={{ color: "red" }}>
+                        Bạn đã đạt giới hạn 8 học kì vui lòng cập nhật các học
+                        kì đã học
+                      </p>
+
+                      <Stack width={"100%"} alignItems={"center"}>
+                        <Button
+                          width={"30%"}
+                          bgColor={"black"}
+                          _hover={{ bgColor: "black" }}
+                          color={"white"}
+                          noOfLines={1}
+                          transition="filter 0.3s"
+                          onClick={props.handleClose}
+                        >
+                          Back
+                        </Button>
+                      </Stack>
+                    </div>
+                  </div>
+                )}
+                {isValid && (
+                  <div
+                    className="container w-100"
+                    style={{
+                      backgroundColor: "white",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <div className="row align-items-center text-center">
+                      <FaCircleQuestion
+                        style={{ fontSize: "3.5rem", color: "orange" }}
+                      />
+                      <h3 style={{ fontWeight: "700", color: "orange" }}>
+                        CONFIRM
+                      </h3>
+                      {availableTerm() === props.listTerm.length + 1 ? (
+                        <p>
+                          Bạn có muốn tạo mới và lưu danh sách vào học kì{" "}
+                          {availableTerm()}
+                        </p>
+                      ) : props.selectedTerm === 0 ? (
+                        <div>
+                          <p>Bạn đang còn thiếu học kì {availableTerm()}</p>
+                          <p>
+                            {" "}
+                            <span style={{ fontWeight: "bold" }}>
+                              Danh sách sẽ được lưu vào học kì:
+                            </span>{" "}
+                            {availableTerm()}
+                          </p>
+                        </div>
+                      ) : (
+                        <div>
+                          <p>
+                            Bạn có muốn cập nhật danh sách cho học kì:{" "}
+                            {availableTerm()}
+                          </p>
+                          <p>
+                            {" "}
+                            <span style={{ fontWeight: "bold" }}>
+                              Danh sách sẽ được lưu vào học kì:
+                            </span>{" "}
+                            {availableTerm()}
+                          </p>
+                        </div>
+                      )}
+                      <p>
+                        <span style={{ fontWeight: "bold" }}>
+                          Số tín chỉ hiện tại:
+                        </span>{" "}
+                        {total}
+                      </p>
+                      <Stack width={"100%"} alignItems={"center"}>
+                        <Button
+                          width={"30%"}
+                          bgColor={"black"}
+                          _hover={{ bgColor: "black" }}
+                          color={"white"}
+                          noOfLines={1}
+                          transition="filter 0.3s"
+                          onClick={handleSave}
+                        >
+                          Save
+                        </Button>
+                        <Button
+                          colorScheme="grey"
+                          variant="link"
+                          onClick={props.handleClose}
+                        >
+                          Back
+                        </Button>
+                      </Stack>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </>
         )}

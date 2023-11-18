@@ -36,8 +36,8 @@ td {
 .plan_table th {
   position: sticky;
   top: 0;
-  background-color: var(--second-color);
-  color: black;
+  background-color: black;
+  color: white;
   border-top: 0;
 }
 

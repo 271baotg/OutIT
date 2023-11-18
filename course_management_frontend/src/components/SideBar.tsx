@@ -5,7 +5,7 @@ import styled from "styled-components";
 const NavWrapper = styled.nav`
   height: 100%;
   width: 3rem;
-  background-color: var(--bar-color);
+  background-color: black;
   transition: width 600ms ease;
   left: 0;
   position: fixed;
@@ -69,7 +69,7 @@ const NavWrapper = styled.nav`
     margin-bottom: 5rem;
     margin-top: 1.5rem;
     text-align: center;
-    color: var(--text-color);
+    color: white;
     font-size: 1rem;
     letter-spacing: normal;
     width: 100%;
@@ -79,7 +79,7 @@ const NavWrapper = styled.nav`
   }
   .nav-item {
     .nav-link {
-      color: var(--text-color);
+      color: white;
       display: flex;
       align-items: center;
       height: 3rem;
@@ -89,7 +89,7 @@ const NavWrapper = styled.nav`
       &:hover {
         filter: grayscale(0%) opacity(1);
         background: var(--heavy-color);
-        color: var(--text-color);
+        color: white;
       }
 
       svg {
