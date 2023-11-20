@@ -8,8 +8,8 @@ import AuthContext from "../auth/AuthProvider";
 import React from "react";
 
 const Wrapper = styled.div`
-
-  min-height: calc(100% - 85px);
+  min-height: calc(100vh - 85px);
+  margin-top: 85px;
   background-color: var(--main-color);
 `;
 
@@ -59,10 +59,10 @@ const TextHighlight = styled.span`
   color: var(--button-color);
 `;
 const Welcome = () => {
-  const {auth}  = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
 
   if (auth) {
-    console.log(auth)
+    console.log(auth);
     return <Navigate to="/dashboard" />;
   }
 

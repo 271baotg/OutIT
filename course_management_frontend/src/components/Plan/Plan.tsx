@@ -6,8 +6,7 @@ import Content from "../Content";
 const Plan = () => {
   return (
     <div className="container-fluid gx-0 m-0 h-100">
-      <SideBar />
-      <Content>About</Content>
+      <Content>Plan</Content>
     </div>
   );
 };

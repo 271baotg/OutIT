@@ -5,8 +5,10 @@ import Content from "../Content";
 
 const Dashboard = () => {
   return (
-    <div className="container-fluid gx-0 m-0 h-100">
-      <SideBar />
+    <div
+      className="container-fluid gx-0 m-0"
+      style={{ height: "calc(100% - 83.5px)" }}
+    >
       <Content>Dashboard</Content>
     </div>
   );

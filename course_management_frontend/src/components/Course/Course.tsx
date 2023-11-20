@@ -28,7 +28,9 @@ import NormalModal from "../NormalModal";
 import { Enrollment } from "../../model/Enrollment";
 import { loadAllCourse, loadAllEnrollment } from "../../api/courseService";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  margin-top: 83.5px;
+`;
 
 const Layout = styled.div`
   h1 {
@@ -36,13 +38,8 @@ const Layout = styled.div`
   }
 `;
 
-const Widget = styled.div`
-  height: 10rem;
-  background-color: var(--text-color);
-`;
-
 const LeftCol = styled.div`
-  background-color: #fff;
+  background-color: #ffffff;
   height: 100%;
 `;
 const RightCol = styled.div`
@@ -98,7 +95,6 @@ const EditPanel = styled.div`
   background-color: #ddd;
   width: 100%;
   height: 100%;
-  max-height: "calc(100% - 3rem)";
   padding: 2rem;
   color: #212529;
   -webkit-text-size-adjust: 100%;
@@ -308,7 +304,7 @@ const Course = () => {
   };
 
   return (
-    <Wrapper className="container-fluid gx-0 m-0 h-100">
+    <Wrapper className="container-fluid gx-0 m-0">
       <AnimatePresence initial={false} onExitComplete={() => null}>
         {modalOpen && (
           <Modal
@@ -331,10 +327,12 @@ const Course = () => {
           />
         )}
       </AnimatePresence>
-      <SideBar></SideBar>
       <Content>
-        <Layout className="container-fluid h-100">
-          <div className="row h-100">
+        <Layout
+          className="container-fluid"
+          style={{ height: "calc(100vh - 83.5px)" }}
+        >
+          <div className="row" style={{ height: "calc(100vh - 83.5px)" }}>
             <LeftCol className="col-sm-12 col-md-8">
               <CourseTable
                 allEnrollment={allEnrollment}

@@ -3,18 +3,20 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 const NavWrapper = styled.nav`
-  height: 100%;
+  height: calc(100% - 83.5px);
   width: 3rem;
-  background-color: black;
+  background-color: #cdbf59;
   transition: width 600ms ease;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow to the right */
+
   left: 0;
+  top: 0;
   position: fixed;
   /* Small screens */
   @media only screen and (max-width: 600px) {
     bottom: 0;
     width: 100vw;
     height: 3rem;
-    z-index: 999;
     position: sticky;
 
     .navbar {
@@ -22,22 +24,18 @@ const NavWrapper = styled.nav`
       .nav-link {
         justify-content: center;
       }
-      .logo {
-        display: none;
-      }
     }
   }
 
   /* Large screens */
   @media only screen and (min-width: 600px) {
-    top: 0;
-    width: 3rem;
+    width: 10rem;
     height: 100%;
     .nav-item {
       width: 100%;
     }
 
-    &:hover {
+    /* &:hover {
       --content-left-margin: 10rem;
       width: 10rem;
       .nav-item {
@@ -54,7 +52,7 @@ const NavWrapper = styled.nav`
           }
         }
       }
-    }
+    } */
   }
 
   .navbar {
@@ -69,7 +67,7 @@ const NavWrapper = styled.nav`
     margin-bottom: 5rem;
     margin-top: 1.5rem;
     text-align: center;
-    color: white;
+    color: #000000;
     font-size: 1rem;
     letter-spacing: normal;
     width: 100%;
@@ -79,11 +77,10 @@ const NavWrapper = styled.nav`
   }
   .nav-item {
     .nav-link {
-      color: white;
+      color: #000000;
       display: flex;
       align-items: center;
       height: 3rem;
-      filter: grayscale(100%) opacity(0.7);
       transition: var(--transition-speed);
 
       &:hover {
@@ -98,11 +95,6 @@ const NavWrapper = styled.nav`
         min-width: 1rem;
         margin: 0 1rem;
       }
-
-      .link-text {
-        display: none;
-        transition: opacity 0.5s, display 0.6s;
-      }
     }
   }
 `;
@@ -112,7 +104,11 @@ const SideBar = () => {
     <NavWrapper>
       <ul className="navbar">
         <li className="logo">
-          <NavLink to="/dashboard" className="nav-link">
+          <NavLink
+            style={{ fontSize: "2rem" }}
+            to="/dashboard"
+            className="nav-link"
+          >
             Out<span>IT</span>
           </NavLink>
         </li>

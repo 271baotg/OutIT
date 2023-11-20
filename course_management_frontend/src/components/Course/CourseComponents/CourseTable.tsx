@@ -56,7 +56,7 @@ const CourseTable: React.FC<TableProps> = (props) => {
   return (
     <Wrapper className="container rounded mt-5 bg-white p-md-5">
       <section className={`${styles.theader}`}>
-        <div className="h3 display-6">Course List</div>
+        <div className="h4 display-6">Courses</div>
         <form
           className={styles.search_form}
           onSubmit={(e) => e.preventDefault()}

@@ -4,12 +4,15 @@ import styled from "styled-components";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
-  background-color: transparent;
+  background-color: #ffffff;
   padding-top: 10px;
   padding-bottom: 10px;
   min-height: 80px;
   color: var(--text-color);
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  width: 100%;
 `;
 
 const LoginButton = styled.div`
@@ -63,8 +66,12 @@ const Header = () => {
   return (
     <Wrapper className="row gx-0">
       <nav className="navbar navbar-expand-lg col-3">
-        <a className="navbar-brand fs-2 px-5 col-3 p-0" href="#">
-          OutIT
+        <a
+          className="navbar-brand fs-2 px-5 col-3 p-0"
+          style={{ color: "white" }}
+          href="#"
+        >
+          Out<span style={{ color: "var(--button-color)" }}>IT</span>
         </a>
       </nav>
       {location === "/" ? (

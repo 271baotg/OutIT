@@ -5,7 +5,7 @@ const Box = styled.button`
   display: flex;
   flex-direction: column;
   max-width: 8em; /* Smaller max width */
-  min-height: 8em; /* Smaller min height */
+  min-height: 7rem; /* Smaller min height */
   overflow: hidden;
   border-radius: 0.7rem; /* Smaller border radius */
   text-decoration: none;
@@ -19,7 +19,7 @@ const Box = styled.button`
 
   h3 {
     color: #2e3c40;
-    font-size: 1.5rem; /* Smaller font size */
+    font-size: 1.3rem; /* Smaller font size */
     font-weight: 600;
     line-height: 1;
     padding-bottom: 0.2em; /* Smaller padding */

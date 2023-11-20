@@ -8,7 +8,8 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import background from "../Images/login_background.svg";
 
 const Wrapper = styled.div`
-  height: calc(100% - 80px);
+  height: calc(100vh - 85px);
+  margin-top: 85px;
 `;
 
 const Content = styled.div`
@@ -220,7 +221,7 @@ const Login = () => {
   const USER_REGEX = /^[0-9]{8}$/;
   const PWD_REGEX = /^(?!.*\s).{8,24}$/;
 
-  const { auth , setAuth} = useContext(AuthContext)
+  const { auth, setAuth } = useContext(AuthContext);
   const usernameRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
 
@@ -234,7 +235,7 @@ const Login = () => {
   const [passwordFocus, setPasswordFocus] = useState<boolean>(false);
   const [validPassword, setValidPassword] = useState<boolean>(false);
 
-  const submitHandler = async (e : React.ChangeEvent<any>) => {
+  const submitHandler = async (e: React.ChangeEvent<any>) => {
     e.preventDefault();
     try {
       const response = await login(username, password);
@@ -266,15 +267,15 @@ const Login = () => {
   }, [password]);
 
   useEffect(() => {
-    if(usernameRef.current!=null){
+    if (usernameRef.current != null) {
       usernameRef.current.focus();
     }
-    if(auth)
-      navigate("/dashboard", {state: {from: location}, replace: true})
+    if (auth)
+      navigate("/dashboard", { state: { from: location }, replace: true });
   }, []);
 
   return (
-    <Wrapper className="container-fluid m-0 p-0">
+    <Wrapper className="container-fluid p-0">
       <Content className="row m-0">
         <div className="col-md-6 d-none d-md-block p-5  text-center">
           <img className="mw-100" src={background} alt="" />
