@@ -9,7 +9,6 @@ import background from "../Images/login_background.svg";
 
 const Wrapper = styled.div`
   height: calc(100vh - 85px);
-  margin-top: 85px;
 `;
 
 const Content = styled.div`

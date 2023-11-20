@@ -9,6 +9,8 @@ import Routes from "./routes/Routes";
 import GlobalStyle from "./globalStyle";
 import React, { useState } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function App() {
   return (

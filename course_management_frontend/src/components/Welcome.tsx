@@ -9,7 +9,6 @@ import React from "react";
 
 const Wrapper = styled.div`
   min-height: calc(100vh - 85px);
-  margin-top: 85px;
   background-color: var(--main-color);
 `;
 

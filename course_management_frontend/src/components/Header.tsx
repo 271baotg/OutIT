@@ -68,7 +68,7 @@ const Header = () => {
       <nav className="navbar navbar-expand-lg col-3">
         <a
           className="navbar-brand fs-2 px-5 col-3 p-0"
-          style={{ color: "white" }}
+          style={{ color: "black" }}
           href="#"
         >
           Out<span style={{ color: "var(--button-color)" }}>IT</span>

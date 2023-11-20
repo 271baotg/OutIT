@@ -5,7 +5,7 @@ import styled from "styled-components";
 const NavWrapper = styled.nav`
   height: calc(100% - 83.5px);
   width: 3rem;
-  background-color: #cdbf59;
+  background-color: var(--background-color);
   transition: width 600ms ease;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow to the right */
 
@@ -14,6 +14,7 @@ const NavWrapper = styled.nav`
   position: fixed;
   /* Small screens */
   @media only screen and (max-width: 600px) {
+    display: none;
     bottom: 0;
     width: 100vw;
     height: 3rem;

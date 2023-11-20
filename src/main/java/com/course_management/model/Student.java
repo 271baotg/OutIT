@@ -35,6 +35,10 @@ public class Student implements UserDetails {
     @Column(name = "class_name")
     String className;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "studentID", referencedColumnName = "id")
+    Target target;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},
