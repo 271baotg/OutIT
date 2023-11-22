@@ -11,6 +11,7 @@ import { useDebounce } from "../../../hooks/useDebounce";
 import { useAxiosPrivate } from "../../../hooks/useAxiosHook";
 import { Badge, Input } from "@chakra-ui/react";
 import { Enrollment } from "../../../model/Enrollment";
+import { motion } from "framer-motion";
 
 interface TableProps {
   data: Course[];
@@ -22,7 +23,7 @@ interface TableProps {
   selectedTerm: number;
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
   color: #212529;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
@@ -53,8 +54,18 @@ const CourseTable: React.FC<TableProps> = (props) => {
     }
   };
 
+  const tableVariant = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 1 } },
+  };
+
   return (
-    <Wrapper className="container rounded mt-5 bg-white p-md-5">
+    <Wrapper
+      initial="hidden"
+      animate="visible"
+      variants={tableVariant}
+      className="container rounded mt-5 bg-white p-md-5"
+    >
       <section className={`${styles.theader}`}>
         <div className="h4 display-6">Courses</div>
         <form

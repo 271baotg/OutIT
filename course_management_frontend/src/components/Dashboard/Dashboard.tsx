@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import SideBar from "../SideBar";
 import Content from "../Content";
 import ConstraintSlider from "./DashboardComponents/ConstraintSlider";
+import { useAxiosPrivate } from "../../hooks/useAxiosHook";
+import { Enrollment } from "../../model/Enrollment";
+import AuthContext from "../../auth/AuthProvider";
+import { Target } from "../../model/Target";
+import { Type } from "../../model/TypeAndTotal";
+import EnrollmentTable from "./DashboardComponents/EnrollmentTable";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -18,19 +24,145 @@ const Wrapper = styled.div`
 
 const ConstraintWidget = styled.div``;
 
+const TableWrapper = styled.div`
+  height: 50vh;
+`;
+
+const TotalWrapper = styled.div`
+  height: 50vh;
+`;
+
+const ScrollableDiv = styled.div`
+  max-height: 90%;
+  overflow: auto;
+  scrollbar-width: thin; // For Firefox
+  scrollbar-color: #161616 lightgray; // For Firefox
+  &::-webkit-scrollbar {
+    width: 2px; // For Chrome and Safari
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #0a0a0a; // For Chrome and Safari
+  }
+  &::-webkit-scrollbar-track {
+    background-color: lightgray; // For Chrome and Safari
+  }
+`;
+
 const Dashboard = () => {
+  const axiosPrivate = useAxiosPrivate();
+  const { auth } = useContext(AuthContext);
+  const [listTarget, setListTarget] = useState<Target[]>([]);
+  const [allEnrollment, setAllEnrollment] = useState<Enrollment[]>([]);
+  const [listType, setListType] = useState<Type[]>([]);
+
+  //Get All Enrollment
+  const loadEnrollment = async () => {
+    try {
+      const response: Enrollment[] = await axiosPrivate({
+        url: "http://localhost:8081/enroll",
+        method: "get",
+        params: {
+          username: auth?.username,
+        },
+      });
+
+      setAllEnrollment(response);
+    } catch (error) {}
+  };
+
+  const loadTarget = async () => {
+    try {
+      const response: Target[] = await axiosPrivate({
+        url: "http://localhost:8081/student/target",
+        method: "get",
+        params: {
+          username: auth?.username,
+        },
+      });
+      setListTarget(response);
+      console.log(`Target: ${JSON.stringify(response)}`);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    loadTarget();
+    loadEnrollment();
+  }, []);
+
+  // useEffect(() => {
+  //   console.log(allEnrollment);
+  //   const tempList: Type[] = allEnrollment.reduce(
+  //     (result: Type[], enrollment) => {
+  //       // Check if there is an existing Type with the same 'type'
+  //       const existingType = result.find(
+  //         (item) => item.type === enrollment.type
+  //       );
+
+  //       if (existingType) {
+  //         // If the Type already exists, update its 'total'
+  //         existingType.total += enrollment.total;
+  //       } else {
+  //         // If the Type doesn't exist, create a new Type and push it to the result array
+  //         result.push({ type: enrollment.type, total: enrollment.total });
+  //       }
+
+  //       return result;
+  //     },
+  //     []
+  //   );
+  //   setListType(tempList);
+  // }, [allEnrollment]);
+
+  useEffect(() => {
+    console.log("List Target: " + JSON.stringify(listTarget));
+  }, [listTarget]);
+
+  // useEffect(() => {
+  //   console.log("List type: " + JSON.stringify(listType));
+  //   const updatedListTarget: Target[] = listTarget.map((target) => {
+  //     const matchingType = listType.find((type) => type.type === target.type);
+  //     if (matchingType) {
+  //       return { ...target, total: matchingType.total };
+  //     }
+  //     return { ...target, total: 0 };
+  //   });
+  //   setListTarget(updatedListTarget);
+
+  //   setListTarget((prevListTarget) => {
+  //     const updatedListTarget: Target[] = prevListTarget.map((target) => {
+  //       const matchingType = listType.find((type) => type.type === target.type);
+  //       if (matchingType) {
+  //         return { ...target, total: matchingType.total };
+  //       }
+  //       return { ...target, total: 0 };
+  //     });
+  //     return updatedListTarget;
+  //   });
+  // }, [listType]);
+
   return (
     <div
       className="container-fluid gx-0 m-0"
-      style={{ height: "calc(100vh - 83.5px)" }}
+      style={{ height: "calc(100% - 83.5px)" }}
     >
       <Wrapper>
         <ConstraintWidget className="row">
-          <ConstraintSlider />
+          <ConstraintSlider data={listTarget} />
         </ConstraintWidget>
-        <div className="row">
-          <div className="col-md-8"></div>
-          <div className="col-md-4"></div>
+        <div className="row" style={{ marginTop: "1rem", padding: "8px" }}>
+          <div className="col-md-9 mb-2 mb-md-0 ">
+            <TableWrapper className="container rounded bg-white pt-3 pb-4">
+              <strong style={{ fontWeight: "medium" }}>
+                Danh sách môn đã đăng kí
+              </strong>
+              <ScrollableDiv>
+                <EnrollmentTable data={allEnrollment} />
+              </ScrollableDiv>
+            </TableWrapper>
+          </div>
+          <div className="col-md-3 order-md-1">
+            <TotalWrapper className="container rounded bg-white d-flex"></TotalWrapper>
+          </div>
         </div>
       </Wrapper>
     </div>

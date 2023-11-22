@@ -11,7 +11,15 @@ type componentprops = {
 };
 
 const PlanTable: React.FC<componentprops> = (props) => {
-  const typeChuyenNghiep: String[] = ["CN", "CSN", "CNTC", "CNCS", "CSNN"];
+  const typeChuyenNghiep: String[] = [
+    "CN",
+    "CSN",
+    "CNTC",
+    "CNCS",
+    "CSNN",
+    "ĐC",
+    "ĐA",
+  ];
 
   useEffect(() => {
     const planListCodes = new Set(props.planList.map((item) => item.code));

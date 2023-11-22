@@ -142,15 +142,6 @@ const Course = () => {
     }
   };
 
-  const reloadCourse = async () => {
-    try {
-      const response = await loadAllCourse(axiosPrivate);
-      console.log("Response from loadCourse:", response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   //Get All Enrollment
   const loadEnrollment = async () => {
     try {

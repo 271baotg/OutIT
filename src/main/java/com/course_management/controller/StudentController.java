@@ -1,14 +1,18 @@
 package com.course_management.controller;
 
 
+import com.course_management.dto.TargetDTO;
 import com.course_management.dto.TermDTO;
 import com.course_management.model.Enrollment;
 import com.course_management.model.Student;
+import com.course_management.model.Target;
 import com.course_management.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -63,6 +67,13 @@ public class StudentController {
     public List<TermDTO> getAllTerm(@PathVariable(value = "username") String username){
         List<TermDTO> listTerm =  studentService.findAllTerm(username);
         return listTerm;
+    }
+
+    @GetMapping("student/target")
+    public List<TargetDTO> getAllTarget(@RequestParam(value = "username") String username){
+        if(studentService.getAllTarget(username).isPresent())
+            return studentService.getAllTarget(username).get();
+        else return Collections.emptyList();
     }
 
 }

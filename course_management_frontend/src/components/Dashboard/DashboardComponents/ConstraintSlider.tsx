@@ -2,7 +2,13 @@ import React from "react";
 import Slider from "react-slick";
 import SliderItem from "./SliderItem";
 import styled from "styled-components";
-const ConstraintSlider = () => {
+import { Target } from "../../../model/Target";
+
+interface componentProps {
+  data: Target[];
+}
+
+const ConstraintSlider: React.FC<componentProps> = (props) => {
   var settings = {
     infinite: false,
     adaptiveHeight: true,
@@ -42,11 +48,11 @@ const ConstraintSlider = () => {
   return (
     <div>
       <Slider {...settings}>
-        <SliderItem />
-        <SliderItem />
-        <SliderItem />
-        <SliderItem />
-        <SliderItem />
+        {props.data
+          .sort((a, b) => b.total - a.total)
+          .map((target) => (
+            <SliderItem data={target} />
+          ))}
       </Slider>
     </div>
   );

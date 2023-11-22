@@ -1,6 +1,7 @@
 package com.course_management.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,9 +36,10 @@ public class Student implements UserDetails {
     @Column(name = "class_name")
     String className;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "studentID", referencedColumnName = "id")
-    Target target;
+    @OneToMany(mappedBy = "student",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @JsonIgnore
+    List<Target> targetList;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",

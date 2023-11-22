@@ -8,7 +8,7 @@ type componentProps = {
 };
 
 const PlanRow: React.FC<componentProps> = (props) => {
-  const typeChuyenNghiep: String[] = ["CN", "CSN", "CNTC", "CSNN"];
+  const typeChuyenNghiep: String[] = ["CN", "CSN", "CNTC", "CSNN", "ĐC", "ĐA"];
   const [current, setCurrentType] = useState<String>(props.data.type);
 
   const handleItemSelect = (value: String) => {

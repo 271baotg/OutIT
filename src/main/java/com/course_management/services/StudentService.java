@@ -1,12 +1,13 @@
 package com.course_management.services;
 
+import com.course_management.dto.TargetDTO;
 import com.course_management.dto.TermDTO;
-import com.course_management.model.Course;
 import com.course_management.model.Enrollment;
 import com.course_management.model.Student;
-import org.springframework.stereotype.Service;
+import com.course_management.model.Target;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StudentService {
     List<Student> findAll();
@@ -23,4 +24,6 @@ public interface StudentService {
     List<TermDTO> findAllTerm(String username);
 
     List<Enrollment> getAllEnrollment(String username);
-}
+
+    Optional<List<TargetDTO>> getAllTarget(String username);
+ }

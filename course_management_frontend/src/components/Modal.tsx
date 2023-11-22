@@ -106,12 +106,11 @@ const Modal: React.FC<modalProps> = (props) => {
   ]);
 
   useEffect(() => {
-    console.log("Plan: " + JSON.stringify(props.data));
     props.data.map((course) => {
       const existingType = typeList.some((item) => item.type === course.type);
       if (existingType) {
         typeList?.map((item) =>
-          item.type == course.type
+          item.type === course.type
             ? { ...item, total: (item.total += course.total) }
             : item
         );
@@ -133,7 +132,6 @@ const Modal: React.FC<modalProps> = (props) => {
     let updateList: Type[] = [];
     typeList.forEach((item) => {
       const isMainType = mainType.some((element) => item.type === element);
-      console.log(isMainType);
       if (isMainType) {
         updateList.push(item);
       } else {
