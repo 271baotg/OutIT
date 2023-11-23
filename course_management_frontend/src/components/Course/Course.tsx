@@ -39,11 +39,11 @@ const Layout = styled.div`
 `;
 
 const LeftCol = styled.div`
-  background-color: #ffffff;
+  background-color: #ebcf94;
   height: 100%;
 `;
 const RightCol = styled.div`
-  background-color: #fff;
+  background-color: #ebcf94;
   height: 100%;
 `;
 
@@ -369,11 +369,11 @@ const Course = () => {
                   <TabPanel
                     style={{
                       padding: 0,
-                      height: "calc(100% - 3rem)",
+                      height: "100%",
                       display: "flex",
                     }}
                   >
-                    <InfoPanel className="container rounded mt-5 bg-white p-md-3 d-flex">
+                    <InfoPanel className="container rounded bg-white p-md-3 d-flex">
                       <StatusBar>
                         <div className={styles.header_text}>
                           <div>
@@ -418,14 +418,14 @@ const Course = () => {
                   <TabPanel
                     style={{
                       padding: 0,
-                      height: "calc(100% - 3rem)",
+                      height: "100%",
                       display: "flex",
                       position: "relative",
                       justifyContent: "center",
                     }}
                   >
                     <Card
-                      className="container rounded mt-5 p-0 bg-white d-flex"
+                      className="container rounded p-0 bg-white d-flex"
                       style={{ transform: getTranslateY() }}
                     >
                       <div className={styles.front_card}>

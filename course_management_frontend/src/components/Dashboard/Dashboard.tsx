@@ -9,13 +9,14 @@ import AuthContext from "../../auth/AuthProvider";
 import { Target } from "../../model/Target";
 import { Type } from "../../model/TypeAndTotal";
 import EnrollmentTable from "./DashboardComponents/EnrollmentTable";
+import DonutChart from "./DashboardComponents/DonutChart";
 
 const Wrapper = styled.div`
   height: 100%;
   margin-left: 10rem;
   padding: 2rem;
   transition: var(--transition-speed) ease-out;
-  background-color: #ddd;
+  background-color: #ebcf94;
 
   @media only screen and (max-width: 600px) {
     margin: 0;
@@ -26,10 +27,12 @@ const ConstraintWidget = styled.div``;
 
 const TableWrapper = styled.div`
   height: 50vh;
+  box-shadow: 0 6px 6px hsl(0deg 0% 0% / 0.3);
 `;
 
 const TotalWrapper = styled.div`
   height: 50vh;
+  box-shadow: 0 6px 6px hsl(0deg 0% 0% / 0.3);
 `;
 
 const ScrollableDiv = styled.div`
@@ -53,7 +56,6 @@ const Dashboard = () => {
   const { auth } = useContext(AuthContext);
   const [listTarget, setListTarget] = useState<Target[]>([]);
   const [allEnrollment, setAllEnrollment] = useState<Enrollment[]>([]);
-  const [listType, setListType] = useState<Type[]>([]);
 
   //Get All Enrollment
   const loadEnrollment = async () => {
@@ -117,29 +119,6 @@ const Dashboard = () => {
     console.log("List Target: " + JSON.stringify(listTarget));
   }, [listTarget]);
 
-  // useEffect(() => {
-  //   console.log("List type: " + JSON.stringify(listType));
-  //   const updatedListTarget: Target[] = listTarget.map((target) => {
-  //     const matchingType = listType.find((type) => type.type === target.type);
-  //     if (matchingType) {
-  //       return { ...target, total: matchingType.total };
-  //     }
-  //     return { ...target, total: 0 };
-  //   });
-  //   setListTarget(updatedListTarget);
-
-  //   setListTarget((prevListTarget) => {
-  //     const updatedListTarget: Target[] = prevListTarget.map((target) => {
-  //       const matchingType = listType.find((type) => type.type === target.type);
-  //       if (matchingType) {
-  //         return { ...target, total: matchingType.total };
-  //       }
-  //       return { ...target, total: 0 };
-  //     });
-  //     return updatedListTarget;
-  //   });
-  // }, [listType]);
-
   return (
     <div
       className="container-fluid gx-0 m-0"
@@ -161,7 +140,15 @@ const Dashboard = () => {
             </TableWrapper>
           </div>
           <div className="col-md-3 order-md-1">
-            <TotalWrapper className="container rounded bg-white d-flex"></TotalWrapper>
+            <TotalWrapper className="container rounded bg-white pt-3 pb-4">
+              <strong style={{ fontWeight: "medium" }}>Tổng tiến độ</strong>
+              <ScrollableDiv>
+                <DonutChart
+                  listEnroll={allEnrollment}
+                  listTarget={listTarget}
+                />
+              </ScrollableDiv>
+            </TotalWrapper>
           </div>
         </div>
       </Wrapper>

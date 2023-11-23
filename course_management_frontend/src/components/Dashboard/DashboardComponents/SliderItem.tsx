@@ -10,6 +10,9 @@ const Card = styled.div`
   height: 150px;
   width: 95%;
   padding: 1rem;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  box-shadow: 0 6px 6px hsl(0deg 0% 0% / 0.3);
   display: flex;
   flex-direction: column;
 `;
@@ -26,10 +29,11 @@ const SliderItem: React.FC<componentProps> = (props) => {
     if (props.data.type == "CNTC") return "CHUYÊN NGHÀNH TỰ CHỌN";
     if (props.data.type == "CSNN") return "CƠ SỞ NHÓM NGHÀNH";
     if (props.data.type == "CĐTN") return "CHUYÊN ĐỀ TỐT NGHIỆP";
-    if (props.data.type == "TTTN") return "THỰC TẬP TỐT NGHIỆP";
+    if (props.data.type == "TTDN") return "THỰC TẬP TỐT NGHIỆP";
     if (props.data.type == "ĐA") return "ĐỒ ÁN";
-    else return "others";
+    else return "CÁC MÔN KHÁC";
   };
+
   return (
     <Card className="container rounded bg-white d-flex mx-2">
       <p style={{ fontWeight: "bold", fontSize: "1rem" }}>{getTitle()}</p>

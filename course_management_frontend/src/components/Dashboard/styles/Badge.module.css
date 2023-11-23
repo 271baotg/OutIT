@@ -1,0 +1,68 @@
+/* TypeBadge.css */
+
+.csnn_badge {
+  width: 90%;
+  background-color: var(--csnn-bg-color);
+  color: var(--csnn-text-color);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+.csn_badge {
+  width: 90%;
+  background-color: var(--csn-bg-color);
+  color: var(--csn-text-color);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.cn_badge {
+  width: 90%;
+  background-color: var(--cn-bg-color);
+  color: var(--cn-text-color);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.cdtn_badge {
+  width: 90%;
+  background-color: var(--cdtn-bg-color);
+  color: var(--cdtn-text-color);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.cntc_badge {
+  width: 90%;
+  background-color: var(--cntc-bg-color);
+  color: var(--cntc-text-color);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+.dc_badge {
+  width: 90%;
+  background-color: var(--dc-bg-color);
+  color: var(--dc-text-color);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+.da_badge {
+  width: 90%;
+  background-color: var(--da-bg-color);
+  color: var(--da-text-color);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}

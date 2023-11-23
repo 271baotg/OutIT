@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import TypeBadge from "./TypeBadge";
 
 interface componentProps {
   data: Enrollment[];
@@ -33,7 +34,6 @@ const EnrollmentTable: React.FC<componentProps> = (props) => {
     if (type == "CĐTN") return "Chuyên đề tốt nghiệp";
     if (type == "TTTN") return "Thực tập tốt nghiệp";
     if (type == "ĐA") return "Đồ án";
-    else return "others";
   };
   return (
     <>
@@ -59,11 +59,16 @@ const EnrollmentTable: React.FC<componentProps> = (props) => {
                   >
                     {enrollment.code}
                   </Td>
-                  <Td borderLeft={"none"} borderRight={"none"}>
+                  <Td
+                    borderLeft={"none"}
+                    borderRight={"none"}
+                    maxWidth="200px"
+                    whiteSpace="pre-line"
+                  >
                     {enrollment.name}
                   </Td>
                   <Td borderLeft={"none"} borderRight={"none"}>
-                    {getTitle(enrollment.type)}
+                    <TypeBadge data={enrollment.type} />
                   </Td>
                   <Td borderLeft={"none"} borderRight={"none"} isNumeric>
                     {enrollment.total}

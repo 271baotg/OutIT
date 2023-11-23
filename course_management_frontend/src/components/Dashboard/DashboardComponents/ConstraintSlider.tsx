@@ -11,7 +11,7 @@ interface componentProps {
 const ConstraintSlider: React.FC<componentProps> = (props) => {
   var settings = {
     infinite: false,
-    adaptiveHeight: true,
+    adaptiveHeight: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 3,
