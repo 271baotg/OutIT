@@ -90,7 +90,7 @@ const DialogHeader = styled.div`
   width: 100%;
   height: 2rem;
   margin-bottom: 1rem;
-  background-color: #000000;
+  background-color: #ebcf94;
   border-radius: 0.2rem 0.2rem 0 0;
   display: flex;
   justify-content: end;
@@ -361,8 +361,7 @@ const NormalModal: React.FC<modalProps> = (props) => {
                       <Stack width={"100%"} alignItems={"center"}>
                         <Button
                           width={"30%"}
-                          bgColor={"black"}
-                          _hover={{ bgColor: "black" }}
+                          style={{ backgroundColor: "var(--button-color)" }}
                           color={"white"}
                           noOfLines={1}
                           transition="filter 0.3s"

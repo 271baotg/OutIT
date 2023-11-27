@@ -10,6 +10,8 @@ import { Target } from "../../model/Target";
 import { Type } from "../../model/TypeAndTotal";
 import EnrollmentTable from "./DashboardComponents/EnrollmentTable";
 import DonutChart from "./DashboardComponents/DonutChart";
+import { AnimatePresence } from "framer-motion";
+import DashboardModal from "./DashboardComponents/DashboardModal";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -56,6 +58,12 @@ const Dashboard = () => {
   const { auth } = useContext(AuthContext);
   const [listTarget, setListTarget] = useState<Target[]>([]);
   const [allEnrollment, setAllEnrollment] = useState<Enrollment[]>([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedType, setSelectedType] = useState<string>("");
+
+  const handleModal = () => {
+    setModalOpen(true);
+  };
 
   //Get All Enrollment
   const loadEnrollment = async () => {
@@ -124,9 +132,24 @@ const Dashboard = () => {
       className="container-fluid gx-0 m-0"
       style={{ height: "calc(100% - 83.5px)" }}
     >
+      <AnimatePresence initial={false} onExitComplete={() => null}>
+        {modalOpen && (
+          <DashboardModal
+            isOpen={modalOpen}
+            handleClose={() => setModalOpen(false)}
+            type={selectedType}
+            enrollment={allEnrollment}
+          />
+        )}
+      </AnimatePresence>
+
       <Wrapper>
         <ConstraintWidget className="row">
-          <ConstraintSlider data={listTarget} />
+          <ConstraintSlider
+            data={listTarget}
+            handleModal={handleModal}
+            setSelectedType={setSelectedType}
+          />
         </ConstraintWidget>
         <div className="row" style={{ marginTop: "1rem", padding: "8px" }}>
           <div className="col-md-9 mb-2 mb-md-0 ">

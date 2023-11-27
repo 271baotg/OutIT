@@ -23,7 +23,7 @@ interface TableProps {
   selectedTerm: number;
 }
 
-const Wrapper = styled(motion.div)`
+const Wrapper = styled.div`
   color: #212529;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
@@ -60,12 +60,7 @@ const CourseTable: React.FC<TableProps> = (props) => {
   };
 
   return (
-    <Wrapper
-      initial="hidden"
-      animate="visible"
-      variants={tableVariant}
-      className="container rounded mt-5 bg-white p-md-5"
-    >
+    <Wrapper className="container rounded mt-5 bg-white p-md-5">
       <section className={`${styles.theader}`}>
         <div className="h4 display-6">Courses</div>
         <form

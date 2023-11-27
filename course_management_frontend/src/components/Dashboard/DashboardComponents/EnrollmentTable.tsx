@@ -40,7 +40,7 @@ const EnrollmentTable: React.FC<componentProps> = (props) => {
       <motion.div initial="hidden" animate="visible" variants={tableVariant}>
         <TableContainer whiteSpace="nowrap" overflowX="unset" overflowY="unset">
           <Table variant="simple" size="sm">
-            <Thead position="sticky" top={0} zIndex="docked" bgColor="white">
+            <Thead position="sticky" top={0} bgColor="white">
               <Tr>
                 <Th>Mã môn</Th>
                 <Th>Tên môn</Th>

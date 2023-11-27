@@ -78,7 +78,7 @@ const Dialog = styled(motion.dialog)`
 const DialogHeader = styled.div`
   width: 100%;
   height: 2rem;
-  background-color: black;
+  background-color: #ebcf94;
   border-radius: 0.2rem 0.2rem 0 0;
   display: flex;
   justify-content: end;
@@ -155,6 +155,7 @@ const Modal: React.FC<modalProps> = (props) => {
         initial="hidden"
         animate="visible"
         exit="exit"
+        layout
       >
         <DialogHeader>
           <CloseButton
@@ -205,7 +206,7 @@ const Modal: React.FC<modalProps> = (props) => {
                 }}
               >
                 <Button
-                  bgColor={"black"}
+                  style={{ backgroundColor: "var(--button-color)" }}
                   color={"white"}
                   variant="solid"
                   onClick={props.handleClose}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, MouseEventHandler, SetStateAction } from "react";
 import Slider from "react-slick";
 import SliderItem from "./SliderItem";
 import styled from "styled-components";
@@ -6,6 +6,8 @@ import { Target } from "../../../model/Target";
 
 interface componentProps {
   data: Target[];
+  handleModal: Function;
+  setSelectedType: Dispatch<SetStateAction<string>>;
 }
 
 const ConstraintSlider: React.FC<componentProps> = (props) => {
@@ -51,7 +53,11 @@ const ConstraintSlider: React.FC<componentProps> = (props) => {
         {props.data
           .sort((a, b) => b.total - a.total)
           .map((target) => (
-            <SliderItem data={target} />
+            <SliderItem
+              data={target}
+              setSelectedType={props.setSelectedType}
+              handleModal={props.handleModal}
+            />
           ))}
       </Slider>
     </div>

@@ -1,10 +1,16 @@
-import React from "react";
+import React, {
+  Dispatch,
+  MouseEventHandler,
+  SetStateAction,
+  useState,
+} from "react";
 import styled from "styled-components";
 import TypeBar from "../../Course/CourseComponents/TypeBar";
 import ConstraintProgress from "./ConstraintProgress";
 import { Target } from "../../../model/Target";
 import { FaCircleCheck } from "react-icons/fa6";
 import { Divider, Link } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 
 const Card = styled.div`
   height: 150px;
@@ -19,6 +25,8 @@ const Card = styled.div`
 
 interface componentProps {
   data: Target;
+  handleModal: Function;
+  setSelectedType: Dispatch<SetStateAction<string>>;
 }
 
 const SliderItem: React.FC<componentProps> = (props) => {
@@ -34,18 +42,35 @@ const SliderItem: React.FC<componentProps> = (props) => {
     else return "CÁC MÔN KHÁC";
   };
 
+  const onClickHandler = (type: string) => {
+    props.handleModal();
+    props.setSelectedType(type);
+  };
+
   return (
     <Card className="container rounded bg-white d-flex mx-2">
       <p style={{ fontWeight: "bold", fontSize: "1rem" }}>{getTitle()}</p>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <p>
-          {props.data.total} /{" "}
-          <span style={{ fontWeight: "bold" }}>{props.data.goal}</span>
-        </p>
-        {props.data.total >= props.data.goal && <FaCircleCheck color="green" />}
-      </div>
-      <ConstraintProgress data={props.data} />
-      <Link color="teal.500">Xem chi tiết</Link>
+
+      <motion.div layout>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <p>
+            {props.data.total} /{" "}
+            <span style={{ fontWeight: "bold" }}>{props.data.goal}</span>
+          </p>
+          {props.data.total >= props.data.goal && (
+            <FaCircleCheck color="green" />
+          )}
+        </div>
+        <ConstraintProgress data={props.data} />
+        <Link
+          color="teal.500"
+          onClick={() => {
+            onClickHandler(props.data.type);
+          }}
+        >
+          Xem chi tiết
+        </Link>
+      </motion.div>
     </Card>
   );
 };
