@@ -3,10 +3,8 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   height: 100%;
-  margin-left: 10rem;
+  min-width: 100%;
   transition: var(--transition-speed) ease-out;
-  background-color: #ddd;
-
   @media only screen and (max-width: 600px) {
     margin: 0;
   }

@@ -8,6 +8,8 @@ import { createPortal } from "react-dom";
 import EnrollmentTable from "./EnrollmentTable";
 import StaggerCourseList from "./StaggerCourseList";
 import { Enrollment } from "../../../model/Enrollment";
+import { getTitle } from "../../../hooks/getTypeColor";
+import { Target } from "../../../model/Target";
 
 const dropIn = {
   hidden: {
@@ -183,22 +185,36 @@ interface modalProps {
   handleClose: MouseEventHandler;
   type: string;
   enrollment: Enrollment[];
+  listTarget: Target[];
 }
 
 const DashboardModal: React.FC<modalProps> = (props) => {
   const count = useMotionValue(0);
   const rounded = useTransform(count, Math.round);
   const [filterEnrollment, setFilterEnrollment] = useState<Enrollment[]>([]);
+  const goal = props.listTarget.find((item) => item.type === props.type)?.goal;
+  const [displayValue, setDisplayValue] = useState(0);
 
   useEffect(() => {
     const tempFilter = props.enrollment.filter(
       (enrollment) => enrollment.type === props.type
     );
     setFilterEnrollment(tempFilter);
-    const animation = animate(count, 50, {
+    const total = tempFilter.reduce((acc, current) => {
+      return (acc += current.total);
+    }, 0);
+    const animation = animate(count, total, {
       duration: 2.5,
+      onUpdate: (latest) => {
+        // Update displayValue during the animation
+        setDisplayValue(latest);
+      },
+      onComplete: () => {
+        const roundedValue = rounded.get();
+        setDisplayValue(roundedValue);
+        console.log("Rounded Value after animation:", rounded.get());
+      },
     });
-    console.log("Type in modal: " + props.type);
 
     return animation.stop;
   }, []);
@@ -230,14 +246,17 @@ const DashboardModal: React.FC<modalProps> = (props) => {
               <>
                 <div className="col-md-4 h-100 bg-gray d-flex align-items-center justify-center">
                   <div style={{ flex: 1, textAlign: "center" }}>
-                    <strong>Chuyên nghành</strong>
-                    <motion.h3>{rounded}</motion.h3>
+                    <strong>{getTitle(props.type)}</strong>
+                    <motion.h3>
+                      {displayValue.toFixed(0)}/{goal}
+                    </motion.h3>
                     <p>Tín chỉ</p>
                   </div>
                 </div>
                 <div className="col-md-8 h-100 bg-gray py-5 px-2">
                   <StaggerCourseList
                     data={filterEnrollment}
+                    type={props.type}
                   ></StaggerCourseList>
                 </div>
               </>

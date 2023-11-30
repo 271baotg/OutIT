@@ -29,7 +29,7 @@ import { Enrollment } from "../../model/Enrollment";
 import { loadAllCourse, loadAllEnrollment } from "../../api/courseService";
 
 const Wrapper = styled.div`
-  margin-top: 83.5px;
+  margin-left: 10rem;
 `;
 
 const Layout = styled.div`
@@ -295,7 +295,7 @@ const Course = () => {
   };
 
   return (
-    <Wrapper className="container-fluid gx-0 m-0">
+    <Wrapper>
       <AnimatePresence initial={false} onExitComplete={() => null}>
         {modalOpen && (
           <Modal

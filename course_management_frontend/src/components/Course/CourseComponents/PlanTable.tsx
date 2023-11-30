@@ -39,10 +39,6 @@ const PlanTable: React.FC<componentprops> = (props) => {
     props.setPlanList(updatedPlanList);
   }, [props.data]);
 
-  useEffect(() => {
-    console.log("Plan list: " + JSON.stringify(props.planList));
-  }, [props.planList]);
-
   const handleTypeChange = (code: string, newType: string) => {
     // Find the course in the planList and update its type
     const updatedPlanList = props.planList.map((course) =>

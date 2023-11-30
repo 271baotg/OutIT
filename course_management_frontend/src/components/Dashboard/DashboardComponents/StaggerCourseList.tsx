@@ -2,16 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import { Enrollment } from "../../../model/Enrollment";
-
-// const variant = {
-//   hidden: { opacity: 0 },
-//   show: {
-//     opacity: 1,
-//     transition: {
-//       staggerChildren: 0.2,
-//     },
-//   },
-// };
+import { getTitle, getTypeColor } from "../../../hooks/getTypeColor";
 
 const Item = styled(motion.div)`
   padding: 0.5rem;
@@ -37,7 +28,6 @@ const Wrapper = styled(motion.div)`
 const HeaderBar = styled.div`
   width: 100%;
   height: 2.5rem; /* Adjust the height as needed */
-  background-color: #d97272; /* Your desired header color */
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -66,11 +56,14 @@ const ListContainer = styled.div`
 
 interface componentProps {
   data: Enrollment[];
+  type: string;
 }
 const StaggerCourseList: React.FC<componentProps> = (props) => {
   return (
     <Wrapper>
-      <HeaderBar>Danh sách môn học</HeaderBar>
+      <HeaderBar style={{ backgroundColor: getTypeColor(props.type) }}>
+        Danh sách môn {getTitle(props.type)} bạn đã đăng kí
+      </HeaderBar>
       <ListContainer>
         {props.data.map((value, i) => {
           return (

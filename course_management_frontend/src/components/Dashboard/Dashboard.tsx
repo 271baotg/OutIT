@@ -14,7 +14,7 @@ import { AnimatePresence } from "framer-motion";
 import DashboardModal from "./DashboardComponents/DashboardModal";
 
 const Wrapper = styled.div`
-  height: 100%;
+  min-height: calc(100vh - 83.5px);
   margin-left: 10rem;
   padding: 2rem;
   transition: var(--transition-speed) ease-out;
@@ -128,10 +128,7 @@ const Dashboard = () => {
   }, [listTarget]);
 
   return (
-    <div
-      className="container-fluid gx-0 m-0"
-      style={{ height: "calc(100% - 83.5px)" }}
-    >
+    <Wrapper>
       <AnimatePresence initial={false} onExitComplete={() => null}>
         {modalOpen && (
           <DashboardModal
@@ -139,11 +136,12 @@ const Dashboard = () => {
             handleClose={() => setModalOpen(false)}
             type={selectedType}
             enrollment={allEnrollment}
+            listTarget={listTarget}
           />
         )}
       </AnimatePresence>
 
-      <Wrapper>
+      <Content>
         <ConstraintWidget className="row">
           <ConstraintSlider
             data={listTarget}
@@ -174,8 +172,8 @@ const Dashboard = () => {
             </TotalWrapper>
           </div>
         </div>
-      </Wrapper>
-    </div>
+      </Content>
+    </Wrapper>
   );
 };
 

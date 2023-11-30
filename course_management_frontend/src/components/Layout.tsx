@@ -13,7 +13,7 @@ export const Layout = () => {
   const shouldRenderHeader = pathsWithoutHeader.includes(location.pathname);
   const shouldRenderSidebar = pathsWithoutSidebar.includes(location.pathname);
   return (
-    <div className="container-fluid gx-0 m-0">
+    <div className="container-fluid gx-0 m-0" style={{ minHeight: "100vh" }}>
       <Header />
       {shouldRenderSidebar && <SideBar />}
       <Outlet />

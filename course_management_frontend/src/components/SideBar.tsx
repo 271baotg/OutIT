@@ -8,7 +8,6 @@ const NavWrapper = styled.nav`
   background-color: var(--background-color);
   transition: width 600ms ease;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow to the right */
-
   left: 0;
   top: 0;
   position: fixed;
