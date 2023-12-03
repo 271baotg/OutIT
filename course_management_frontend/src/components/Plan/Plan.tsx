@@ -1,7 +1,26 @@
 import React from "react";
 import styled from "styled-components";
 import Content from "../Content";
-import { Avatar, AvatarBadge, AvatarGroup, WrapItem } from "@chakra-ui/react";
+import {
+  Avatar,
+  AvatarBadge,
+  AvatarGroup,
+  Box,
+  Heading,
+  Highlight,
+  List,
+  ListIcon,
+  ListItem,
+  WrapItem,
+  position,
+} from "@chakra-ui/react";
+import {
+  FaChalkboardUser,
+  FaEnvelope,
+  FaIdBadge,
+  FaIdCard,
+} from "react-icons/fa6";
+import TermLayout from "./PlanComponents/TermLayout";
 
 const Wrapper = styled.div`
   height: calc(100vh - 83.5px);
@@ -52,8 +71,52 @@ const Plan = () => {
                       src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.nicepng.com%2Fourpic%2Fu2q8i1a9e6i1o0o0_view-user-icon-png-user-circle-icon-png%2F&psig=AOvVaw2mBmc9pOYG35DlsSPSBc2_&ust=1701442623670000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPifquv964IDFQAAAAAdAAAAABAJ"
                     />
                   </WrapItem>
+                  <div style={{ textAlign: "center", marginTop: "1rem" }}>
+                    <h3>Trần Gia Bảo</h3>
+                  </div>
+                  <div style={{ padding: "0.5rem" }}>
+                    <List spacing={3} style={{ padding: 0, lineHeight: "1" }}>
+                      <ListItem>
+                        <ListIcon as={FaIdCard} color="black.500" />
+                        <span style={{ fontWeight: "bold" }}>MSSV</span>:
+                        21521862
+                      </ListItem>
+                      <ListItem>
+                        <ListIcon as={FaEnvelope} color="black.500" />
+                        <span style={{ fontWeight: "bold" }}>Email</span>:
+                        21521862@gm.uit.edu.vn
+                      </ListItem>
+                      <ListItem>
+                        <ListIcon as={FaChalkboardUser} color="black.500" />
+                        <span style={{ fontWeight: "bold" }}>Khoa</span>: CNPM
+                      </ListItem>
+                    </List>
+                  </div>
                 </div>
-                <div className="col-md-8"></div>
+                <div
+                  className="col-md-8"
+                  style={{
+                    position: "relative",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Box
+                    marginTop="2rem"
+                    marginLeft="2rem"
+                    height="3rem"
+                    fontSize="1.5rem"
+                    backgroundColor="gray.300"
+                    paddingLeft="1rem" // Adjust as needed
+                    borderLeft="4px solid gray.600" // Adjust color and size as needed
+                    borderBottomLeftRadius="8px" // Adjust radius as needed
+                    display="flex"
+                    alignItems="center"
+                  >
+                    Danh sách học kì
+                  </Box>
+                  <TermLayout />
+                </div>
               </div>
             </Left>
           </div>

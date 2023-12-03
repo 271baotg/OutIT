@@ -1,0 +1,45 @@
+.card {
+  background: rgb(179, 174, 174);
+  border-radius: 15px;
+  height: 20%;
+  margin-bottom: 0.5rem;
+  margin-left: 5rem;
+  cursor: pointer;
+}
+
+.opened_card {
+  border-radius: 15px;
+  cursor: pointer;
+  height: calc(100% - 10rem);
+  width: 80%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.opened_card div {
+  background: white;
+  height: 100%;
+  width: 100%;
+  margin: 0 1rem;
+  border-radius: 15px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .opened_card {
+    height: calc(100% - 5rem); /* Adjust height for smaller screens */
+  }
+}
