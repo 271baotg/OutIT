@@ -1,9 +1,9 @@
 .card {
-  background: rgb(179, 174, 174);
+  background: #fff;
   border-radius: 15px;
-  height: 20%;
-  margin-bottom: 0.5rem;
-  margin-left: 5rem;
+  height: 30%;
+  margin: 1rem 4rem;
+  box-shadow: 0 6px 6px hsl(0deg 0% 0% / 0.3);
   cursor: pointer;
 }
 
@@ -11,6 +11,7 @@
   border-radius: 15px;
   cursor: pointer;
   height: calc(100% - 10rem);
+  box-shadow: 0 6px 6px hsl(0deg 0% 0% / 0.3);
   width: 80%;
   position: absolute;
   top: 0;

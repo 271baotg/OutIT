@@ -2,11 +2,25 @@ import { motion } from "framer-motion";
 import React, { useState } from "react";
 import styled from "styled-components";
 import styles from "../styles/TermLayout.module.css";
+import TermItem from "./TermItem";
 
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   background-color: #fff;
+  max-height: 90%;
+  overflow: auto;
+  scrollbar-width: thin; // For Firefox
+  scrollbar-color: #161616 lightgray; // For Firefox
+  &::-webkit-scrollbar {
+    width: 2px; // For Chrome and Safari
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #0a0a0a; // For Chrome and Safari
+  }
+  &::-webkit-scrollbar-track {
+    background-color: lightgray; // For Chrome and Safari
+  }
 `;
 
 const TermLayout = () => {
@@ -32,6 +46,7 @@ const TermLayout = () => {
           onClick={() => handleCardClick(card)}
         >
           {selectedId === card && <div> Hello </div>}
+          {selectedId !== card && <TermItem />}
         </motion.div>
       ))}
       <motion.div

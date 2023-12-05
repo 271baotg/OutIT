@@ -103,13 +103,10 @@ const Plan = () => {
                 >
                   <Box
                     marginTop="2rem"
-                    marginLeft="2rem"
                     height="3rem"
                     fontSize="1.5rem"
                     backgroundColor="gray.300"
-                    paddingLeft="1rem" // Adjust as needed
-                    borderLeft="4px solid gray.600" // Adjust color and size as needed
-                    borderBottomLeftRadius="8px" // Adjust radius as needed
+                    paddingLeft="1rem"
                     display="flex"
                     alignItems="center"
                   >

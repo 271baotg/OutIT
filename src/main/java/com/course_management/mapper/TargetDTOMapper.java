@@ -15,7 +15,7 @@ import java.util.function.Function;
 @Service
 public class TargetDTOMapper implements Function<Target, TargetDTO> {
 
-    private  EnrollmentRepository enrollmentRepository;
+    private final  EnrollmentRepository enrollmentRepository;
 
     public TargetDTOMapper(EnrollmentRepository enrollmentRepository) {
         this.enrollmentRepository = enrollmentRepository;
