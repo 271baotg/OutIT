@@ -95,11 +95,13 @@ public class StudentServiceImpl implements StudentService{
     public List<TermDTO> findAllTerm(String username) {
         List<TermDTO> result = new ArrayList<>();
         List<Integer> listTerm;
+        List<String> listType;
         if(studentRepository.findAllTerm(username).isPresent())
         {
              listTerm = studentRepository.findAllTerm(username).get();
              for(int term : listTerm){
-                 TermDTO temp = new TermDTO(term,enrollmentRepository.getTotal(username,term));
+                 listType = enrollmentRepository.getTypeByTerm(term);
+                 TermDTO temp = new TermDTO(term,enrollmentRepository.getTotal(username,term),listType);
                  result.add(temp);
              }
              return result;

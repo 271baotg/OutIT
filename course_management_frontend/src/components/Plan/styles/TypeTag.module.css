@@ -1,0 +1,82 @@
+/* TypeBadge.css */
+
+.csnn_badge {
+  display: inline-block; /* Set display to inline-block */
+  background-color: var(--csnn-bg-color);
+  color: var(--csnn-text-color);
+  font-size: 0.8rem;
+  padding: 2px 10px;
+  margin: 0.1rem 0.5rem;
+  border-radius: 0.7rem;
+  font-weight: bold;
+  text-align: center;
+}
+.csn_badge {
+  display: inline-block; /* Set display to inline-block */
+  background-color: var(--csn-bg-color);
+  color: var(--csn-text-color);
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  margin: 0 0.5rem;
+  border-radius: 0.7rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.cn_badge {
+  display: inline-block; /* Set display to inline-block */
+  background-color: var(--cn-bg-color);
+  color: var(--cn-text-color);
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  margin: 0 0.5rem;
+  border-radius: 0.7rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.cdtn_badge {
+  display: inline-block; /* Set display to inline-block */
+  background-color: var(--cdtn-bg-color);
+  color: var(--cdtn-text-color);
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  margin: 0 0.5rem;
+  border-radius: 0.7rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.cntc_badge {
+  display: inline-block; /* Set display to inline-block */
+  background-color: var(--cntc-bg-color);
+  color: var(--cntc-text-color);
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  margin: 0 0.5rem;
+  border-radius: 0.7rem;
+  font-weight: bold;
+  text-align: center;
+}
+.dc_badge {
+  display: inline-block; /* Set display to inline-block */
+  background-color: var(--dc-bg-color);
+  color: var(--dc-text-color);
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  margin: 0 0.5rem;
+  border-radius: 0.7rem;
+  font-weight: bold;
+  text-align: center;
+}
+.da_badge {
+  display: inline-block; /* Set display to inline-block */
+  background-color: var(--da-bg-color);
+  color: var(--da-text-color);
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  margin: 0 0.5rem;
+  border-radius: 0.7rem;
+  font-weight: bold;
+  text-align: center;
+}

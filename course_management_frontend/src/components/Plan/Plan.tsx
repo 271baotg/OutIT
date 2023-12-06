@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Content from "../Content";
 import {
@@ -21,6 +21,8 @@ import {
   FaIdCard,
 } from "react-icons/fa6";
 import TermLayout from "./PlanComponents/TermLayout";
+import { useAxiosPrivate } from "../../hooks/useAxiosHook";
+import AuthContext from "../../auth/AuthProvider";
 
 const Wrapper = styled.div`
   height: calc(100vh - 83.5px);
@@ -44,6 +46,28 @@ const TargetPanel = styled.div`
 `;
 
 const Plan = () => {
+  const axiosPrivate = useAxiosPrivate();
+  const { auth } = useContext(AuthContext);
+  const [listTerm, setListTerm] = useState<Term[]>([]);
+
+  //Lấy danh sách các kì và tổng số tín chỉ mỗi kì
+  const loadTerm = async () => {
+    try {
+      const response: Term[] = await axiosPrivate({
+        url: `http://localhost:8081/enroll/terms/${auth?.username}`,
+        method: "get",
+      });
+      const result = response.sort((a, b) => a.term - b.term);
+      setListTerm(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    loadTerm();
+  }, []);
+
   return (
     <Wrapper>
       <Content>
@@ -112,7 +136,7 @@ const Plan = () => {
                   >
                     Danh sách học kì
                   </Box>
-                  <TermLayout />
+                  <TermLayout data={listTerm} />
                 </div>
               </div>
             </Left>

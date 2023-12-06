@@ -1,6 +1,7 @@
 import { Center, Divider } from "@chakra-ui/react";
 import React from "react";
 import styled from "styled-components";
+import TypeTag from "./TypeTag";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -9,7 +10,19 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-const TermItem = () => {
+const TypeLane = styled.div`
+  width: 100%;
+  flex: 1;
+  display: flex;
+  background-color: #ffffff;
+  align-items: center;
+`;
+
+interface componentProps {
+  data: Term;
+}
+
+const TermItem: React.FC<componentProps> = (props) => {
   return (
     <Wrapper>
       <div
@@ -28,7 +41,7 @@ const TermItem = () => {
             margin: 0,
           }}
         >
-          HỌC KÌ 1
+          HỌC KÌ {props.data.term}
         </p>
         <div style={{ backgroundColor: "rgba(217, 217, 217, 0.3)" }}>
           <p
@@ -38,11 +51,29 @@ const TermItem = () => {
               margin: 0,
             }}
           >
-            Số tín chỉ: 20
+            Số tín chỉ: {props.data.total}
           </p>
         </div>
       </div>
-      <Divider marginTop={0} borderWidth={2} bg={"rgba(217, 217, 217, 0.3)"} />
+      <Divider
+        marginTop={0}
+        marginBottom={0}
+        borderWidth={2}
+        bg={"rgba(217, 217, 217, 0.3)"}
+      />
+      <TypeLane>
+        <div
+          style={{
+            width: "100%",
+            display: "inline",
+            flexWrap: "wrap",
+          }}
+        >
+          {props.data.listType.map((type, i) => (
+            <TypeTag data={type}></TypeTag>
+          ))}
+        </div>
+      </TypeLane>
     </Wrapper>
   );
 };

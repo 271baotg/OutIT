@@ -23,9 +23,12 @@ const Wrapper = styled.div`
   }
 `;
 
-const TermLayout = () => {
+interface componentProps {
+  data: Term[];
+}
+
+const TermLayout: React.FC<componentProps> = (props) => {
   const [selectedId, setSelectedId] = useState(null);
-  const cards = [1, 2, 3, 4];
   const handleCardClick = (cardId: any) => {
     setSelectedId(selectedId === cardId ? null : cardId);
   };
@@ -35,21 +38,22 @@ const TermLayout = () => {
 
   return (
     <Wrapper>
-      {cards.map((card, i) => (
+      {props.data.map((term, i) => (
         <motion.div
           className={
-            selectedId === card ? `${styles.opened_card}` : `${styles.card}`
+            selectedId === term ? `${styles.opened_card}` : `${styles.card}`
           }
           key={i}
           layout
-          drag={selectedId === card ? "x" : false}
-          onClick={() => handleCardClick(card)}
+          drag={selectedId === term ? "x" : false}
+          onClick={() => handleCardClick(term)}
         >
-          {selectedId === card && <div> Hello </div>}
-          {selectedId !== card && <TermItem />}
+          {selectedId === term && <div> Hello </div>}
+          {selectedId !== term && <TermItem data={term} />}
         </motion.div>
       ))}
       <motion.div
+        layout
         style={{
           position: "absolute",
           height: "100%",

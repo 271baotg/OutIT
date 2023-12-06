@@ -17,5 +17,8 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment,Integer> 
     @Query(value = "select sum(total) from enrollment, student where username = :username and type=:type", nativeQuery = true)
     Optional<Integer> getTotalByType(String username, String type);
 
+    @Query(value = "select distinct type from enrollment where term = :term", nativeQuery = true)
+    List<String> getTypeByTerm(Integer term);
+
     void deleteAllByStudentAndTerm(Student student,Integer term);
 }

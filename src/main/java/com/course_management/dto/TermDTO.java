@@ -12,5 +12,6 @@ public class TermDTO {
 
     private int term;
     private int total;
+    private List<String> listType;
 
 }
