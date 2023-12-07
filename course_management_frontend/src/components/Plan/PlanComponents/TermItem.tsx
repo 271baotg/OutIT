@@ -55,12 +55,12 @@ const TermItem: React.FC<componentProps> = (props) => {
           </p>
         </div>
       </div>
-      <Divider
+      {/* <Divider
         marginTop={0}
         marginBottom={0}
         borderWidth={2}
         bg={"rgba(217, 217, 217, 0.3)"}
-      />
+      /> */}
       <TypeLane>
         <div
           style={{

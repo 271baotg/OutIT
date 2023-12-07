@@ -49,6 +49,8 @@ const Plan = () => {
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useContext(AuthContext);
   const [listTerm, setListTerm] = useState<Term[]>([]);
+  const [selectedTerm, setSelectedTerm] = useState<number>();
+  const [listCourse, setListCourse] = useState<Course[]>([]);
 
   //Lấy danh sách các kì và tổng số tín chỉ mỗi kì
   const loadTerm = async () => {
@@ -64,6 +66,30 @@ const Plan = () => {
     }
   };
 
+  const loadCourseByTerm = async () => {
+    try {
+      const response: Course[] = await axiosPrivate({
+        url: `http://localhost:8081/enroll/${auth?.username}`,
+        method: "get",
+        params: {
+          term: selectedTerm,
+        },
+      });
+      console.log(`Term ${selectedTerm}: ${JSON.stringify(response)}`);
+      setListCourse(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onTermItemClick = (term: number) => {
+    setSelectedTerm(term);
+  };
+
+  useEffect(() => {
+    loadCourseByTerm();
+  }, [selectedTerm]);
+
   useEffect(() => {
     loadTerm();
   }, []);
@@ -72,11 +98,11 @@ const Plan = () => {
     <Wrapper>
       <Content>
         <div className="row h-100" style={{ padding: "8px" }}>
-          <div className="col-md-9">
+          <div className="col-md-9 h-100">
             <Left className="container gx-0 rounded bg-white h-100">
               <div className="row gx-0 h-100">
                 <div
-                  className="col-md-4"
+                  className="col-md-4 h-100"
                   style={{ backgroundColor: "rgba(217, 217, 217, 0.3)" }}
                 >
                   <WrapItem
@@ -118,7 +144,7 @@ const Plan = () => {
                   </div>
                 </div>
                 <div
-                  className="col-md-8"
+                  className="col-md-8 h-100"
                   style={{
                     position: "relative",
                     display: "flex",
@@ -136,7 +162,11 @@ const Plan = () => {
                   >
                     Danh sách học kì
                   </Box>
-                  <TermLayout data={listTerm} />
+                  <TermLayout
+                    data={listTerm}
+                    listCourse={listCourse}
+                    onTermClick={onTermItemClick}
+                  />
                 </div>
               </div>
             </Left>

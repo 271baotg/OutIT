@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import styles from "../styles/TermLayout.module.css";
 import TermItem from "./TermItem";
+import TermDetail from "./TermDetail";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -25,6 +26,8 @@ const Wrapper = styled.div`
 
 interface componentProps {
   data: Term[];
+  listCourse: Course[];
+  onTermClick: Function;
 }
 
 const TermLayout: React.FC<componentProps> = (props) => {
@@ -46,9 +49,14 @@ const TermLayout: React.FC<componentProps> = (props) => {
           key={i}
           layout
           drag={selectedId === term ? "x" : false}
-          onClick={() => handleCardClick(term)}
+          onClick={() => {
+            handleCardClick(term);
+            props.onTermClick(term.term);
+          }}
         >
-          {selectedId === term && <div> Hello </div>}
+          {selectedId === term && (
+            <TermDetail data={term} listCourse={props.listCourse} />
+          )}
           {selectedId !== term && <TermItem data={term} />}
         </motion.div>
       ))}
