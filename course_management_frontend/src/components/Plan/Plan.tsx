@@ -6,6 +6,7 @@ import {
   AvatarBadge,
   AvatarGroup,
   Box,
+  Button,
   Heading,
   Highlight,
   List,
@@ -16,13 +17,30 @@ import {
 } from "@chakra-ui/react";
 import {
   FaChalkboardUser,
+  FaCircle,
   FaEnvelope,
   FaIdBadge,
   FaIdCard,
 } from "react-icons/fa6";
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+} from "@chakra-ui/react";
 import TermLayout from "./PlanComponents/TermLayout";
 import { useAxiosPrivate } from "../../hooks/useAxiosHook";
 import AuthContext from "../../auth/AuthProvider";
+import { FaDotCircle } from "react-icons/fa";
+import axios from "axios";
+import { Target } from "../../model/Target";
+import { getTitle, getTypeColor } from "../../hooks/getTypeColor";
+import { color } from "framer-motion";
 
 const Wrapper = styled.div`
   height: calc(100vh - 83.5px);
@@ -38,11 +56,9 @@ const Wrapper = styled.div`
 `;
 
 const Left = styled.div``;
-const TermTable = styled.div`
-  background-color: orange;
-`;
-const TargetPanel = styled.div`
-  background-color: aqua;
+const Right = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const Plan = () => {
@@ -51,6 +67,7 @@ const Plan = () => {
   const [listTerm, setListTerm] = useState<Term[]>([]);
   const [selectedTerm, setSelectedTerm] = useState<number>();
   const [listCourse, setListCourse] = useState<Course[]>([]);
+  const [listTarget, setListTarget] = useState<Target[]>([]);
 
   //Lấy danh sách các kì và tổng số tín chỉ mỗi kì
   const loadTerm = async () => {
@@ -61,6 +78,21 @@ const Plan = () => {
       });
       const result = response.sort((a, b) => a.term - b.term);
       setListTerm(result);
+    } catch (error) {}
+  };
+
+  //Lấy danh sách mục tiêu của sinh viên
+  const loadTarget = async () => {
+    try {
+      const response: Target[] = await axiosPrivate({
+        method: "get",
+        url: `http://localhost:8081/student/target`,
+        params: {
+          username: auth?.username,
+        },
+      });
+      console.log(response);
+      setListTarget(response);
     } catch (error) {
       console.log(error);
     }
@@ -92,12 +124,13 @@ const Plan = () => {
 
   useEffect(() => {
     loadTerm();
+    loadTarget();
   }, []);
 
   return (
     <Wrapper>
       <Content>
-        <div className="row h-100" style={{ padding: "8px" }}>
+        <div className="row h-100 gx-2" style={{ padding: "0" }}>
           <div className="col-md-9 h-100">
             <Left className="container gx-0 rounded bg-white h-100">
               <div className="row gx-0 h-100">
@@ -125,20 +158,34 @@ const Plan = () => {
                     <h3>Trần Gia Bảo</h3>
                   </div>
                   <div style={{ padding: "0.5rem" }}>
-                    <List spacing={3} style={{ padding: 0, lineHeight: "1" }}>
+                    <List
+                      spacing={3}
+                      style={{
+                        padding: 0,
+                        lineHeight: "1",
+                        fontSize: "0.9rem",
+                      }}
+                    >
                       <ListItem>
                         <ListIcon as={FaIdCard} color="black.500" />
-                        <span style={{ fontWeight: "bold" }}>MSSV</span>:
-                        21521862
+                        <span style={{ fontWeight: "bold", fontSize: "1rem" }}>
+                          MSSV
+                        </span>
+                        : 21521862
                       </ListItem>
                       <ListItem>
                         <ListIcon as={FaEnvelope} color="black.500" />
-                        <span style={{ fontWeight: "bold" }}>Email</span>:
-                        21521862@gm.uit.edu.vn
+                        <span style={{ fontWeight: "bold", fontSize: "1rem" }}>
+                          Email
+                        </span>
+                        : 21521862@gm.uit.edu.vn
                       </ListItem>
                       <ListItem>
                         <ListIcon as={FaChalkboardUser} color="black.500" />
-                        <span style={{ fontWeight: "bold" }}>Khoa</span>: CNPM
+                        <span style={{ fontWeight: "bold", fontSize: "1rem" }}>
+                          Khoa
+                        </span>
+                        : CNPM
                       </ListItem>
                     </List>
                   </div>
@@ -155,7 +202,7 @@ const Plan = () => {
                     marginTop="2rem"
                     height="3rem"
                     fontSize="1.5rem"
-                    backgroundColor="gray.300"
+                    backgroundColor="var(--heavy-color)"
                     paddingLeft="1rem"
                     display="flex"
                     alignItems="center"
@@ -171,7 +218,87 @@ const Plan = () => {
               </div>
             </Left>
           </div>
-          <div className="col-md-3"></div>
+          <div className="col-md-3">
+            <Right className="container gx-0 rounded bg-white h-100 ">
+              <div style={{ height: "85%" }}>
+                <p
+                  style={{
+                    color: "black",
+                    fontWeight: "700",
+                    fontSize: "1.2rem",
+                    padding: "0.5rem",
+                  }}
+                >
+                  Mục tiêu của bạn
+                </p>
+                <TableContainer>
+                  <Table variant="simple" size="sm" maxWidth="100%">
+                    <Thead bgColor={"var(--background-color)"}>
+                      <Tr>
+                        <Th
+                          paddingTop={"1rem"}
+                          paddingBottom={"1rem"}
+                          fontSize={"0.9rem"}
+                          color={"black"}
+                        >
+                          Tên môn học
+                        </Th>
+                        <Th
+                          paddingTop={"1rem"}
+                          paddingBottom={"1rem"}
+                          fontSize={"0.9rem"}
+                          color={"black"}
+                        >
+                          Mục tiêu
+                        </Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {listTarget.map((target) => (
+                        <Tr>
+                          <Td
+                            borderLeft={"none"}
+                            borderRight={"none"}
+                            textColor={`${getTypeColor(target.type)}`}
+                            whiteSpace="pre-line"
+                            fontWeight={"700"}
+                          >
+                            {getTitle(target.type)}
+                          </Td>
+                          <Td
+                            borderLeft={"none"}
+                            borderRight={"none"}
+                            textColor={"black"}
+                            textAlign={"center"}
+                          >
+                            {target.goal}
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+              </div>
+              <div
+                style={{
+                  flex: 1,
+                  backgroundColor: "rgba(217, 217, 217, 0.3)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "right",
+                }}
+              >
+                <Button
+                  bgColor={"black"}
+                  textColor={"white"}
+                  _hover={{ bgColor: "#ddd", color: "black" }}
+                  marginRight={"1rem"}
+                >
+                  EDIT
+                </Button>
+              </div>
+            </Right>
+          </div>
         </div>
       </Content>
     </Wrapper>

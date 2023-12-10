@@ -10,6 +10,7 @@ const Wrapper = styled.div`
   height: 100%;
   background-color: #fff;
   max-height: 90%;
+  margin-bottom: 1rem;
   overflow: auto;
   scrollbar-width: thin; // For Firefox
   scrollbar-color: #161616 lightgray; // For Firefox
@@ -48,7 +49,6 @@ const TermLayout: React.FC<componentProps> = (props) => {
           }
           key={i}
           layout
-          drag={selectedId === term ? "x" : false}
           onClick={() => {
             handleCardClick(term);
             props.onTermClick(term.term);
@@ -71,6 +71,7 @@ const TermLayout: React.FC<componentProps> = (props) => {
           background: "black",
           opacity: 0,
           pointerEvents: "none",
+          borderRadius: "0 0.375rem 0.375rem 0",
         }}
         animate={{ opacity: selectedId ? 0.3 : 0 }}
         onClick={handleOverlayClick} // Add onClick handler for overlay

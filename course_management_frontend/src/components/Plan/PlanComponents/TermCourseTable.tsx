@@ -27,13 +27,16 @@ const Wrapper = styled(motion.div)`
 
 const HeaderBar = styled.div`
   width: 100%;
-  height: 2.5rem; /* Adjust the height as needed */
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
+
+  background-color: #ddd;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 0.8rem;
   font-weight: 700;
+  text-align: left;
+
+  div {
+    text-align: start;
+  }
 `;
 
 const ListContainer = styled.div`
@@ -60,9 +63,12 @@ interface componentProps {
 const TermCourseTable: React.FC<componentProps> = (props) => {
   return (
     <Wrapper>
-      {/* <HeaderBar style={{ backgroundColor: getTypeColor(props.type) }}>
-        Danh sách môn {getTitle(props.type)} bạn đã đăng kí
-      </HeaderBar> */}
+      <HeaderBar className="row m-0 ">
+        <div className="col-2 d-none d-md-block">Mã môn</div>
+        <div className="col-4 d-none d-md-block">Tên</div>
+        <div className="col-4 d-none d-md-block">Loại tín chỉ</div>
+        <div className="col-2 d-none d-md-block">Số tín chỉ</div>
+      </HeaderBar>
       <ListContainer>
         {props.data.map((value, i) => {
           return (
