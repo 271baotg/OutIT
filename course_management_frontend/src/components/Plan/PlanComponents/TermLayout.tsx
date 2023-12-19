@@ -60,10 +60,9 @@ const TermLayout: React.FC<componentProps> = (props) => {
           {selectedId !== term && <TermItem data={term} />}
         </motion.div>
       ))}
-      <motion.div
+      {/* <motion.div
         layout
         style={{
-          position: "absolute",
           height: "100%",
           width: "100%",
           left: 0,
@@ -75,7 +74,7 @@ const TermLayout: React.FC<componentProps> = (props) => {
         }}
         animate={{ opacity: selectedId ? 0.3 : 0 }}
         onClick={handleOverlayClick} // Add onClick handler for overlay
-      />
+      /> */}
     </Wrapper>
   );
 };

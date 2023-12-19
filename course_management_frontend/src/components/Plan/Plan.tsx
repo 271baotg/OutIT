@@ -40,7 +40,8 @@ import { FaDotCircle } from "react-icons/fa";
 import axios from "axios";
 import { Target } from "../../model/Target";
 import { getTitle, getTypeColor } from "../../hooks/getTypeColor";
-import { color } from "framer-motion";
+import { AnimatePresence, color } from "framer-motion";
+import EditTargetModal from "./PlanComponents/EditTargetModal";
 
 const Wrapper = styled.div`
   height: calc(100vh - 83.5px);
@@ -68,7 +69,7 @@ const Plan = () => {
   const [selectedTerm, setSelectedTerm] = useState<number>();
   const [listCourse, setListCourse] = useState<Course[]>([]);
   const [listTarget, setListTarget] = useState<Target[]>([]);
-
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   //Lấy danh sách các kì và tổng số tín chỉ mỗi kì
   const loadTerm = async () => {
     try {
@@ -129,6 +130,15 @@ const Plan = () => {
 
   return (
     <Wrapper>
+      <AnimatePresence initial={false} onExitComplete={() => null}>
+        {modalOpen && (
+          <EditTargetModal
+            isOpen={modalOpen}
+            handleClose={() => setModalOpen(false)}
+            listTarget={listTarget}
+          />
+        )}
+      </AnimatePresence>
       <Content>
         <div className="row h-100 gx-2" style={{ padding: "0" }}>
           <div className="col-md-9 h-100">
@@ -138,7 +148,7 @@ const Plan = () => {
                   className="col-md-4 h-100"
                   style={{ backgroundColor: "rgba(217, 217, 217, 0.3)" }}
                 >
-                  <WrapItem
+                  {/* <WrapItem
                     style={{
                       justifyContent: "center",
                       alignItems: "center",
@@ -153,7 +163,7 @@ const Plan = () => {
                       size="2xl"
                       src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.nicepng.com%2Fourpic%2Fu2q8i1a9e6i1o0o0_view-user-icon-png-user-circle-icon-png%2F&psig=AOvVaw2mBmc9pOYG35DlsSPSBc2_&ust=1701442623670000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPifquv964IDFQAAAAAdAAAAABAJ"
                     />
-                  </WrapItem>
+                  </WrapItem> */}
                   <div style={{ textAlign: "center", marginTop: "1rem" }}>
                     <h3>Trần Gia Bảo</h3>
                   </div>
@@ -193,7 +203,7 @@ const Plan = () => {
                 <div
                   className="col-md-8 h-100"
                   style={{
-                    position: "relative",
+                    // position: "relative",
                     display: "flex",
                     flexDirection: "column",
                   }}
@@ -293,6 +303,8 @@ const Plan = () => {
                   textColor={"white"}
                   _hover={{ bgColor: "#ddd", color: "black" }}
                   marginRight={"1rem"}
+                  onClick={() => setModalOpen(true)}
+                  position={"unset"}
                 >
                   EDIT
                 </Button>
