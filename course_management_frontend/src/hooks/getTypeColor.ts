@@ -19,6 +19,8 @@ export const getTitle = (type: string) => {
     CĐTN: "CHUYÊN ĐỀ TỐT NGHIỆP",
     TTDN: "THỰC TẬP TỐT NGHIỆP",
     ĐA: "ĐỒ ÁN",
+    KLTN: "KHÓA LUẬN TỐT NGHIỆP",
+    NN: "NGOẠI NGỮ",
   };
 
   return titleMap[type] || "CÁC MÔN KHÁC";

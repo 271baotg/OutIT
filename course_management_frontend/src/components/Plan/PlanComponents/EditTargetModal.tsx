@@ -1,10 +1,11 @@
-import React, { MouseEventHandler } from "react";
+import React, { MouseEventHandler, useEffect, useState } from "react";
 import Backdrop from "../../Backdrop";
 import { Target } from "../../../model/Target";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { CloseButton } from "@chakra-ui/react";
 import { getTitle } from "../../../hooks/getTypeColor";
+import styles from "../styles/EditTargetModal.module.css";
 import {
   Table,
   Thead,
@@ -45,6 +46,20 @@ const bubble = {
   },
 };
 
+const TableWrapper = styled.div`
+  &::-webkit-scrollbar {
+    width: 1px; // For Chrome and Safari
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #0a0a0a; // For Chrome and Safari
+  }
+  &::-webkit-scrollbar-track {
+    background-color: lightgray; // For Chrome and Safari
+
+    border-radius: 0.7rem;
+  }
+`;
+
 const Dialog = styled(motion.dialog)`
   width: 60%;
   height: 70%;
@@ -76,6 +91,34 @@ const DialogHeader = styled.div`
 `;
 
 const EditTargetModal: React.FC<componentProps> = (props) => {
+  const [currentTarget, setCurrentTarget] = useState<Target[]>(
+    props.listTarget
+  );
+  var allType = [
+    "CN",
+    "CSN",
+    "ĐC",
+    "CĐTN",
+    "ĐA",
+    "CNTC",
+    "TTTN",
+    "KLTN",
+    "CSNN",
+    "NN",
+  ];
+  useEffect(() => {
+    refreshTarget();
+  }, [props.listTarget]);
+
+  const refreshTarget = () => {
+    const remainingTarget = allType
+      .filter(
+        (value) => !props.listTarget.map((obj) => obj.type).includes(value)
+      )
+      .map((type) => new Target(type, 0, 0));
+
+    setCurrentTarget((prevTarget) => [...prevTarget, ...remainingTarget]);
+  };
   return (
     <Backdrop onClick={props.handleClose}>
       <Dialog
@@ -184,6 +227,7 @@ const EditTargetModal: React.FC<componentProps> = (props) => {
                     left: 0,
                     fontSize: "0.8rem",
                     textAlign: "center",
+                    fontWeight: "700",
                   }}
                 >
                   Bảng mục tiêu hiện tại của bạn
@@ -208,7 +252,75 @@ const EditTargetModal: React.FC<componentProps> = (props) => {
                   boxShadow: "0 6px 6px hsl(0deg 0% 0% / 0.3)",
                   borderRadius: "0.7rem",
                 }}
-              ></div>
+              >
+                <TableWrapper
+                  style={{
+                    width: "100%",
+                    maxHeight: "80%",
+                    overflow: "auto",
+                  }}
+                >
+                  <div
+                    className="row p-0 gx-0"
+                    style={{
+                      height: "10%",
+                      borderBottom: "1px rgba(217, 217, 217, 0.3) solid",
+                    }}
+                  >
+                    <div
+                      className="col-md-8 text-center"
+                      style={{ fontWeight: "700" }}
+                    >
+                      Loại tín chỉ
+                    </div>
+                    <div
+                      className="col-md-4 text-center"
+                      style={{ fontWeight: "700" }}
+                    >
+                      Số lượng
+                    </div>
+                  </div>
+                  {currentTarget.map((target) => (
+                    <div className="row gx-0" style={{}}>
+                      <div
+                        className="col-md-8 p-1"
+                        style={{ fontSize: "0.9rem" }}
+                      >
+                        {getTitle(target.type)}
+                      </div>
+                      <div
+                        className="col-md-4 text-md-center p-1"
+                        style={{ fontSize: "0.9rem" }}
+                      >
+                        <div className={styles.input_wrapper}>
+                          <input
+                            type="number"
+                            autoComplete="off"
+                            placeholder="0"
+                            name="text"
+                            defaultValue={target.goal}
+                            className={styles.input}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </TableWrapper>
+                <div
+                  style={{
+                    width: "100%",
+                    height: "10%",
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    fontSize: "0.8rem",
+                    textAlign: "center",
+                    fontWeight: "700",
+                  }}
+                >
+                  Bảng mục tiêu sau điều chỉnh
+                </div>
+              </div>
             </div>
           </div>
         </div>
