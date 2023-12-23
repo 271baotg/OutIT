@@ -70,6 +70,7 @@ const Plan = () => {
   const [listCourse, setListCourse] = useState<Course[]>([]);
   const [listTarget, setListTarget] = useState<Target[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+
   //Lấy danh sách các kì và tổng số tín chỉ mỗi kì
   const loadTerm = async () => {
     try {
@@ -133,6 +134,7 @@ const Plan = () => {
       <AnimatePresence initial={false} onExitComplete={() => null}>
         {modalOpen && (
           <EditTargetModal
+            axios={axiosPrivate}
             isOpen={modalOpen}
             handleClose={() => setModalOpen(false)}
             listTarget={listTarget}
