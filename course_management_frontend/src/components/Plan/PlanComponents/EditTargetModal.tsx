@@ -95,6 +95,7 @@ const DialogHeader = styled.div`
 interface componentProps {
   isOpen: boolean;
   handleClose: MouseEventHandler;
+  handleSecondModal: Function;
   listTarget: Target[];
   axios: AxiosInstance;
 }
@@ -144,24 +145,6 @@ const EditTargetModal: React.FC<componentProps> = (props) => {
   useEffect(() => {
     console.log(currentTarget);
   }, [currentTarget]);
-
-  //Update mục tiêu tín chỉ
-  const updateTarget = async () => {
-    try {
-      const response: Target[] = await props.axios({
-        method: "put",
-        url: "http://localhost:8081/student/target",
-        params: {
-          username: auth?.username,
-        },
-        data: currentTarget,
-      });
-
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <Backdrop onClick={props.handleClose}>
       <Dialog
@@ -378,7 +361,9 @@ const EditTargetModal: React.FC<componentProps> = (props) => {
             }}
           >
             <Button
-              onClick={updateTarget}
+              onClick={() => {
+                props.handleSecondModal(currentTarget);
+              }}
               as={motion.div}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
