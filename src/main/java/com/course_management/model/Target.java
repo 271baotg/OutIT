@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Table(name = "target")
 @NoArgsConstructor
+@AllArgsConstructor
 @IdClass(TargetPK.class)
 public class Target {
 

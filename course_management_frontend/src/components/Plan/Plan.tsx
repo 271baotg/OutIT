@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Content from "../Content";
 import {
@@ -42,6 +42,8 @@ import { Target } from "../../model/Target";
 import { getTitle, getTypeColor } from "../../hooks/getTypeColor";
 import { AnimatePresence, color } from "framer-motion";
 import EditTargetModal from "./PlanComponents/EditTargetModal";
+import ConfirmModal from "./PlanComponents/ConfirmModal";
+import { BlobOptions } from "buffer";
 
 const Wrapper = styled.div`
   height: calc(100vh - 83.5px);
@@ -70,6 +72,11 @@ const Plan = () => {
   const [listCourse, setListCourse] = useState<Course[]>([]);
   const [listTarget, setListTarget] = useState<Target[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [updateTarget, setUpdateTarget] = useState<Target[]>([]);
+  const [secondModalOpen, setSecondModalOpen] = useState<boolean>(false);
+
+  const updateTargetRef = useRef<Target[]>([]);
+
   //Lấy danh sách các kì và tổng số tín chỉ mỗi kì
   const loadTerm = async () => {
     try {
@@ -119,6 +126,10 @@ const Plan = () => {
     setSelectedTerm(term);
   };
 
+  const refreshAllState = () => {
+    loadTarget();
+  };
+
   useEffect(() => {
     loadCourseByTerm();
   }, [selectedTerm]);
@@ -128,14 +139,31 @@ const Plan = () => {
     loadTarget();
   }, []);
 
+  const handleSecondModal = (newListTarget: Target[]) => {
+    setModalOpen(false);
+    setSecondModalOpen(true);
+    updateTargetRef.current = newListTarget;
+  };
+
   return (
     <Wrapper>
       <AnimatePresence initial={false} onExitComplete={() => null}>
         {modalOpen && (
           <EditTargetModal
+            axios={axiosPrivate}
             isOpen={modalOpen}
             handleClose={() => setModalOpen(false)}
+            handleSecondModal={handleSecondModal}
             listTarget={listTarget}
+          />
+        )}
+        {secondModalOpen && (
+          <ConfirmModal
+            isOpen={secondModalOpen}
+            handleClose={() => setSecondModalOpen(false)}
+            onReload={refreshAllState}
+            updateTarget={updateTargetRef.current}
+            axiosPrivate={axiosPrivate}
           />
         )}
       </AnimatePresence>

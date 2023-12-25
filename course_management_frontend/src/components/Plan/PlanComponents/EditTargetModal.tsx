@@ -1,9 +1,15 @@
-import React, { MouseEventHandler, useEffect, useState } from "react";
+import React, {
+  MouseEventHandler,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Backdrop from "../../Backdrop";
 import { Target } from "../../../model/Target";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { CloseButton } from "@chakra-ui/react";
+import { Button, CloseButton } from "@chakra-ui/react";
 import { getTitle } from "../../../hooks/getTypeColor";
 import styles from "../styles/EditTargetModal.module.css";
 import {
@@ -17,12 +23,9 @@ import {
   TableCaption,
   TableContainer,
 } from "@chakra-ui/react";
-
-interface componentProps {
-  isOpen: boolean;
-  handleClose: MouseEventHandler;
-  listTarget: Target[];
-}
+import { FaSave } from "react-icons/fa";
+import { AxiosInstance } from "axios";
+import AuthContext from "../../../auth/AuthProvider";
 
 const bubble = {
   hidden: {
@@ -62,7 +65,7 @@ const TableWrapper = styled.div`
 
 const Dialog = styled(motion.dialog)`
   width: 60%;
-  height: 70%;
+  height: 75%;
   background-color: white;
   padding: 0;
   margin: auto;
@@ -89,8 +92,15 @@ const DialogHeader = styled.div`
   display: flex;
   justify-content: end;
 `;
-
+interface componentProps {
+  isOpen: boolean;
+  handleClose: MouseEventHandler;
+  handleSecondModal: Function;
+  listTarget: Target[];
+  axios: AxiosInstance;
+}
 const EditTargetModal: React.FC<componentProps> = (props) => {
+  const { auth } = useContext(AuthContext);
   const [currentTarget, setCurrentTarget] = useState<Target[]>(
     props.listTarget
   );
@@ -119,6 +129,22 @@ const EditTargetModal: React.FC<componentProps> = (props) => {
 
     setCurrentTarget((prevTarget) => [...prevTarget, ...remainingTarget]);
   };
+
+  const inputValueRef = useRef<number>();
+  const handleInputChange = (e: any, type: string) => {
+    inputValueRef.current = Number(e.target.value);
+    const newCurrentTarget = currentTarget.map((value) => {
+      return value.type === type
+        ? { ...value, goal: inputValueRef.current! }
+        : value;
+    });
+
+    setCurrentTarget(newCurrentTarget);
+  };
+
+  useEffect(() => {
+    console.log(currentTarget);
+  }, [currentTarget]);
   return (
     <Backdrop onClick={props.handleClose}>
       <Dialog
@@ -149,7 +175,7 @@ const EditTargetModal: React.FC<componentProps> = (props) => {
           <div>
             <p>Thay đổi các mục tiêu về tín chỉ của bạn:</p>
           </div>
-          <div className="row h-100">
+          <div className="row" style={{ height: "80%" }}>
             <div
               className="col-md-6"
               style={{
@@ -164,7 +190,7 @@ const EditTargetModal: React.FC<componentProps> = (props) => {
                   padding: "0.5rem",
                   backgroundColor: "white",
                   position: "relative",
-                  height: "80%",
+                  height: "70%",
                   boxShadow: "0 6px 6px hsl(0deg 0% 0% / 0.3)",
                   borderRadius: "0.7rem",
                 }}
@@ -248,7 +274,7 @@ const EditTargetModal: React.FC<componentProps> = (props) => {
                   padding: "0.5rem",
                   backgroundColor: "white",
                   position: "relative",
-                  height: "80%",
+                  height: "70%",
                   boxShadow: "0 6px 6px hsl(0deg 0% 0% / 0.3)",
                   borderRadius: "0.7rem",
                 }}
@@ -299,6 +325,7 @@ const EditTargetModal: React.FC<componentProps> = (props) => {
                             placeholder="0"
                             name="text"
                             defaultValue={target.goal}
+                            onChange={(e) => handleInputChange(e, target.type)}
                             className={styles.input}
                           />
                         </div>
@@ -322,6 +349,33 @@ const EditTargetModal: React.FC<componentProps> = (props) => {
                 </div>
               </div>
             </div>
+          </div>
+          <div
+            className="row"
+            style={{
+              flexGrow: 1,
+              backgroundColor: "rgba(217, 217, 217, 0.3)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "end",
+            }}
+          >
+            <Button
+              onClick={() => {
+                props.handleSecondModal(currentTarget);
+              }}
+              as={motion.div}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              leftIcon={<FaSave />}
+              width={"fit-content"}
+              marginRight={"0.5rem"}
+              cursor={"pointer"}
+              colorScheme="green"
+              variant="solid"
+            >
+              Save
+            </Button>
           </div>
         </div>
       </Dialog>
