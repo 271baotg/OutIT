@@ -1,6 +1,7 @@
 package com.course_management.auth;
 
 
+import com.course_management.dto.TargetDTO;
 import com.course_management.model.Target;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,5 +19,5 @@ public class RegisterRequest {
     private String email;
     private String password;
     private String className;
-    private List<Target> targetList;
+    private List<TargetDTO> targetList;
 }

@@ -111,8 +111,8 @@ public class StudentServiceImpl implements StudentService{
             student = studentRepository.findStudentByUsername(username).get();
             listTerm = studentRepository.findAllTerm(student.getId()).get();
              for(int term : listTerm){
-                 listType = enrollmentRepository.getTypeByTerm(term);
-                 TermDTO temp = new TermDTO(term,enrollmentRepository.getTotal(username,term),listType);
+                 listType = enrollmentRepository.getTypeByTerm(student.getId(),term);
+                 TermDTO temp = new TermDTO(term,enrollmentRepository.getTotal(student.getId(),term),listType);
                  result.add(temp);
              }
              return result;
@@ -132,7 +132,7 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public Optional<List<TargetDTO>> getAllTarget(String username) {
         Student student = studentRepository.findStudentByUsername(username).get();
-        Optional<List<Target>> list = targetRepository.findAllByStudent(student);
+        Optional<List<Target>> list = targetRepository.findAllByStudentID(student.getId());
         if(list.isPresent()) {
             List<Target> targetList = list.get();
             List<TargetDTO> result = targetList.stream()

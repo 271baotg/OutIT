@@ -16,8 +16,8 @@ public class AuthenticationController {
 //        return authService.register(request);
 //    }
     @PostMapping("/register")
-    public RegisterRequest register(@RequestBody RegisterRequest request){
-        return request;
+    public AuthResponse register(@RequestBody RegisterRequest request){
+        return authService.register(request);
     }
     @PostMapping("/login")
     public AuthResponse login(@RequestBody LoginRequest request){

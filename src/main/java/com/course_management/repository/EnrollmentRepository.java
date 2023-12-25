@@ -11,14 +11,14 @@ import java.util.Optional;
 
 public interface EnrollmentRepository extends JpaRepository<Enrollment,Integer> {
 
-    @Query(value = "select sum(total) from enrollment, student where username = :username and term=:term", nativeQuery = true)
-    int getTotal(String username, Integer term);
+    @Query(value = "select sum(total) from enrollment where student_id = :id and term=:term", nativeQuery = true)
+    int getTotal(Integer id, Integer term);
 
-    @Query(value = "select sum(total) from enrollment, student where username = :username and type=:type", nativeQuery = true)
-    Optional<Integer> getTotalByType(String username, String type);
+    @Query(value = "select sum(total) from enrollment where student_id = :id and type=:type", nativeQuery = true)
+    Optional<Integer> getTotalByType(Integer id, String type);
 
-    @Query(value = "select distinct type from enrollment where term = :term", nativeQuery = true)
-    List<String> getTypeByTerm(Integer term);
+    @Query(value = "select distinct type from enrollment where term = :term and student_id = :id", nativeQuery = true)
+    List<String> getTypeByTerm(Integer id, Integer term);
 
     void deleteAllByStudentAndTerm(Student student,Integer term);
 }

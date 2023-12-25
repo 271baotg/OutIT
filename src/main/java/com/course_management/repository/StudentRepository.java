@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface StudentRepository extends JpaRepository<Student,Integer> {
     Optional<Student> findStudentByUsername(String username);
 
-    @Query(value = "select distinct term from enrollment, student where student_id = :id" , nativeQuery = true)
+    @Query(value = "select distinct term from enrollment where student_id = :id" , nativeQuery = true)
     Optional<List<Integer>> findAllTerm(int id);
 
 }
