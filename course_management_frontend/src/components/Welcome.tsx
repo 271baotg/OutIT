@@ -58,11 +58,17 @@ const TextHighlight = styled.span`
   color: var(--button-color);
 `;
 const Welcome = () => {
+  const navigate = useNavigate();
   const { auth } = useContext(AuthContext);
 
   if (auth) {
     console.log(auth);
     return <Navigate to="/dashboard" />;
+  }
+
+  const handleOnClickCreateAccount = () =>{
+
+    return navigate('register');
   }
 
   return (
@@ -75,7 +81,7 @@ const Welcome = () => {
           </h1>
 
           <div className="d-flex mt-5">
-            <LearnMoreButton>Create Account </LearnMoreButton>
+            <LearnMoreButton onClick={handleOnClickCreateAccount} className="btn">Create Account </LearnMoreButton>
           </div>
         </div>
 
