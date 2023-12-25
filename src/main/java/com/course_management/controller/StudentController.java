@@ -1,6 +1,7 @@
 package com.course_management.controller;
 
 
+import com.course_management.dto.StudentDTO;
 import com.course_management.dto.TargetDTO;
 import com.course_management.dto.TermDTO;
 import com.course_management.model.Enrollment;
@@ -35,6 +36,12 @@ public class StudentController {
     public Student findStudentById(@PathVariable int id){
         return studentService.findById(id);
     }
+
+    @GetMapping("students/detail")
+    public StudentDTO findStudentByUsername(@RequestParam(value = "username") String username){
+        return studentService.findByUsername(username);
+    }
+
 
     @PutMapping("students")
     public Student updateStudent(@RequestBody Student student){
@@ -72,7 +79,7 @@ public class StudentController {
         return listTerm;
     }
 
-    @GetMapping("student/target")
+    @GetMapping("students/target")
     public List<TargetDTO> getAllTarget(@RequestParam(value = "username") String username){
         if(studentService.getAllTarget(username).isPresent())
             return studentService.getAllTarget(username).get();

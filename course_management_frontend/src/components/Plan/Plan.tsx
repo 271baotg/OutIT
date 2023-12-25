@@ -44,6 +44,7 @@ import { AnimatePresence, color } from "framer-motion";
 import EditTargetModal from "./PlanComponents/EditTargetModal";
 import ConfirmModal from "./PlanComponents/ConfirmModal";
 import { BlobOptions } from "buffer";
+import { UserModal } from "../../model/UserModal";
 
 const Wrapper = styled.div`
   height: calc(100vh - 83.5px);
@@ -74,6 +75,7 @@ const Plan = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [updateTarget, setUpdateTarget] = useState<Target[]>([]);
   const [secondModalOpen, setSecondModalOpen] = useState<boolean>(false);
+  const [currentStudent, setCurrentStudent] = useState<UserModal>();
 
   const updateTargetRef = useRef<Target[]>([]);
 
@@ -94,13 +96,29 @@ const Plan = () => {
     try {
       const response: Target[] = await axiosPrivate({
         method: "get",
-        url: `http://localhost:8081/student/target`,
+        url: `http://localhost:8081/students/target`,
         params: {
           username: auth?.username,
         },
       });
       console.log(response);
       setListTarget(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const loadUserDetail = async () => {
+    try {
+      const response: UserModal = await axiosPrivate({
+        method: "get",
+        url: `http://localhost:8081/students/detail`,
+        params: {
+          username: auth?.username,
+        },
+      });
+      console.log(response);
+      setCurrentStudent(response);
     } catch (error) {
       console.log(error);
     }
@@ -126,6 +144,8 @@ const Plan = () => {
     setSelectedTerm(term);
   };
 
+  const loadProfile = () => {};
+
   const refreshAllState = () => {
     loadTarget();
   };
@@ -137,6 +157,7 @@ const Plan = () => {
   useEffect(() => {
     loadTerm();
     loadTarget();
+    loadUserDetail();
   }, []);
 
   const handleSecondModal = (newListTarget: Target[]) => {
@@ -193,7 +214,7 @@ const Plan = () => {
                     />
                   </WrapItem> */}
                   <div style={{ textAlign: "center", marginTop: "1rem" }}>
-                    <h3>Trần Gia Bảo</h3>
+                    <h3>{currentStudent?.fullName}</h3>
                   </div>
                   <div style={{ padding: "0.5rem" }}>
                     <List
@@ -209,21 +230,21 @@ const Plan = () => {
                         <span style={{ fontWeight: "bold", fontSize: "1rem" }}>
                           MSSV
                         </span>
-                        : 21521862
+                        : {currentStudent?.username}
                       </ListItem>
                       <ListItem>
                         <ListIcon as={FaEnvelope} color="black.500" />
                         <span style={{ fontWeight: "bold", fontSize: "1rem" }}>
                           Email
                         </span>
-                        : 21521862@gm.uit.edu.vn
+                        : {currentStudent?.email}
                       </ListItem>
                       <ListItem>
                         <ListIcon as={FaChalkboardUser} color="black.500" />
                         <span style={{ fontWeight: "bold", fontSize: "1rem" }}>
                           Khoa
                         </span>
-                        : CNPM
+                        : {currentStudent?.className}
                       </ListItem>
                     </List>
                   </div>

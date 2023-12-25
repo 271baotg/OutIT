@@ -1,7 +1,9 @@
 package com.course_management.services;
 
+import com.course_management.dto.StudentDTO;
 import com.course_management.dto.TargetDTO;
 import com.course_management.dto.TermDTO;
+import com.course_management.mapper.StudentDTOMapper;
 import com.course_management.mapper.TargetDTOMapper;
 import com.course_management.model.Enrollment;
 import com.course_management.model.Student;
@@ -19,18 +21,20 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
-
 @Service
 public class StudentServiceImpl implements StudentService{
 
     private final EnrollmentRepository enrollmentRepository;
 
+    private final StudentDTOMapper studentDTOMapper;
+
     private final StudentRepository studentRepository;
     private final TargetRepository targetRepository;
     private final TargetDTOMapper targetDTOMapper;
 
-    public StudentServiceImpl(EnrollmentRepository enrollmentRepository, StudentRepository studentRepository, TargetRepository targetRepository, TargetDTOMapper targetDTOMapper) {
+    public StudentServiceImpl(EnrollmentRepository enrollmentRepository, StudentDTOMapper studentDTOMapper, StudentRepository studentRepository, TargetRepository targetRepository, TargetDTOMapper targetDTOMapper) {
         this.enrollmentRepository = enrollmentRepository;
+        this.studentDTOMapper = studentDTOMapper;
         this.studentRepository = studentRepository;
         this.targetRepository = targetRepository;
         this.targetDTOMapper = targetDTOMapper;
@@ -47,6 +51,11 @@ public class StudentServiceImpl implements StudentService{
         if(studentRepository.findById(id).isPresent())
             student = studentRepository.findById(id).get();
         return student;
+    }
+
+    @Override
+    public StudentDTO findByUsername(String username) {
+        return studentDTOMapper.apply(studentRepository.findStudentByUsername(username).get());
     }
 
 
@@ -96,9 +105,11 @@ public class StudentServiceImpl implements StudentService{
         List<TermDTO> result = new ArrayList<>();
         List<Integer> listTerm;
         List<String> listType;
-        if(studentRepository.findAllTerm(username).isPresent())
+        Student student;
+        if(studentRepository.findStudentByUsername(username).isPresent())
         {
-             listTerm = studentRepository.findAllTerm(username).get();
+            student = studentRepository.findStudentByUsername(username).get();
+            listTerm = studentRepository.findAllTerm(student.getId()).get();
              for(int term : listTerm){
                  listType = enrollmentRepository.getTypeByTerm(term);
                  TermDTO temp = new TermDTO(term,enrollmentRepository.getTotal(username,term),listType);

@@ -1,5 +1,6 @@
 package com.course_management.services;
 
+import com.course_management.dto.StudentDTO;
 import com.course_management.dto.TargetDTO;
 import com.course_management.dto.TermDTO;
 import com.course_management.model.Enrollment;
@@ -12,6 +13,8 @@ import java.util.Optional;
 public interface StudentService {
     List<Student> findAll();
     Student findById(int id);
+
+    StudentDTO findByUsername(String username);
 
     void deleteById(int id);
     Student update(Student student);
