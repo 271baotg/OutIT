@@ -25,9 +25,9 @@ public class TargetDTOMapper implements Function<Target, TargetDTO> {
     public TargetDTO apply(Target target) {
         Student student = target.getStudent();
         int total;
-        if(enrollmentRepository.getTotalByType(student.getUsername(), target.getType()).isPresent())
+        if(enrollmentRepository.getTotalByType(student.getId(), target.getType()).isPresent())
         {
-            total = enrollmentRepository.getTotalByType(student.getUsername(), target.getType()).get();
+            total = enrollmentRepository.getTotalByType(student.getId(), target.getType()).get();
         }
         else total = 0;
         return new TargetDTO(target.getType(), target.getGoal(),total);

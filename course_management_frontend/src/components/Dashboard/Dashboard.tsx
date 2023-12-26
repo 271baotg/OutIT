@@ -83,7 +83,7 @@ const Dashboard = () => {
   const loadTarget = async () => {
     try {
       const response: Target[] = await axiosPrivate({
-        url: "http://localhost:8081/student/target",
+        url: "http://localhost:8081/students/target",
         method: "get",
         params: {
           username: auth?.username,
