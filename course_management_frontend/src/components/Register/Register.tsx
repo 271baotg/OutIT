@@ -187,7 +187,7 @@ export const Register: React.FC<{}> = () => {
                 <div className="card container-fluid" style={{ backgroundColor: 'var(--main-color)', height: '100%'}}>
                     <div className="row" style={{height: '100%', overflow:'auto'}}>
                         <div className={`${style.leftSide} col-3 bg-info`}>
-                            <h1 className="mb-0">Out<span style={{ color: "var(--button-color)" }}>IT</span><PiPersonSimpleRunFill className="d-inline"/></h1>
+                            <h1 className="mb-0">Out<span style={{ color: "var(--button-color)" }}>IT</span><PiPersonSimpleRunFill size={28} className="d-inline"/></h1>
                             
                             <div className=" d-flex justify-content-center flex-column mt-5">
                                 <h1 className="d-block">ALREADY HAVE AN ACCOUNT?</h1>
