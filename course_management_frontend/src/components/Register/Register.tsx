@@ -12,6 +12,7 @@ import { Type } from "../../model/TypeAndTotal";
 import { Target } from "../../model/Target";
 import RegisterDataModel from "../../model/RegisterDataModel";
 import { useAxiosPrivate } from "../../hooks/useAxiosHook";
+import { PiPersonSimpleRunFill } from "react-icons/pi";
 
 const Wrapper = styled.div`
   height: calc(100vh - 85px);
@@ -186,7 +187,8 @@ export const Register: React.FC<{}> = () => {
                 <div className="card container-fluid" style={{ backgroundColor: 'var(--main-color)', height: '100%'}}>
                     <div className="row" style={{height: '100%', overflow:'auto'}}>
                         <div className={`${style.leftSide} col-3 bg-info`}>
-                            <h1 className="mb-0">Out<span style={{ color: "var(--button-color)" }}>IT</span></h1>
+                            <h1 className="mb-0">Out<span style={{ color: "var(--button-color)" }}>IT</span><PiPersonSimpleRunFill className="d-inline"/></h1>
+                            
                             <div className=" d-flex justify-content-center flex-column mt-5">
                                 <h1 className="d-block">ALREADY HAVE AN ACCOUNT?</h1>
                                 <p>To keep track on your dashboard please login with your personal info</p>

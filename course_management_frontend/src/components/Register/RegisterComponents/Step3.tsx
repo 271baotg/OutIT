@@ -13,11 +13,6 @@ export const Step3: React.FC<{
     handleOnClickBack: Function
 }> = (props) => {
 
-
-
-
-
-
     return (
         <div className="w-100 p-5 pt-0 pb-0">
             <div className="container">
