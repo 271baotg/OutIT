@@ -269,7 +269,7 @@ const Login = () => {
     if (usernameRef.current != null) {
       usernameRef.current.focus();
     }
-    if (auth)
+    if (auth?.username)
       navigate("/dashboard", { state: { from: location }, replace: true });
   }, []);
 
