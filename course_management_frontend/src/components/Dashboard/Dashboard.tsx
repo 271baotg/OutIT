@@ -69,7 +69,7 @@ const Dashboard = () => {
   const loadEnrollment = async () => {
     try {
       const response: Enrollment[] = await axiosPrivate({
-        url: "http://localhost:8081/enroll",
+        url: "https://outit-production.up.railway.app/enroll",
         method: "get",
         params: {
           username: auth?.username,
@@ -83,7 +83,7 @@ const Dashboard = () => {
   const loadTarget = async () => {
     try {
       const response: Target[] = await axiosPrivate({
-        url: "http://localhost:8081/students/target",
+        url: "https://outit-production.up.railway.app/students/target",
         method: "get",
         params: {
           username: auth?.username,

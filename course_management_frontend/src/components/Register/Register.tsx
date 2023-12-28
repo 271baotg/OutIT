@@ -12,6 +12,7 @@ import { Type } from "../../model/TypeAndTotal";
 import { Target } from "../../model/Target";
 import RegisterDataModel from "../../model/RegisterDataModel";
 import { useAxiosPrivate } from "../../hooks/useAxiosHook";
+import { PiPersonSimpleRunFill } from "react-icons/pi";
 
 const Wrapper = styled.div`
   height: calc(100vh - 85px);
@@ -65,10 +66,6 @@ export const Register: React.FC<{}> = () => {
         }
         setCurrentStep(currentStep - 1);
     }
-
-
-
-    
 
     const handleOnChangeCreditTotal = (type:string, total: number) =>{
         console.log(total);
@@ -127,7 +124,7 @@ export const Register: React.FC<{}> = () => {
         )
 
         try{
-            const url = 'http://localhost:8081/auth/register';
+            const url = 'https://outit-production.up.railway.app/auth/register';
             const response = await axios.post(
                 url, 
                 data
@@ -162,11 +159,16 @@ export const Register: React.FC<{}> = () => {
                     major={major} 
                     setFirstName={setFirstName}
                     setLastName={setLastName}
-                    setMajor={setMajor}/>);
+                    setMajor={setMajor}
+                    handleOnClickBack={handleOnClickBack}/>);
                 break;
 
             case 3:
-                return (<Step3 handleOnChangeTotal={handleOnChangeCreditTotal} handleOnFinish={handleOnFinish} creditTypeList={creditTypeList}/>);
+                return (<Step3 
+                    handleOnChangeTotal={handleOnChangeCreditTotal} 
+                    handleOnFinish={handleOnFinish} 
+                    creditTypeList={creditTypeList}
+                    handleOnClickBack={handleOnClickBack}/>);
                 break;
 
             default: return (
@@ -182,18 +184,19 @@ export const Register: React.FC<{}> = () => {
     return (
         <>
             <Wrapper>
-                <div className="card container-fluid h-100">
-                    <div className="row h-100" style={{ backgroundColor: 'var(--main-color)' }}>
-                        <div className={`${style.leftSide} col-3 h-100 bg-info`}>
-                            <h1 className="m-5 mb-0">Out<span style={{ color: "var(--button-color)" }}>IT</span></h1>
-                            <div className=" d-flex justify-content-center flex-column p-5 h-100">
+                <div className="card container-fluid" style={{ backgroundColor: 'var(--main-color)', height: '100%'}}>
+                    <div className="row" style={{height: '100%', overflow:'auto'}}>
+                        <div className={`${style.leftSide} col-3 bg-info`}>
+                            <h1 className="mb-0">Out<span style={{ color: "var(--button-color)" }}>IT</span><PiPersonSimpleRunFill size={28} className="d-inline"/></h1>
+                            
+                            <div className=" d-flex justify-content-center flex-column mt-5">
                                 <h1 className="d-block">ALREADY HAVE AN ACCOUNT?</h1>
                                 <p>To keep track on your dashboard please login with your personal info</p>
                                 <button onClick={handleOnClickSignIn} className="btn btn-outline-light">Sign in</button>
                             </div>
                         </div>
                         <div className="col-9">
-                            <div className="w-100  d-flex flex-column justify-content-center align-items-center">
+                            <div className="w-100 d-flex flex-column justify-content-center align-items-center">
                                 <div className="w-100 mt-1">
                                     <FaArrowLeft className={`${style.backButton} ${currentStep === 1 ? "d-none" : ""}`} role="button" size={40} onClick={handleOnClickBack} />
                                 </div>

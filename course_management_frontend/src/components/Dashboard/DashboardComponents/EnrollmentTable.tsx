@@ -14,12 +14,14 @@ import {
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import TypeBadge from "./TypeBadge";
+import { useNavigate } from "react-router-dom";
 
 interface componentProps {
   data: Enrollment[];
 }
 
 const EnrollmentTable: React.FC<componentProps> = (props) => {
+  const navigate = useNavigate();
   const tableVariant = {
     hidden: { opacity: 0, y: -20 },
     visible: { opacity: 1, y: 0, transition: { duration: 1 } },
@@ -35,6 +37,10 @@ const EnrollmentTable: React.FC<componentProps> = (props) => {
     if (type == "TTTN") return "Thực tập tốt nghiệp";
     if (type == "ĐA") return "Đồ án";
   };
+  const handleOnClickGoToCourse = () => {
+    navigate("/course");
+  }
+
   return (
     <>
       <motion.div initial="hidden" animate="visible" variants={tableVariant}>
@@ -49,7 +55,7 @@ const EnrollmentTable: React.FC<componentProps> = (props) => {
                 <Th>Học kì</Th>
               </Tr>
             </Thead>
-            <Tbody>
+            {props.data.length > 0 ? <Tbody>
               {props.data.map((enrollment) => (
                 <Tr>
                   <Td
@@ -79,6 +85,16 @@ const EnrollmentTable: React.FC<componentProps> = (props) => {
                 </Tr>
               ))}
             </Tbody>
+              :
+              <tr>
+                <td colSpan={5}>
+                  <div className="h-100 flex-column d-flex justify-content-center align-items-center">
+                    <h4>Bạn chưa đăng ký môn nào hết, xin vui lòng chuyển sang Course để đăng ký</h4>
+                    <button onClick={handleOnClickGoToCourse} className="btn btn-primary m-4 w-50 h-25 fs-5">Đi tới Course</button>
+                  </div>
+                </td>
+              </tr>
+            }
           </Table>
         </TableContainer>
       </motion.div>
