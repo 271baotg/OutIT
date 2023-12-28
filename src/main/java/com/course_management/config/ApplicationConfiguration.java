@@ -35,7 +35,7 @@ public class ApplicationConfiguration {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("*");
         source.registerCorsConfiguration("/**", config);
         return source;
     }
