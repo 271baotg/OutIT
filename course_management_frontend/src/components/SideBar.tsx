@@ -1,5 +1,7 @@
+import { Button } from "@chakra-ui/react";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { FaRightFromBracket } from "react-icons/fa6";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const NavWrapper = styled.nav`
@@ -11,6 +13,10 @@ const NavWrapper = styled.nav`
   left: 0;
   top: 0;
   position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   /* Small screens */
   @media only screen and (max-width: 600px) {
     display: none;
@@ -100,6 +106,8 @@ const NavWrapper = styled.nav`
 `;
 
 const SideBar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   return (
     <NavWrapper>
       <ul className="navbar">
@@ -165,6 +173,31 @@ const SideBar = () => {
           </NavLink>
         </li>
       </ul>
+      <div
+        className="row"
+        style={{
+          marginBottom: "0.5rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Button
+          leftIcon={<FaRightFromBracket />}
+          width={"fit-content"}
+          marginRight={"0.5rem"}
+          cursor={"pointer"}
+          colorScheme="black"
+          variant={"outline"}
+          onClick={() => {
+            sessionStorage.clear();
+            // window.location.reload();
+            navigate("/login");
+          }}
+        >
+          Logout
+        </Button>
+      </div>
     </NavWrapper>
   );
 };

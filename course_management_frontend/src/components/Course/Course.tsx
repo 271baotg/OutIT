@@ -146,7 +146,7 @@ const Course = () => {
   const loadEnrollment = async () => {
     try {
       const allEnerolment: Enrollment[] = await axiosPrivate({
-        url: "http://localhost:8081/enroll",
+        url: "https://outit-production.up.railway.app/enroll",
         method: "get",
         params: {
           username: auth?.username,
@@ -162,7 +162,7 @@ const Course = () => {
   const loadCourseByTerm = async () => {
     try {
       const response: Course[] = await axiosPrivate({
-        url: `http://localhost:8081/enroll/${auth?.username}`,
+        url: `https://outit-production.up.railway.app/enroll/${auth?.username}`,
         method: "get",
         params: {
           term: selectedTerm,
@@ -180,7 +180,7 @@ const Course = () => {
     try {
       const response: Course[] = await axiosPrivate({
         method: "get",
-        url: "http://localhost:8081/course",
+        url: "https://outit-production.up.railway.app/course",
       });
       const list = response as Course[];
       setCourseList(list);
@@ -193,7 +193,7 @@ const Course = () => {
   const loadTerm = async () => {
     try {
       const response: Term[] = await axiosPrivate({
-        url: `http://localhost:8081/enroll/terms/${auth?.username}`,
+        url: `https://outit-production.up.railway.app/enroll/terms/${auth?.username}`,
         method: "get",
       });
       setListTerm(response);
@@ -250,7 +250,7 @@ const Course = () => {
 
         const response: Course[] = await axiosPrivate({
           method: "get",
-          url: "http://localhost:8081/course/search",
+          url: "https://outit-production.up.railway.app/course/search",
           params: {
             query: query,
           },

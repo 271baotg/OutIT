@@ -148,7 +148,7 @@ const NormalModal: React.FC<modalProps> = (props) => {
       //Update the enrollment by term
       const response: Enrollment[] = await props.axiosPrivate({
         method: "put",
-        url: "http://localhost:8081/enroll",
+        url: "https://outit-production.up.railway.app/enroll",
         params: {
           username: auth?.username,
           term: availableTerm(),

@@ -124,7 +124,7 @@ export const Register: React.FC<{}> = () => {
         )
 
         try{
-            const url = 'http://localhost:8081/auth/register';
+            const url = 'https://outit-production.up.railway.app/auth/register';
             const response = await axios.post(
                 url, 
                 data
