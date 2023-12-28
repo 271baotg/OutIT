@@ -20,7 +20,7 @@ const ProgressBar: React.FC<componentProp> = (props) => {
   const getColor = () => {
     if (progress < 14) return "#000000";
     else if (progress < 30) {
-      return "#0bb83f";
+      return "#79dc97";
     } else return "#ff2600";
   };
 
@@ -31,12 +31,12 @@ const ProgressBar: React.FC<componentProp> = (props) => {
         style={{ color: getColor() }}
       >
         {progress === 0
-          ? "Select some courses"
+          ? "Chọn một vài môn từ bảng bên trái đề bắt đầu"
           : progress < 14
-          ? "You are below 14 credits"
+          ? "Vui lòng chọn đủ 14 tín chỉ"
           : progress < 30
-          ? "You meet the requirement of 14 credits"
-          : "You are picking over 30 credits"}
+          ? "Bạn đã đạt 14 tín chỉ"
+          : "Bạn đang chọn vượt quá 30 tín chỉ"}
       </div>
       <div className={styles.progress_bar}>
         <div
@@ -44,7 +44,7 @@ const ProgressBar: React.FC<componentProp> = (props) => {
           style={{ width: `${percentage}%`, backgroundColor: getColor() }}
         ></div>
       </div>
-      <div className="text-start">Total: {progress}</div>
+      <div className="text-start">Tổng số tín chỉ: {progress}</div>
     </div>
   );
 };

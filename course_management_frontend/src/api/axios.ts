@@ -1,11 +1,12 @@
 import axios from "axios";
 
+export const baseURL = "http://localhost:8081";
 const instance = axios.create({
-  baseURL: "http://localhost:8081",
+  baseURL: `${baseURL}`,
 });
 
 export const axiosPrivate = axios.create({
-  baseURL: "http://localhost:8081",
+  baseURL: `${baseURL}`,
 });
 
 // axios.interceptors.request.use(

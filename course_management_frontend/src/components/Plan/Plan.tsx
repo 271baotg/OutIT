@@ -45,6 +45,7 @@ import EditTargetModal from "./PlanComponents/EditTargetModal";
 import ConfirmModal from "./PlanComponents/ConfirmModal";
 import { BlobOptions } from "buffer";
 import { UserModal } from "../../model/UserModal";
+import { baseURL } from "../../api/axios";
 
 const Wrapper = styled.div`
   height: calc(100vh - 83.5px);
@@ -83,7 +84,7 @@ const Plan = () => {
   const loadTerm = async () => {
     try {
       const response: Term[] = await axiosPrivate({
-        url: `http://localhost:8081/enroll/terms/${auth?.username}`,
+        url: `${baseURL}/enroll/terms/${auth?.username}`,
         method: "get",
       });
       const result = response.sort((a, b) => a.term - b.term);
@@ -96,7 +97,7 @@ const Plan = () => {
     try {
       const response: Target[] = await axiosPrivate({
         method: "get",
-        url: `http://localhost:8081/students/target`,
+        url: `${baseURL}/students/target`,
         params: {
           username: auth?.username,
         },
@@ -111,8 +112,8 @@ const Plan = () => {
   const loadUserDetail = async () => {
     try {
       const response: UserModal = await axiosPrivate({
-        method: "get",
-        url: `http://localhost:8081/students/detail`,
+        method: `get`,
+        url: `${baseURL}/students/detail`,
         params: {
           username: auth?.username,
         },
@@ -127,7 +128,7 @@ const Plan = () => {
   const loadCourseByTerm = async () => {
     try {
       const response: Course[] = await axiosPrivate({
-        url: `http://localhost:8081/enroll/${auth?.username}`,
+        url: `${baseURL}/enroll/${auth?.username}`,
         method: "get",
         params: {
           term: selectedTerm,

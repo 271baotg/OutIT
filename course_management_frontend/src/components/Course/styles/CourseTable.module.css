@@ -13,6 +13,7 @@
   border-radius: 5px 5px 0 0;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  max-height: 100%;
 }
 
 .table_container::-webkit-scrollbar {
@@ -37,17 +38,16 @@
 /* Define styles for the custom animation when checked */
 
 .table thead {
-  background-color: #000000;
+  background-color: var(--heavy-color);
   color: #ffffff;
   text-align: left;
   font-weight: bold;
-  /* position: sticky;
-  top: 0;  */
+  font-size: small;
 }
 
 .table th,
 .table td {
-  padding: 12px 15px;
+  padding: 10px 10px;
 }
 
 .table tbody tr {
@@ -67,7 +67,7 @@
 
 .table tbody tr:hover {
   font-weight: bold;
-  color: #009879;
+  color: var(--button-color);
   cursor: pointer;
 }
 
@@ -85,10 +85,10 @@
 .search_form {
   position: relative;
   width: 40%;
-  background: var(--main-color);
+  background: var(--white-color);
   border-radius: 0.7rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add box-shadow */
-  border: 2px solid #57bd84; /* Add border */
+  border: 2px solid #000000; /* Add border */
   overflow: hidden; /* Ensure rounded corners */
 }
 

@@ -12,6 +12,7 @@ import EnrollmentTable from "./DashboardComponents/EnrollmentTable";
 import DonutChart from "./DashboardComponents/DonutChart";
 import { AnimatePresence } from "framer-motion";
 import DashboardModal from "./DashboardComponents/DashboardModal";
+import { baseURL } from "../../api/axios";
 
 const Wrapper = styled.div`
   min-height: calc(100vh - 83.5px);
@@ -69,7 +70,7 @@ const Dashboard = () => {
   const loadEnrollment = async () => {
     try {
       const response: Enrollment[] = await axiosPrivate({
-        url: "http://localhost:8081/enroll",
+        url: `${baseURL}/enroll`,
         method: "get",
         params: {
           username: auth?.username,
@@ -83,7 +84,7 @@ const Dashboard = () => {
   const loadTarget = async () => {
     try {
       const response: Target[] = await axiosPrivate({
-        url: "http://localhost:8081/students/target",
+        url: `${baseURL}/students/target`,
         method: "get",
         params: {
           username: auth?.username,
