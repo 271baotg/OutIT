@@ -43,7 +43,7 @@ const INIT_CREDIT:Target[] = [
 export const Register: React.FC<{}> = () => {
     const axios = useAxiosPrivate();
     const navigate = useNavigate();
-    const [currentStep, setCurrentStep] = useState<number>(3);
+    const [currentStep, setCurrentStep] = useState<number>(1);
     const [username, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -124,7 +124,7 @@ export const Register: React.FC<{}> = () => {
         )
 
         try{
-            const url = 'https://outit-production.up.railway.app/auth/register';
+            const url = '/auth/register';
             const response = await axios.post(
                 url, 
                 data

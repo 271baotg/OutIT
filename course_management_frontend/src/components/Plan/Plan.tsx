@@ -83,7 +83,7 @@ const Plan = () => {
   const loadTerm = async () => {
     try {
       const response: Term[] = await axiosPrivate({
-        url: `https://outit-production.up.railway.app/enroll/terms/${auth?.username}`,
+        url: `/enroll/terms/${auth?.username}`,
         method: "get",
       });
       const result = response.sort((a, b) => a.term - b.term);
@@ -96,7 +96,7 @@ const Plan = () => {
     try {
       const response: Target[] = await axiosPrivate({
         method: "get",
-        url: `https://outit-production.up.railway.app/students/target`,
+        url: `/students/target`,
         params: {
           username: auth?.username,
         },
@@ -112,7 +112,7 @@ const Plan = () => {
     try {
       const response: UserModal = await axiosPrivate({
         method: "get",
-        url: `https://outit-production.up.railway.app/students/detail`,
+        url: `/students/detail`,
         params: {
           username: auth?.username,
         },
@@ -127,7 +127,7 @@ const Plan = () => {
   const loadCourseByTerm = async () => {
     try {
       const response: Course[] = await axiosPrivate({
-        url: `https://outit-production.up.railway.app/enroll/${auth?.username}`,
+        url: `/enroll/${auth?.username}`,
         method: "get",
         params: {
           term: selectedTerm,

@@ -96,7 +96,7 @@ const ConfirmModal: React.FC<modalProps> = (props) => {
       //Update the enrollment by term
       const response: Target[] = await props.axiosPrivate({
         method: "put",
-        url: "https://outit-production.up.railway.app/student/target",
+        url: "/student/target",
         params: {
           username: auth?.username,
         },
