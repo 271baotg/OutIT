@@ -3,6 +3,7 @@ import { MdError } from "react-icons/md";
 import { FaCheckCircle, FaLongArrowAltRight } from "react-icons/fa";
 import { PasswordValidator, UsernameValidator, isEmalValid } from "../../../utils/Validation";
 import { Tooltip } from "@chakra-ui/react";
+import { NONAME } from "dns";
 
 export const Step1: React.FC<{
     setStep: Function,
@@ -28,9 +29,7 @@ export const Step1: React.FC<{
 
 
     const handleOnClickNext = () => {
-
         let canNext = true;
-
         if (props.username == '') {
             setIsShowUNToolTip(true);
             canNext = false;
@@ -50,13 +49,13 @@ export const Step1: React.FC<{
 
         }
 
-        if(isEmalValid(props.email) 
-        && userNameValidator.isValid(props.username)
-        && passwordValidator.isValid(props.password)
-        && props.confirmPassword === props.password
+        if (isEmalValid(props.email)
+            && userNameValidator.isValid(props.username)
+            && passwordValidator.isValid(props.password)
+            && props.confirmPassword === props.password
         ) {
             canNext = true;
-        } else{
+        } else {
             canNext = false;
         }
 
@@ -86,7 +85,27 @@ export const Step1: React.FC<{
         props.setConfirmPassword(event.target.value);
     }
 
+    const handleOnChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const id = e.target.name + "-validate";
+        const validateTag: HTMLElement | null = document.getElementById(id);
+        if (validateTag) {
 
+            validateTag.style.display = "block"
+        }
+    }
+
+    const handleOnForcusInput = (e: React.FocusEvent<HTMLInputElement>) => {
+        let a = true;
+        if(a){
+            return;
+        }
+        const id = e.target.name + "-validate";
+        const validateTag: HTMLElement | null = document.getElementById(id);
+        if (validateTag) {
+
+            validateTag.style.display = "block"
+        }
+    }
 
     return (
         <div className="w-100 p-5 pt-0 pb-2">
@@ -96,54 +115,55 @@ export const Step1: React.FC<{
                     <Tooltip hasArrow placement="bottom-end" isOpen={isShowUNToolTip} label="This field can't be empty" bg='red.600'>
                         <div className="input-group input-group-md m-4 mt-0 mb-1">
                             <span className="input-group-text" id="inputGroup-sizing-lg">Username</span>
-                            <input onChange={handleOnUserNameChange} type="text" name="username" value={props.username} placeholder="Enter username (e.g. 2152xxxx)" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" />
+                            <input onFocus={handleOnForcusInput} onChange={(e)=>{handleOnUserNameChange(e); handleOnChangeInput(e)}} type="text" name="username" value={props.username} placeholder="Enter username (e.g. 2152xxxx)" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" />
                         </div>
                     </Tooltip>
-
-                    <p className="ms-5 mb-2">{userNameValidator.isValid(props.username) ? <FaCheckCircle className="d-inline text-success" /> : <MdError className="d-inline text-danger" />
+                    <p className="ms-5 mb-2" style={{ display: "none" }} id="username-validate">{userNameValidator.isValid(props.username) ? <FaCheckCircle className="d-inline text-success" /> : <MdError className="d-inline text-danger" />
                     }
-                        &nbsp;User phải có ít nhất 8 ký tự số</p>
+                        &nbsp;Username phải có ít nhất 8 ký tự số</p>
                 </div>
                 <div>
                     <Tooltip hasArrow placement="bottom-end" isOpen={isShowEmailToolTip} label="This field can't be empty" bg='red.600'>
                         <div className="input-group input-group-md m-4 mt-0 mb-1">
                             <span className="input-group-text" id="inputGroup-sizing-lg">Email</span>
-                            <input onChange={handleOnChangeEmail} type="text" name="email" value={props.email} placeholder="Enter email" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" />
+                            <input onFocus={handleOnForcusInput} onChange={(e)=>{handleOnChangeEmail(e); handleOnChangeInput(e)}} type="text" name="email" value={props.email} placeholder="Enter email" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" />
                         </div>
                     </Tooltip>
-                    <p className="ms-5 mb-2">
+                    <p className="ms-5 mb-2" style={{ display: "none" }} id="email-validate">
                         {isEmalValid(props.email) ? <FaCheckCircle className="d-inline text-success" /> : <MdError className="d-inline text-danger" />}
                         &nbsp;Email phải là email thực
                     </p>
                 </div>
                 <div>
                     <Tooltip hasArrow placement="bottom-end" isOpen={isShowPWToolTip} label="This field can't be empty" bg='red.600'>
-                        <div className="input-group input-group-md m-4 mt-0 mb-2">
+                        <div className="input-group input-group-md m-4 mt-0 mb-1">
                             <span className="input-group-text" id="inputGroup-sizing-lg">Password</span>
-                            <input onChange={handleOnChangePassword} type="password" name="password" value={props.password} placeholder="Enter password" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" />
+                            <input onFocus={handleOnForcusInput} onChange={(e)=>{handleOnChangePassword(e); handleOnChangeInput(e)}} type="password" name="password" value={props.password} placeholder="Enter password" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" />
                         </div>
                     </Tooltip>
-                    <p className="ms-5 mb-2">
-                        {passwordValidator.isLongEnough(props.password) ? <FaCheckCircle className="d-inline text-success" /> : <MdError className="d-inline text-danger" />}
-                        &nbsp; Mật khẩu phải có ít nhất 8 ký tự
-                    </p>
-                    <p className="ms-5 mb-2">
-                        {passwordValidator.isContainerNumber(props.password) ? <FaCheckCircle className="d-inline text-success" /> : <MdError className="d-inline text-danger" />}
-                        &nbsp; Mật khẩu phải có ít nhất 1 chữ số
-                    </p>
-                    <p className="ms-5 mb-2">
-                        {passwordValidator.isContaineSpecialCharacter(props.password) ? <FaCheckCircle className="d-inline text-success" /> : <MdError className="d-inline text-danger" />}
-                        &nbsp; Mật khẩu phải có ít nhất 1 ký tự đặc biệt (e.g. @#$&...)
-                    </p>
+                    <div style={{display:'none'}} id="password-validate">
+                        <p className="ms-5 mb-2" >
+                            {passwordValidator.isLongEnough(props.password) ? <FaCheckCircle className="d-inline text-success" /> : <MdError className="d-inline text-danger" />}
+                            &nbsp; Mật khẩu phải có ít nhất 8 ký tự
+                        </p>
+                        <p className="ms-5 mb-2">
+                            {passwordValidator.isContainerNumber(props.password) ? <FaCheckCircle className="d-inline text-success" /> : <MdError className="d-inline text-danger" />}
+                            &nbsp; Mật khẩu phải có ít nhất 1 chữ số
+                        </p>
+                        <p className="ms-5 mb-2">
+                            {passwordValidator.isContaineSpecialCharacter(props.password) ? <FaCheckCircle className="d-inline text-success" /> : <MdError className="d-inline text-danger" />}
+                            &nbsp; Mật khẩu phải có ít nhất 1 ký tự đặc biệt (e.g. @#$&...)
+                        </p>
+                    </div>
                 </div>
                 <div>
                     <Tooltip hasArrow placement="bottom-end" isOpen={isShowCFPWToolTip} label="This field can't be empty" bg='red.600'>
                         <div className="input-group input-group-md m-4 mt-0 mb-2">
                             <span className="input-group-text" id="inputGroup-sizing-lg">Confirm password</span>
-                            <input onChange={handleOnChangeConfirmPassword} type="password" name="confirmPassword" value={props.confirmPassword} placeholder="Re enter password" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" />
+                            <input onFocus={handleOnForcusInput} onChange={(e)=>{handleOnChangeConfirmPassword(e); handleOnChangeInput(e)}} type="password" name="confirmPassword" value={props.confirmPassword} placeholder="Re enter password" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" />
                         </div>
                     </Tooltip>
-                    <p className="ms-5 mb-2">
+                    <p className="ms-5 mb-2" style={{display: 'none'}} id='confirmPassword-validate'>
                         {props.confirmPassword === props.password && props.confirmPassword != '' ? <FaCheckCircle className="d-inline text-success" /> : <MdError className="d-inline text-danger" />}
                         &nbsp; Mật khẩu xác nhận phải có trùng với mật khẩu đã nhập                    </p>
                 </div>
