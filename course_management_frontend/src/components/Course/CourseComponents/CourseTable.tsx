@@ -33,7 +33,6 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   display: block !important;
   text-align: center;
-  font-weight: 700;
   font-size: 0.937rem;
   text-transform: uppercase;
   /* border: 2px solid #34444c;
@@ -127,9 +126,14 @@ const CourseTable: React.FC<TableProps> = (props) => {
                       checked={isChecked}
                     />
                   </td>
-                  <td>{course.code}</td>
+                  <td style={{ fontWeight: "bold" }}>{course.code}</td>
                   <td>{course.name}</td>
-                  <td style={{ color: `${getTypeColor(course.type)}` }}>
+                  <td
+                    style={{
+                      color: `${getTypeColor(course.type)}`,
+                      fontWeight: "bold",
+                    }}
+                  >
                     {getTitle(course.type)}
                   </td>
                   <td>{course.total}</td>

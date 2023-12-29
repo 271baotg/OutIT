@@ -1,4 +1,5 @@
 package com.course_management.auth;
+import com.course_management.advice.UserAlreadyExistsException;
 import com.course_management.model.Role;
 import com.course_management.model.Student;
 import com.course_management.repository.RolesRepository;
@@ -35,15 +36,15 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final RolesRepository rolesRepository;
     private final TargetServiceImpl targetService;
-    public AuthResponse register(RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request){
         String raw_password = request.getPassword();
         Student student = new Student(request.getUsername(),
                 passwordEncoder.encode(raw_password),
                 request.getFullName(),
                 request.getEmail(),
                 request.getClassName());
-        if (studentRepository.findStudentByUsername(request.getUsername()).isPresent()) {
-            return new AuthResponse("User exist");
+        if(studentRepository.findStudentByUsername(student.getUsername()).isPresent()){
+            throw new UserAlreadyExistsException(student.getUsername());
         }
 
         Set<Role> roleDefault = new HashSet<>();

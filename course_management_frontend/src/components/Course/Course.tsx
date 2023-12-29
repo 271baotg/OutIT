@@ -23,10 +23,11 @@ import ProgressBar from "./CourseComponents/ProgressBar";
 import { relative } from "path";
 import TermBox from "./CourseComponents/TermBox";
 import AuthContext from "../../auth/AuthProvider";
-import Modal from "../Modal";
-import NormalModal from "../NormalModal";
+import Modal from "./CourseComponents/Modal";
+import NormalModal from "./CourseComponents/NormalModal";
 import { Enrollment } from "../../model/Enrollment";
 import { loadAllCourse, loadAllEnrollment } from "../../api/courseService";
+import ConfirmDeleteModal from "./CourseComponents/ConfirmDeleteModal";
 
 const Wrapper = styled.div`
   margin-left: 10rem;
@@ -134,6 +135,7 @@ const Course = () => {
   const [allEnrollment, setAllEnrollment] = useState<Enrollment[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [secondModalOpen, setSecondModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [planList, setPlanList] = useState<Course[]>([]);
 
   const getTranslateY = () => {
@@ -323,6 +325,14 @@ const Course = () => {
             handleClose={() => setSecondModalOpen(false)}
             onReload={refreshAllState}
             listTerm={listTerm}
+            axiosPrivate={axiosPrivate}
+            selectedTerm={selectedTerm}
+          />
+        )}
+        {deleteModalOpen && (
+          <ConfirmDeleteModal
+            handleClose={() => setDeleteModalOpen(false)}
+            onReload={refreshAllState}
             axiosPrivate={axiosPrivate}
             selectedTerm={selectedTerm}
           />
@@ -530,29 +540,43 @@ const Course = () => {
                             direction="row"
                             style={{
                               display: "flex",
-                              justifyContent: "end",
+                              justifyContent: "space-between",
                               paddingTop: "1rem",
                             }}
                           >
-                            <Button
-                              as={motion.div}
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.9 }}
-                              leftIcon={<FaCheck />}
-                              colorScheme="green"
-                              variant="solid"
-                              onClick={handleModal}
-                            >
-                              Cập nhật
-                            </Button>
-                            <Button
-                              onClick={onResetHandler}
-                              rightIcon={<FaTrash />}
-                              colorScheme="red"
-                              variant="outline"
-                            >
-                              Reset
-                            </Button>
+                            <div>
+                              <Button
+                                leftIcon={<FaCheck />}
+                                colorScheme="red"
+                                variant="solid"
+                                onClick={() => {
+                                  setDeleteModalOpen(true);
+                                }}
+                              >
+                                Xóa học kì
+                              </Button>
+                            </div>
+                            <div>
+                              <Button
+                                as={motion.div}
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                leftIcon={<FaCheck />}
+                                colorScheme="green"
+                                variant="solid"
+                                onClick={handleModal}
+                              >
+                                Cập nhật
+                              </Button>
+                              <Button
+                                onClick={onResetHandler}
+                                rightIcon={<FaTrash />}
+                                colorScheme="red"
+                                variant="outline"
+                              >
+                                Reset
+                              </Button>
+                            </div>
                           </Stack>
                         </EditPanel>
                       </div>

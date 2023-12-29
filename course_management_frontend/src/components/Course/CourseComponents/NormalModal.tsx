@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import Backdrop from "./Backdrop";
+import Backdrop from "../../Backdrop";
 import styled from "styled-components";
 import { motion, color } from "framer-motion";
 import { FaCheckCircle } from "react-icons/fa";
@@ -18,10 +18,11 @@ import {
   FaTriangleExclamation,
 } from "react-icons/fa6";
 import { Button, Spinner, Stack } from "@chakra-ui/react";
-import { useAxiosPrivate } from "../hooks/useAxiosHook";
-import { Enrollment } from "../model/Enrollment";
-import AuthContext from "../auth/AuthProvider";
+import { useAxiosPrivate } from "../../../hooks/useAxiosHook";
+import { Enrollment } from "../../../model/Enrollment";
+import AuthContext from "../../../auth/AuthProvider";
 import { AxiosInstance } from "axios";
+import { baseURL } from "../../../api/axios";
 
 const dropIn = {
   hidden: {
@@ -148,7 +149,7 @@ const NormalModal: React.FC<modalProps> = (props) => {
       //Update the enrollment by term
       const response: Enrollment[] = await props.axiosPrivate({
         method: "put",
-        url: "http://localhost:8081/enroll",
+        url: `${baseURL}/enroll`,
         params: {
           username: auth?.username,
           term: availableTerm(),

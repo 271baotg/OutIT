@@ -10,10 +10,10 @@ const Wrapper = styled.div`
   min-height: 80px;
   color: var(--text-color);
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  position: sticky;
   top: 0;
+  position: sticky;
   width: 100%;
-  z-index: 999;
+  z-index: 1;
 `;
 
 const LoginButton = styled.div`

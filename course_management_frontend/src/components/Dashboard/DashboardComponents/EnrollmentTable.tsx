@@ -56,6 +56,7 @@ const EnrollmentTable: React.FC<componentProps> = (props) => {
                     borderLeft={"none"}
                     borderRight={"none"}
                     textColor={"black"}
+                    fontWeight={"bold"}
                   >
                     {enrollment.code}
                   </Td>

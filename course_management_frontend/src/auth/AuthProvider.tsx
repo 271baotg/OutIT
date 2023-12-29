@@ -1,5 +1,5 @@
 import axios, { AxiosHeaders } from "axios";
-import Modal from "../components/Modal";
+import Modal from "../components/Course/CourseComponents/Modal";
 import { AnimatePresence } from "framer-motion";
 import {
   ChildContextProvider,

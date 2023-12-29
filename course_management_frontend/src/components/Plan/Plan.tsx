@@ -125,13 +125,13 @@ const Plan = () => {
     }
   };
 
-  const loadCourseByTerm = async () => {
+  const loadCourseByTerm = async (term: number) => {
     try {
       const response: Course[] = await axiosPrivate({
         url: `${baseURL}/enroll/${auth?.username}`,
         method: "get",
         params: {
-          term: selectedTerm,
+          term: term,
         },
       });
       console.log(`Term ${selectedTerm}: ${JSON.stringify(response)}`);
@@ -142,7 +142,7 @@ const Plan = () => {
   };
 
   const onTermItemClick = (term: number) => {
-    setSelectedTerm(term);
+    loadCourseByTerm(term);
   };
 
   const loadProfile = () => {};
@@ -150,10 +150,6 @@ const Plan = () => {
   const refreshAllState = () => {
     loadTarget();
   };
-
-  useEffect(() => {
-    loadCourseByTerm();
-  }, [selectedTerm]);
 
   useEffect(() => {
     loadTerm();
