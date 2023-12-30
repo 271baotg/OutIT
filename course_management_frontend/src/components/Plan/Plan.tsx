@@ -88,7 +88,7 @@ const Plan = () => {
       });
       const result = response.sort((a, b) => a.term - b.term);
       setListTerm(result);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   //Lấy danh sách mục tiêu của sinh viên
@@ -144,7 +144,7 @@ const Plan = () => {
     setSelectedTerm(term);
   };
 
-  const loadProfile = () => {};
+  const loadProfile = () => { };
 
   const refreshAllState = () => {
     loadTarget();
@@ -337,6 +337,10 @@ const Plan = () => {
                     </Tbody>
                   </Table>
                 </TableContainer>
+                {listTarget.length <= 0 &&
+                    <div className="h-100 flex-column p-1 d-flex justify-content-center align-items-center">
+                      <h4 className="text-center">Vui lòng ấn vào nút <strong>EDIT</strong> để cài dặt tín chỉ của bạn</h4>
+                    </div>}
               </div>
               <div
                 style={{

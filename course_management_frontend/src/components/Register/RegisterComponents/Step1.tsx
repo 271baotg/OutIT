@@ -3,7 +3,6 @@ import { MdError } from "react-icons/md";
 import { FaCheckCircle, FaLongArrowAltRight } from "react-icons/fa";
 import { PasswordValidator, UsernameValidator, isEmalValid } from "../../../utils/Validation";
 import { Tooltip } from "@chakra-ui/react";
-import { NONAME } from "dns";
 
 export const Step1: React.FC<{
     setStep: Function,
@@ -120,7 +119,7 @@ export const Step1: React.FC<{
                     </Tooltip>
                     <p className="ms-5 mb-2" style={{ display: "none" }} id="username-validate">{userNameValidator.isValid(props.username) ? <FaCheckCircle className="d-inline text-success" /> : <MdError className="d-inline text-danger" />
                     }
-                        &nbsp;Username phải có ít nhất 8 ký tự số</p>
+                        &nbsp;Username phải có đủ 8 ký tự số</p>
                 </div>
                 <div>
                     <Tooltip hasArrow placement="bottom-end" isOpen={isShowEmailToolTip} label="This field can't be empty" bg='red.600'>

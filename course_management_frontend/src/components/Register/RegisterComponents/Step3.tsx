@@ -1,20 +1,32 @@
-import { Button, HStack, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, useNumberInput } from "@chakra-ui/react"
+import { Spinner } from "@chakra-ui/react"
 import { CreditItem } from "./CreditItem"
-import { Type } from "../../../model/TypeAndTotal"
 import style from "../styles/Step3.module.css"
 import { Target } from "../../../model/Target"
 import { FaLongArrowAltLeft } from "react-icons/fa"
+import { SuccessModal } from "./SuccessModal"
+import { FailModal } from "./FailModal"
 
 
 export const Step3: React.FC<{
     creditTypeList: Target[],
     handleOnFinish: Function,
-    handleOnChangeTotal: Function
-    handleOnClickBack: Function
+    handleOnChangeTotal: Function,
+    handleOnClickBack: Function,
+    isOpenSuccessModal: boolean,
+    onCloseSuccessModal: Function,
+    isOpenFailModal: boolean,
+    onCloseFailModal: Function,
+    isLoading: boolean,
+    setStep:Function,
+    setIsSuccessRegister: Function
 }> = (props) => {
-
+    console.log('props', props);
+    const backToStep1 = () =>{
+        props.setIsSuccessRegister(undefined);
+        props.setStep(1);
+    }
     return (
-        <div className="w-100 p-md-5 pt-0 pb-0 overflow-auto">
+        <div className="w-100 pt-0 pb-0 overflow-auto">
             {/* DESKTOP */}
             <div className="container d-none d-md-block">
                 <h5 className="text-center">Sắp xong rồi ! Điền thông tin tín chỉ mục tiêu của bạn để bắt đầu trải nghiệm</h5>
@@ -30,7 +42,13 @@ export const Step3: React.FC<{
                 </div>
                 <div className="d-none d-md-flex row justify-content-around mt-3">
                     <button onClick={() => (props.handleOnClickBack())} className="btn btn-secondary h-25 col-5"><FaLongArrowAltLeft size={30} className="d-inline-block" />&nbsp;BACK</button>
-                    <button onClick={() => { props.handleOnFinish() }} className="btn btn-primary col-5 h-25">FINISH</button>
+                    <button disabled={props.isLoading} id='finish-register'
+                        onClick={() => { props.handleOnFinish() }}
+                        className="btn btn-primary col-5 h-25">
+                        {props.isLoading ?
+                            <Spinner></Spinner>: "FINISH" 
+                        }
+                    </button>
                 </div>
             </div>
             {/* MOBILE */}
@@ -51,6 +69,9 @@ export const Step3: React.FC<{
                     <button onClick={() => (props.handleOnClickBack())} className="btn btn-secondary d-block m-1 h-25 w-75"><FaLongArrowAltLeft size={30} className="d-inline" />&nbsp;BACK</button>
                 </div>
             </div>
+            {props.isOpenSuccessModal && <SuccessModal isOpenSuccessModal={props.isOpenSuccessModal} onCloseSuccessModal={props.onCloseSuccessModal}/>}
+            {props.isOpenFailModal && <FailModal backTopStep1={backToStep1} isOpenFailModal={props.isOpenFailModal} onCloseFaildModal={props.onCloseFailModal}/>}
+        
         </div>
     )
 }

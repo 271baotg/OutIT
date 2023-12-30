@@ -13,7 +13,7 @@ interface IUsernameValidate {
 
 export class UsernameValidator implements IUsernameValidate {
     isValid = (u: string) => {
-        if (u && u.length && u.length >= 8) {
+        if (u && u.length && u.length === 8) {
             return true;
         }
         return false;

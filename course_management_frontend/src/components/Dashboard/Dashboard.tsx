@@ -12,6 +12,7 @@ import EnrollmentTable from "./DashboardComponents/EnrollmentTable";
 import DonutChart from "./DashboardComponents/DonutChart";
 import { AnimatePresence } from "framer-motion";
 import DashboardModal from "./DashboardComponents/DashboardModal";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   min-height: calc(100vh - 83.5px);
@@ -55,6 +56,7 @@ const ScrollableDiv = styled.div`
 
 const Dashboard = () => {
   const axiosPrivate = useAxiosPrivate();
+  const nav = useNavigate();
   const { auth } = useContext(AuthContext);
   const [listTarget, setListTarget] = useState<Target[]>([]);
   const [allEnrollment, setAllEnrollment] = useState<Enrollment[]>([]);
@@ -77,7 +79,7 @@ const Dashboard = () => {
       });
 
       setAllEnrollment(response);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const loadTarget = async () => {
@@ -91,7 +93,7 @@ const Dashboard = () => {
       });
       setListTarget(response);
       console.log(`Target: ${JSON.stringify(response)}`);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {
@@ -127,6 +129,10 @@ const Dashboard = () => {
     console.log("List Target: " + JSON.stringify(listTarget));
   }, [listTarget]);
 
+  function handleOnClickGoToCourse(): void {
+    nav('/course');
+  }
+
   return (
     <Wrapper>
       <AnimatePresence initial={false} onExitComplete={() => null}>
@@ -158,6 +164,11 @@ const Dashboard = () => {
               <ScrollableDiv>
                 <EnrollmentTable data={allEnrollment} />
               </ScrollableDiv>
+              {allEnrollment.length <= 0 &&
+                <div className="h-100 flex-column d-flex justify-content-center align-items-center">
+                  <h4><strong></strong>Bạn chưa đăng ký môn nào hết, xin vui lòng chuyển sang <strong><i><span role="button" onClick={handleOnClickGoToCourse}>Course</span></i></strong> để đăng ký</h4>
+                  <button onClick={handleOnClickGoToCourse} className="btn btn-primary m-4 w-50 fs-5" style={{ height: '15%' }}>Đi tới Course</button>
+                </div>}
             </TableWrapper>
           </div>
           <div className="col-md-3 order-md-1">
