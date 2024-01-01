@@ -20,7 +20,6 @@ export const Step3: React.FC<{
   setStep: Function;
   setIsSuccessRegister: Function;
 }> = (props) => {
-  console.log("props", props);
   const backToStep1 = () => {
     props.setIsSuccessRegister(undefined);
     props.setStep(1);

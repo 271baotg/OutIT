@@ -103,11 +103,10 @@ const ConfirmModal: React.FC<modalProps> = (props) => {
         },
         data: props.updateTarget,
       });
-      console.log(response);
+
       setRequestCompleted(true);
       props.onReload();
     } catch (error) {
-      console.log(error);
     } finally {
       // Set loading to false after the API request is completed (whether it succeeds or fails)
       setLoading(false);

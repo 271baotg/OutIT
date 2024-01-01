@@ -93,7 +93,6 @@ const Dashboard = () => {
         },
       });
       setListTarget(response);
-      console.log(`Target: ${JSON.stringify(response)}`);
     } catch (error) {}
   };
 
@@ -103,7 +102,7 @@ const Dashboard = () => {
   }, []);
 
   // useEffect(() => {
-  //   console.log(allEnrollment);
+  //
   //   const tempList: Type[] = allEnrollment.reduce(
   //     (result: Type[], enrollment) => {
   //       // Check if there is an existing Type with the same 'type'
@@ -126,9 +125,7 @@ const Dashboard = () => {
   //   setListType(tempList);
   // }, [allEnrollment]);
 
-  useEffect(() => {
-    console.log("List Target: " + JSON.stringify(listTarget));
-  }, [listTarget]);
+  useEffect(() => {}, [listTarget]);
 
   function handleOnClickGoToCourse(): void {
     nav("/course");

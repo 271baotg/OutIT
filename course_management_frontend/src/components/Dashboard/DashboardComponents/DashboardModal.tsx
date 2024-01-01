@@ -101,7 +101,6 @@ const DashboardModal: React.FC<modalProps> = (props) => {
       onComplete: () => {
         const roundedValue = rounded.get();
         setDisplayValue(roundedValue);
-        console.log("Rounded Value after animation:", rounded.get());
       },
     });
 

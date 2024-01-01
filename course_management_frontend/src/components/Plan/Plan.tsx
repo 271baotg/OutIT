@@ -102,11 +102,9 @@ const Plan = () => {
           username: auth?.username,
         },
       });
-      console.log(response);
+
       setListTarget(response);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const loadUserDetail = async () => {
@@ -118,11 +116,9 @@ const Plan = () => {
           username: auth?.username,
         },
       });
-      console.log(response);
+
       setCurrentStudent(response);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const loadCourseByTerm = async (term: number) => {
@@ -134,11 +130,9 @@ const Plan = () => {
           term: term,
         },
       });
-      console.log(`Term ${selectedTerm}: ${JSON.stringify(response)}`);
+
       setListCourse(response);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const onTermItemClick = (term: number) => {

@@ -121,12 +121,8 @@ const Modal: React.FC<modalProps> = (props) => {
     });
   }, []);
 
-  useEffect(() => {
-    console.log("Type List" + JSON.stringify(typeList));
-  }, [typeList]);
-  useEffect(() => {
-    console.log("Display Type: " + JSON.stringify(displayType));
-  }, [displayType]);
+  useEffect(() => {}, [typeList]);
+  useEffect(() => {}, [displayType]);
 
   useEffect(() => {
     let updateList: Type[] = [];
