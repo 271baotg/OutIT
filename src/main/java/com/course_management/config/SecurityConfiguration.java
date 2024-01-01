@@ -44,17 +44,12 @@ public class SecurityConfiguration {
                 .sessionManagement( session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
-
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/auth/**").permitAll();
                     auth.requestMatchers("/students/**").hasAnyAuthority("admin","user");
                     auth.anyRequest().authenticated();
-
                 })
                 .authenticationProvider(authProvider)
-                .exceptionHandling( ex ->
-                        ex.accessDeniedHandler(new CustomAccessDeniedHandler())
-                        .authenticationEntryPoint(new JwtAuthenticationEntryEndpoint()))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }

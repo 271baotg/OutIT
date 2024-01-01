@@ -19,6 +19,7 @@ const PlanTable: React.FC<componentprops> = (props) => {
     "CSNN",
     "ĐC",
     "ĐA",
+    "CĐTN",
   ];
 
   useEffect(() => {
@@ -52,11 +53,10 @@ const PlanTable: React.FC<componentprops> = (props) => {
       <table className={styles.plan_table}>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Code</th>
-            <th>Type</th>
-            <th>Total</th>
-            <th></th>
+            <th>Tên</th>
+            <th>Mã</th>
+            <th>Loại</th>
+            <th>Tổng</th>
           </tr>
         </thead>
         <tbody>
@@ -64,20 +64,23 @@ const PlanTable: React.FC<componentprops> = (props) => {
             return (
               <tr key={course.id}>
                 <td>{course.name}</td>
-                <td className="px-2 p-2">
-                  <div className="d-flex gap-2">
-                    <div className={styles.tag}></div>
+                <td className="">
+                  <div className="d-flex">
                     <div className="code">{course.code}</div>
                   </div>
                 </td>
 
-                <td className="px-2 p-2">
+                <td>
                   {!typeChuyenNghiep.includes(course.type) && (
-                    <Badge colorScheme="green" className={styles.dropdown}>
-                      <button type="button" aria-expanded="false">
+                    <div className={styles.dropdown}>
+                      <button
+                        type="button"
+                        aria-expanded="false"
+                        style={{ fontSize: "0.8rem" }}
+                      >
                         {course.type}
                       </button>
-                    </Badge>
+                    </div>
                   )}
                   {typeChuyenNghiep.includes(course.type) && (
                     <PlanRow
@@ -89,7 +92,6 @@ const PlanTable: React.FC<componentprops> = (props) => {
                   )}
                 </td>
                 <td>{course.total}</td>
-                <td></td>
               </tr>
             );
           })}

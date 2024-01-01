@@ -6,6 +6,9 @@ import AuthContext from "../auth/AuthProvider";
 import { FaInfoCircle } from "react-icons/fa";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import background from "../Images/login_background.svg";
+import axios, { AxiosError } from "axios";
+import instance from "../api/axios";
+import { Spinner } from "@chakra-ui/react";
 
 const Wrapper = styled.div`
   height: calc(100vh - 85px);
@@ -18,19 +21,17 @@ const Content = styled.div`
 const LoginPanel = styled.div`
   background-color: var(--main-color);
   color: var(--text-color);
-  padding-top: 100px;
+  padding-top: 5rem;
   padding-left: 40px;
   padding-right: 40px;
 
   .instructions {
-    font-size: 16px;
-    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    padding: 0.5rem;
     border-radius: 0.5rem;
     background: #000;
     color: #fff;
-    padding: 0.5rem;
     position: relative;
-    bottom: -10px;
   }
 
   .offscreen {
@@ -57,7 +58,6 @@ const LoginPanel = styled.div`
   }
 
   .errmsg {
-    background-color: lightpink;
     color: firebrick;
     font-weight: bold;
     padding: 0.5rem;
@@ -73,8 +73,8 @@ const LoginPanel = styled.div`
 
   .form-style {
     padding: 10px 20px;
-    padding-left: 55px;
-    height: 56px;
+    padding-left: 10px;
+    height: 2.5rem;
     width: 100%;
     font-weight: 500;
     border-radius: 8px;
@@ -234,21 +234,44 @@ const Login = () => {
   const [passwordFocus, setPasswordFocus] = useState<boolean>(false);
   const [validPassword, setValidPassword] = useState<boolean>(false);
 
+  const [loading, setLoading] = useState(false);
+  const [requestCompleted, setRequestCompleted] = useState(false);
+
   const submitHandler = async (e: React.ChangeEvent<any>) => {
     e.preventDefault();
+    if (!validName || !validPassword) {
+      // Don't proceed with login if any instruction is visible or the button is disabled
+      return;
+    }
     try {
-      const response = await login(username, password);
+      // Set loading to true before making the API request
+      setLoading(true);
+      setRequestCompleted(false);
+      const response = await instance({
+        method: "post",
+        url: "/auth/login",
+        data: {
+          username: username,
+          password: password,
+        },
+      });
       console.log(response.data.token);
       setAuth({
         username: username,
         password: password,
         token: response.data.token,
       });
-      alert("You're succesfully signed in !");
+      console.log(response);
       navigate("/dashboard");
     } catch (error) {
-      setError(JSON.stringify(error));
-      console.log(error);
+      setRequestCompleted(true);
+      const err = error as AxiosError;
+      const errResponse: any = err.response?.data;
+      console.log(errResponse.reason);
+      setError(errResponse.reason);
+    } finally {
+      // Set loading to false after the API request is completed (whether it succeeds or fails)
+      setLoading(false);
     }
   };
 
@@ -306,7 +329,7 @@ const Login = () => {
                 <p
                   id="uidnote"
                   className={
-                    userFocus && username && !validName
+                    (userFocus || username) && !validName
                       ? "instructions"
                       : "offscreen"
                   }
@@ -320,7 +343,7 @@ const Login = () => {
                 </p>
               </div>
 
-              <label className="mt-5">Password</label>
+              <label>Password</label>
               <div className="form-group mt-2">
                 <input
                   onChange={(e) => setPassword(e.target.value)}
@@ -339,7 +362,7 @@ const Login = () => {
                 <p
                   id="passwordnote"
                   className={
-                    passwordFocus && password && !validPassword
+                    (passwordFocus || password) && !validPassword
                       ? "instructions"
                       : "offscreen"
                   }
@@ -352,11 +375,33 @@ const Login = () => {
                 </p>
               </div>
               <div className="d-flex flex-column mt-4">
-                <LoginButton type="submit">Login Now</LoginButton>
+                <LoginButton type="submit" disabled={false}>
+                  Login Now
+                </LoginButton>
               </div>
             </form>
           </div>
-
+          {loading ? (
+            <div className="text-center" style={{}}>
+              <div>
+                <Spinner
+                  size="xl"
+                  thickness="5px"
+                  speed="0.65s"
+                  emptyColor="black"
+                  color="orange"
+                />
+              </div>
+            </div>
+          ) : (
+            <>
+              {requestCompleted && (
+                <div className="text-center errmsg" style={{}}>
+                  {error}
+                </div>
+              )}
+            </>
+          )}
           <div className="col-3 "></div>
         </LoginPanel>
       </Content>

@@ -79,6 +79,13 @@ public class StudentController {
         return listTerm;
     }
 
+    @DeleteMapping("enroll")
+    public void deleteTerm(@RequestParam(name = "username") String username,
+                           @RequestParam(name = "term") Integer term)
+    {
+        studentService.deleteByStudentAndTerm(username,term);
+    }
+
     @GetMapping("students/target")
     public List<TargetDTO> getAllTarget(@RequestParam(value = "username") String username){
         if(studentService.getAllTarget(username).isPresent())

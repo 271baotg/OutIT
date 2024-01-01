@@ -12,6 +12,7 @@ import { useAxiosPrivate } from "../../../hooks/useAxiosHook";
 import { Badge, Input } from "@chakra-ui/react";
 import { Enrollment } from "../../../model/Enrollment";
 import { motion } from "framer-motion";
+import { getTitle, getTypeColor } from "../../../hooks/getTypeColor";
 
 interface TableProps {
   data: Course[];
@@ -28,16 +29,16 @@ const Wrapper = styled.div`
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
   font-family: montserrat, sans-serif;
-  line-height: 1.6;
+
   box-sizing: border-box;
   display: block !important;
   text-align: center;
-  font-weight: 700;
   font-size: 0.937rem;
   text-transform: uppercase;
-  border: 2px solid #34444c;
+  /* border: 2px solid #34444c;
   background: #fff;
-  box-shadow: 4px 4px 0 #34444c;
+  box-shadow: 4px 4px 0 #34444c; */
+  box-shadow: 0 6px 6px hsl(0deg 0% 0% / 0.3);
   height: 80%;
 `;
 
@@ -60,15 +61,15 @@ const CourseTable: React.FC<TableProps> = (props) => {
   };
 
   return (
-    <Wrapper className="container rounded mt-5 bg-white p-md-5">
+    <Wrapper className="container rounded mt-5 bg-white p-md-4">
       <section className={`${styles.theader}`}>
-        <div className="h4 display-6">Courses</div>
+        <div style={{ fontSize: "1.2rem" }}>Danh sách môn học</div>
         <form
           className={styles.search_form}
           onSubmit={(e) => e.preventDefault()}
           role="search"
         >
-          <label htmlFor="search">Search for stuff</label>
+          <label htmlFor="search"></label>
           {/* <input
             id="search"
             type="search"
@@ -82,7 +83,7 @@ const CourseTable: React.FC<TableProps> = (props) => {
             value={props.query}
             onChange={onQueryChange}
             autoFocus
-            placeholder="Search for course..."
+            placeholder="Tìm tên, mã môn..."
             required
           />
         </form>
@@ -92,11 +93,11 @@ const CourseTable: React.FC<TableProps> = (props) => {
           <thead>
             <tr>
               <th className={styles.smallCheckbox}></th>
-              <th>Code</th>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Total</th>
-              <th>Status</th>
+              <th>Mã môn</th>
+              <th>Tên</th>
+              <th>Loại tín chỉ</th>
+              <th>Tổng</th>
+              <th>Trạng thái</th>
             </tr>
           </thead>
           <tbody>
@@ -125,9 +126,16 @@ const CourseTable: React.FC<TableProps> = (props) => {
                       checked={isChecked}
                     />
                   </td>
-                  <td>{course.code}</td>
+                  <td style={{ fontWeight: "bold" }}>{course.code}</td>
                   <td>{course.name}</td>
-                  <td>{course.type}</td>
+                  <td
+                    style={{
+                      color: `${getTypeColor(course.type)}`,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {getTitle(course.type)}
+                  </td>
                   <td>{course.total}</td>
                   {props.allEnrollment.some(
                     (enrollment) => enrollment.code === course.code

@@ -29,4 +29,6 @@ public interface StudentService {
     List<Enrollment> getAllEnrollment(String username);
 
     Optional<List<TargetDTO>> getAllTarget(String username);
+
+    void deleteByStudentAndTerm(String username, Integer term);
  }

@@ -1,11 +1,13 @@
 import axios from "axios";
+import { APP_BASE_URL } from "../utils/ApiConfig";
 
+export const baseURL = "https://outit-production.up.railway.app";
 const instance = axios.create({
-  baseURL: "https://outit-production.up.railway.app",
+  baseURL: `${baseURL}`,
 });
 
 export const axiosPrivate = axios.create({
-  baseURL: "https://outit-production.up.railway.app",
+  baseURL: `${baseURL}`,
 });
 
 // axios.interceptors.request.use(

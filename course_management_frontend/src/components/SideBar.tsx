@@ -191,8 +191,7 @@ const SideBar = () => {
           variant={"outline"}
           onClick={() => {
             sessionStorage.clear();
-            // window.location.reload();
-            navigate("/login");
+            window.location.reload();
           }}
         >
           Logout

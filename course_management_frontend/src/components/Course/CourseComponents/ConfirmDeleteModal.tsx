@@ -1,49 +1,24 @@
-import React, {
-  Dispatch,
-  MouseEventHandler,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import { createPortal } from "react-dom";
-import styled from "styled-components";
-import { motion, color } from "framer-motion";
-import { FaCheckCircle, FaQuestionCircle } from "react-icons/fa";
-import {
-  FaBookmark,
-  FaCircleQuestion,
-  FaFloppyDisk,
-  FaTriangleExclamation,
-} from "react-icons/fa6";
-import { Button, Spinner, Stack } from "@chakra-ui/react";
 import { AxiosInstance } from "axios";
+import React, { MouseEventHandler, useContext, useState } from "react";
+import { createPortal } from "react-dom";
 import Backdrop from "../../Backdrop";
+import styled from "styled-components";
+import { motion } from "framer-motion";
 import AuthContext from "../../../auth/AuthProvider";
-import { Target } from "../../../model/Target";
+import { Button, Spinner, Stack } from "@chakra-ui/react";
+import { FaTriangleExclamation } from "react-icons/fa6";
+import { FaCheckCircle } from "react-icons/fa";
 import { baseURL } from "../../../api/axios";
 
-const bubble = {
-  hidden: {
-    opacity: 0,
-    scale: 0,
-  },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.8,
-      ease: "easeOut",
-      type: "spring",
-      damping: 15,
-      stiffness: 80,
-    },
-  },
-  exit: {
-    opacity: 0,
-    scale: 0,
-  },
-};
+const DialogHeader = styled.div`
+  width: 100%;
+  height: 2rem;
+  margin-bottom: 1rem;
+  background-color: #ebcf94;
+  border-radius: 0.2rem 0.2rem 0 0;
+  display: flex;
+  justify-content: end;
+`;
 
 const Dialog = styled(motion.dialog)`
   width: 30%;
@@ -66,25 +41,35 @@ const Dialog = styled(motion.dialog)`
   }
 `;
 
-const DialogHeader = styled.div`
-  width: 100%;
-  height: 2rem;
-  margin-bottom: 1rem;
-  background-color: #ebcf94;
-  border-radius: 0.2rem 0.2rem 0 0;
-  display: flex;
-  justify-content: end;
-`;
+const errorAppearance = {
+  hidden: {
+    scale: 0,
+    opacity: 0,
+  },
+  visible: {
+    scale: 1.1,
+    opacity: 1,
+    transition: {
+      duration: 0.3,
+      type: "spring",
+      damping: 10,
+      stiffness: 200,
+    },
+  },
+  exit: {
+    scale: 0,
+    opacity: 0,
+  },
+};
 
 interface modalProps {
-  isOpen: Boolean;
   handleClose: MouseEventHandler;
   axiosPrivate: AxiosInstance;
-  updateTarget: Target[];
   onReload: Function;
+  selectedTerm: number;
 }
 
-const ConfirmModal: React.FC<modalProps> = (props) => {
+const ConfirmDeleteModal: React.FC<modalProps> = (props) => {
   const [loading, setLoading] = useState(false);
   const { auth } = useContext(AuthContext);
   const [requestCompleted, setRequestCompleted] = useState(false);
@@ -95,13 +80,13 @@ const ConfirmModal: React.FC<modalProps> = (props) => {
       setLoading(true);
 
       //Update the enrollment by term
-      const response: Target[] = await props.axiosPrivate({
-        method: "put",
-        url: `${baseURL}/student/target`,
+      const response = await props.axiosPrivate({
+        method: "delete",
+        url: `${baseURL}/enroll`,
         params: {
           username: auth?.username,
+          term: props.selectedTerm,
         },
-        data: props.updateTarget,
       });
       console.log(response);
       setRequestCompleted(true);
@@ -119,13 +104,12 @@ const ConfirmModal: React.FC<modalProps> = (props) => {
       <Dialog
         onClick={(e) => e.stopPropagation()}
         className="modal"
-        variants={bubble}
+        variants={errorAppearance}
         initial="hidden"
         animate="visible"
         exit="exit"
       >
         <DialogHeader></DialogHeader>
-
         {loading ? (
           <div
             className="text-center"
@@ -136,9 +120,7 @@ const ConfirmModal: React.FC<modalProps> = (props) => {
               justifyContent: "center",
             }}
           >
-            {" "}
             <div>
-              {" "}
               <Spinner
                 size="xl"
                 thickness="5px"
@@ -153,7 +135,7 @@ const ConfirmModal: React.FC<modalProps> = (props) => {
           <>
             {requestCompleted ? (
               <motion.div
-                variants={bubble}
+                variants={errorAppearance}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
@@ -174,56 +156,45 @@ const ConfirmModal: React.FC<modalProps> = (props) => {
                     >
                       Chúc mừng!
                     </p>
-                    <p>Mục tiêu môn học của bạn đã được cập nhật</p>
+                    <p>Bạn đã xóa thành công học kì!</p>
                   </div>
                 </div>
               </motion.div>
             ) : (
-              <motion.div
-                variants={bubble}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
+              <div
+                className="container flex-grow-1 w-100"
+                style={{ backgroundColor: "white", padding: "1.5rem" }}
               >
-                <div
-                  className="container w-100"
-                  style={{ backgroundColor: "white" }}
-                >
-                  <div className="row align-items-center text-center">
-                    <FaQuestionCircle
-                      style={{ fontSize: "3.5rem", color: "orange" }}
-                    />
-                    <h3 style={{ fontWeight: "700", color: "orange" }}>
-                      CONFIRM
-                    </h3>
-                    <p
-                      style={{ fontWeight: "bold", textTransform: "uppercase" }}
+                <div className="row align-items-center text-center">
+                  <FaTriangleExclamation
+                    style={{ fontSize: "3.5rem", color: "red" }}
+                  />
+                  <h3 style={{ fontWeight: "700", color: "red" }}>WARNING</h3>
+                  <p style={{ color: "red" }}>
+                    Bạn có muốn xóa học kì hiện tại ?
+                  </p>
+
+                  <Stack width={"100%"} alignItems={"center"}>
+                    <Button
+                      width={"30%"}
+                      style={{ backgroundColor: "var(--button-color)" }}
+                      color={"white"}
+                      noOfLines={1}
+                      transition="filter 0.3s"
+                      onClick={handleSave}
                     >
-                      Xác nhận chỉnh sửa
-                    </p>
-                    <p>Bạn có muốn cập nhật mục tiêu tín chỉ</p>
-                    <Stack width={"100%"} alignItems={"center"}>
-                      <Button
-                        width={"30%"}
-                        style={{ backgroundColor: "var(--button-color)" }}
-                        color={"white"}
-                        noOfLines={1}
-                        transition="filter 0.3s"
-                        onClick={handleSave}
-                      >
-                        Save
-                      </Button>
-                      <Button
-                        colorScheme="grey"
-                        variant="link"
-                        onClick={props.handleClose}
-                      >
-                        Back
-                      </Button>
-                    </Stack>
-                  </div>
+                      Confirm
+                    </Button>
+                    <Button
+                      colorScheme="grey"
+                      variant="link"
+                      onClick={props.handleClose}
+                    >
+                      Back
+                    </Button>
+                  </Stack>
                 </div>
-              </motion.div>
+              </div>
             )}
           </>
         )}
@@ -233,4 +204,4 @@ const ConfirmModal: React.FC<modalProps> = (props) => {
   );
 };
 
-export default ConfirmModal;
+export default ConfirmDeleteModal;

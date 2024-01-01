@@ -11,8 +11,8 @@ const Wrapper = styled(motion.div)`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: #6b6565e0;
   display: flex;
   flex-direction: row;

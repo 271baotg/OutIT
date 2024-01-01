@@ -144,5 +144,14 @@ public class StudentServiceImpl implements StudentService{
         return Optional.of(Collections.emptyList());
     }
 
+    @Override
+    @Transactional
+    public void deleteByStudentAndTerm(String username, Integer term) {
+        if (studentRepository.findStudentByUsername(username).isPresent()){
+            Student student = studentRepository.findStudentByUsername(username).get();
+            enrollmentRepository.deleteAllByStudentAndTerm(student,term);
+        }
+    }
+
 
 }

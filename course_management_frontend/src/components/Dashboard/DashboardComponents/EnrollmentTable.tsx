@@ -55,13 +55,14 @@ const EnrollmentTable: React.FC<componentProps> = (props) => {
                 <Th>Học kì</Th>
               </Tr>
             </Thead>
-            {props.data.length > 0 ? <Tbody>
+            <Tbody>
               {props.data.map((enrollment) => (
                 <Tr>
                   <Td
                     borderLeft={"none"}
                     borderRight={"none"}
                     textColor={"black"}
+                    fontWeight={"bold"}
                   >
                     {enrollment.code}
                   </Td>
@@ -85,19 +86,12 @@ const EnrollmentTable: React.FC<componentProps> = (props) => {
                 </Tr>
               ))}
             </Tbody>
-              :
-              <tr>
-                <td colSpan={5}>
-                  <div className="h-100 flex-column d-flex justify-content-center align-items-center">
-                    <h4>Bạn chưa đăng ký môn nào hết, xin vui lòng chuyển sang Course để đăng ký</h4>
-                    <button onClick={handleOnClickGoToCourse} className="btn btn-primary m-4 w-50 h-25 fs-5">Đi tới Course</button>
-                  </div>
-                </td>
-              </tr>
-            }
+
           </Table>
+
         </TableContainer>
       </motion.div>
+
     </>
   );
 };

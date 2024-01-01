@@ -45,6 +45,7 @@ import EditTargetModal from "./PlanComponents/EditTargetModal";
 import ConfirmModal from "./PlanComponents/ConfirmModal";
 import { BlobOptions } from "buffer";
 import { UserModal } from "../../model/UserModal";
+import { baseURL } from "../../api/axios";
 
 const Wrapper = styled.div`
   height: calc(100vh - 83.5px);
@@ -83,7 +84,7 @@ const Plan = () => {
   const loadTerm = async () => {
     try {
       const response: Term[] = await axiosPrivate({
-        url: `https://outit-production.up.railway.app/enroll/terms/${auth?.username}`,
+        url: `${baseURL}/enroll/terms/${auth?.username}`,
         method: "get",
       });
       const result = response.sort((a, b) => a.term - b.term);
@@ -96,7 +97,7 @@ const Plan = () => {
     try {
       const response: Target[] = await axiosPrivate({
         method: "get",
-        url: `https://outit-production.up.railway.app/students/target`,
+        url: `${baseURL}/students/target`,
         params: {
           username: auth?.username,
         },
@@ -111,8 +112,8 @@ const Plan = () => {
   const loadUserDetail = async () => {
     try {
       const response: UserModal = await axiosPrivate({
-        method: "get",
-        url: `https://outit-production.up.railway.app/students/detail`,
+        method: `get`,
+        url: `${baseURL}/students/detail`,
         params: {
           username: auth?.username,
         },
@@ -124,13 +125,13 @@ const Plan = () => {
     }
   };
 
-  const loadCourseByTerm = async () => {
+  const loadCourseByTerm = async (term: number) => {
     try {
       const response: Course[] = await axiosPrivate({
-        url: `https://outit-production.up.railway.app/enroll/${auth?.username}`,
+        url: `${baseURL}/enroll/${auth?.username}`,
         method: "get",
         params: {
-          term: selectedTerm,
+          term: term,
         },
       });
       console.log(`Term ${selectedTerm}: ${JSON.stringify(response)}`);
@@ -141,7 +142,7 @@ const Plan = () => {
   };
 
   const onTermItemClick = (term: number) => {
-    setSelectedTerm(term);
+    loadCourseByTerm(term);
   };
 
   const loadProfile = () => {};
@@ -149,10 +150,6 @@ const Plan = () => {
   const refreshAllState = () => {
     loadTarget();
   };
-
-  useEffect(() => {
-    loadCourseByTerm();
-  }, [selectedTerm]);
 
   useEffect(() => {
     loadTerm();
@@ -337,6 +334,14 @@ const Plan = () => {
                     </Tbody>
                   </Table>
                 </TableContainer>
+                {listTarget.length <= 0 && (
+                  <div className="h-100 flex-column p-1 d-flex justify-content-center align-items-center">
+                    <h4 className="text-center">
+                      Vui lòng ấn vào nút <strong>EDIT</strong> để thêm số lượng
+                      yêu cầu với mỗi loại tín chỉ của bạn
+                    </h4>
+                  </div>
+                )}
               </div>
               <div
                 style={{

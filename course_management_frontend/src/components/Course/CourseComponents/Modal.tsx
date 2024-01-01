@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
-import Backdrop from "../components/Backdrop";
+import Backdrop from "../../Backdrop";
 import { MouseEventHandler, SetStateAction, useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import { Button, CloseButton, ModalCloseButton, Stack } from "@chakra-ui/react";
-import TypeChart from "./Course/CourseComponents/TypeChart";
-import { Type } from "../model/TypeAndTotal";
-import CourseTable from "./Course/CourseComponents/CourseTable";
-import ModalCourseTable from "./Course/CourseComponents/ModalCourseTable";
+import TypeChart from "./TypeChart";
+import { Type } from "../../../model/TypeAndTotal";
+import CourseTable from "./CourseTable";
+import ModalCourseTable from "./ModalCourseTable";
 import { FaCheck } from "react-icons/fa6";
 import { FaArrowAltCircleRight, FaTrash } from "react-icons/fa";
 

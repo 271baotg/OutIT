@@ -13,7 +13,7 @@ import styled from "styled-components";
 import SideBar from "../SideBar";
 import Content from "../Content";
 import CourseTable from "./CourseComponents/CourseTable";
-import { axiosPrivate } from "../../api/axios";
+import { axiosPrivate, baseURL } from "../../api/axios";
 import { useAxiosPrivate } from "../../hooks/useAxiosHook";
 import styles from "./styles/Course.module.css";
 import PlanTable from "./CourseComponents/PlanTable";
@@ -23,10 +23,11 @@ import ProgressBar from "./CourseComponents/ProgressBar";
 import { relative } from "path";
 import TermBox from "./CourseComponents/TermBox";
 import AuthContext from "../../auth/AuthProvider";
-import Modal from "../Modal";
-import NormalModal from "../NormalModal";
+import Modal from "./CourseComponents/Modal";
+import NormalModal from "./CourseComponents/NormalModal";
 import { Enrollment } from "../../model/Enrollment";
 import { loadAllCourse, loadAllEnrollment } from "../../api/courseService";
+import ConfirmDeleteModal from "./CourseComponents/ConfirmDeleteModal";
 
 const Wrapper = styled.div`
   margin-left: 10rem;
@@ -134,6 +135,7 @@ const Course = () => {
   const [allEnrollment, setAllEnrollment] = useState<Enrollment[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [secondModalOpen, setSecondModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [planList, setPlanList] = useState<Course[]>([]);
 
   const getTranslateY = () => {
@@ -146,7 +148,7 @@ const Course = () => {
   const loadEnrollment = async () => {
     try {
       const allEnerolment: Enrollment[] = await axiosPrivate({
-        url: "https://outit-production.up.railway.app/enroll",
+        url: "/enroll",
         method: "get",
         params: {
           username: auth?.username,
@@ -162,7 +164,7 @@ const Course = () => {
   const loadCourseByTerm = async () => {
     try {
       const response: Course[] = await axiosPrivate({
-        url: `https://outit-production.up.railway.app/enroll/${auth?.username}`,
+        url: `${baseURL}/enroll/${auth?.username}`,
         method: "get",
         params: {
           term: selectedTerm,
@@ -180,7 +182,7 @@ const Course = () => {
     try {
       const response: Course[] = await axiosPrivate({
         method: "get",
-        url: "https://outit-production.up.railway.app/course",
+        url: `${baseURL}/course`,
       });
       const list = response as Course[];
       setCourseList(list);
@@ -193,7 +195,7 @@ const Course = () => {
   const loadTerm = async () => {
     try {
       const response: Term[] = await axiosPrivate({
-        url: `https://outit-production.up.railway.app/enroll/terms/${auth?.username}`,
+        url: `${baseURL}/enroll/terms/${auth?.username}`,
         method: "get",
       });
       setListTerm(response);
@@ -250,7 +252,7 @@ const Course = () => {
 
         const response: Course[] = await axiosPrivate({
           method: "get",
-          url: "https://outit-production.up.railway.app/course/search",
+          url: "/course/search",
           params: {
             query: query,
           },
@@ -272,7 +274,17 @@ const Course = () => {
   }, []);
 
   useEffect(() => {
-    console.log(`Selected Course: ${JSON.stringify(selectedList)}`);
+    if (selectedList.length != 0 && selectedTerm != 0) {
+      const sortedCourseList = courseList.filter((course) =>
+        selectedList.some((item) => item.code == course.code)
+      );
+      courseList.forEach((item) => {
+        if (!selectedList.some((selected) => selected.code == item.code)) {
+          sortedCourseList.push(item);
+        }
+      });
+      setCourseList(sortedCourseList);
+    }
   }, [selectedList]);
 
   const onResetHandler = () => {
@@ -317,6 +329,14 @@ const Course = () => {
             selectedTerm={selectedTerm}
           />
         )}
+        {deleteModalOpen && (
+          <ConfirmDeleteModal
+            handleClose={() => setDeleteModalOpen(false)}
+            onReload={refreshAllState}
+            axiosPrivate={axiosPrivate}
+            selectedTerm={selectedTerm}
+          />
+        )}
       </AnimatePresence>
       <Content>
         <Layout
@@ -324,7 +344,7 @@ const Course = () => {
           style={{ height: "calc(100vh - 83.5px)" }}
         >
           <div className="row" style={{ height: "calc(100vh - 83.5px)" }}>
-            <LeftCol className="col-sm-12 col-md-8">
+            <LeftCol className="col-sm-12 col-md-7">
               <CourseTable
                 allEnrollment={allEnrollment}
                 data={courseList}
@@ -335,7 +355,7 @@ const Course = () => {
                 selectedTerm={selectedTerm}
               />
             </LeftCol>
-            <RightCol className="col-sm-12 col-md-4">
+            <RightCol className="col-sm-12 col-md-5">
               <Tabs
                 onChange={(index) => setTabIndex(index)}
                 defaultIndex={0}
@@ -350,17 +370,23 @@ const Course = () => {
               >
                 <TabList>
                   <Tab
-                    _selected={{ backgroundColor: "black", color: "white" }}
+                    _selected={{
+                      backgroundColor: "var(--button-color)",
+                      color: "white",
+                    }}
                     className={styles.tab_label}
                   >
-                    New Plan
+                    Học kì mới
                   </Tab>
 
                   <Tab
-                    _selected={{ backgroundColor: "black", color: "white" }}
+                    _selected={{
+                      backgroundColor: "var(--button-color)",
+                      color: "white",
+                    }}
                     className={styles.tab_label}
                   >
-                    Edit mode
+                    Chỉnh sửa các học kì hiện tại
                   </Tab>
                 </TabList>
                 <TabPanels
@@ -377,7 +403,12 @@ const Course = () => {
                       <StatusBar>
                         <div className={styles.header_text}>
                           <div>
-                            <h3 className="text-start">Your Plan</h3>
+                            <h3
+                              className="text-start"
+                              style={{ fontWeight: "bold", fontSize: "1.2rem" }}
+                            >
+                              Lập kế hoạch của bạn
+                            </h3>
                             <ProgressBar data={selectedList} />
                           </div>
                         </div>
@@ -402,7 +433,7 @@ const Course = () => {
                           variant="solid"
                           onClick={handleModal}
                         >
-                          Create Plan
+                          Tạo mới
                         </Button>
                         <Button
                           onClick={onResetHandler}
@@ -429,7 +460,7 @@ const Course = () => {
                       style={{ transform: getTranslateY() }}
                     >
                       <div className={styles.front_card}>
-                        <h3>Please select your term</h3>
+                        <h3>Chọn học kì cần chỉnh sửa</h3>
                         <div className="fluid-container">
                           <div
                             className="row row-cols-3 px-4 gy-2"
@@ -480,13 +511,14 @@ const Course = () => {
                                 }}
                               >
                                 <h3 className="text-start">
-                                  Term {selectedTerm}
+                                  Học kì {selectedTerm}
                                 </h3>
                                 <button
                                   className={styles.back_button}
                                   onClick={() => {
                                     setFlipState(false);
                                     setSelectedTerm(0);
+                                    loadCourse();
                                   }}
                                 >
                                   <FaArrowLeft
@@ -508,29 +540,43 @@ const Course = () => {
                             direction="row"
                             style={{
                               display: "flex",
-                              justifyContent: "end",
+                              justifyContent: "space-between",
                               paddingTop: "1rem",
                             }}
                           >
-                            <Button
-                              as={motion.div}
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.9 }}
-                              leftIcon={<FaCheck />}
-                              colorScheme="green"
-                              variant="solid"
-                              onClick={handleModal}
-                            >
-                              Create Plan
-                            </Button>
-                            <Button
-                              onClick={onResetHandler}
-                              rightIcon={<FaTrash />}
-                              colorScheme="red"
-                              variant="outline"
-                            >
-                              Reset
-                            </Button>
+                            <div>
+                              <Button
+                                leftIcon={<FaCheck />}
+                                colorScheme="red"
+                                variant="solid"
+                                onClick={() => {
+                                  setDeleteModalOpen(true);
+                                }}
+                              >
+                                Xóa học kì
+                              </Button>
+                            </div>
+                            <div>
+                              <Button
+                                as={motion.div}
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                leftIcon={<FaCheck />}
+                                colorScheme="green"
+                                variant="solid"
+                                onClick={handleModal}
+                              >
+                                Cập nhật
+                              </Button>
+                              <Button
+                                onClick={onResetHandler}
+                                rightIcon={<FaTrash />}
+                                colorScheme="red"
+                                variant="outline"
+                              >
+                                Reset
+                              </Button>
+                            </div>
                           </Stack>
                         </EditPanel>
                       </div>
