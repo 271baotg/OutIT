@@ -142,9 +142,7 @@ const EditTargetModal: React.FC<componentProps> = (props) => {
     setCurrentTarget(newCurrentTarget);
   };
 
-  useEffect(() => {
-    console.log(currentTarget);
-  }, [currentTarget]);
+  useEffect(() => {}, [currentTarget]);
   return (
     <Backdrop onClick={props.handleClose}>
       <Dialog

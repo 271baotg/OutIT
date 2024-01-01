@@ -88,11 +88,10 @@ const ConfirmDeleteModal: React.FC<modalProps> = (props) => {
           term: props.selectedTerm,
         },
       });
-      console.log(response);
+
       setRequestCompleted(true);
       props.onReload();
     } catch (error) {
-      console.log(error);
     } finally {
       // Set loading to false after the API request is completed (whether it succeeds or fails)
       setLoading(false);

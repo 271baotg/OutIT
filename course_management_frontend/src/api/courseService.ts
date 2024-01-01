@@ -7,10 +7,7 @@ export const loadAllCourse = async (axiosPrivate: AxiosInstance) => {
       method: "get",
       url: "/course",
     });
-
-    console.log(response);
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };
@@ -24,7 +21,7 @@ export const loadAllEnrollment = async (username: any, axiosPrivate: any) => {
         username,
       },
     });
-    console.log(response);
+
     return response.data;
   } catch (error) {}
 };

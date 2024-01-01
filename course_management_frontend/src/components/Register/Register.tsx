@@ -89,14 +89,13 @@ export const Register: React.FC<{}> = () => {
   };
 
   const handleOnChangeCreditTotal = (type: string, total: number) => {
-    console.log(total);
     const tempList = creditTypeList.map((item) => {
       if (item.type === type) {
         return { ...item, goal: total };
       }
       return item;
     });
-    console.log(tempList);
+
     setCreditTypeList(tempList);
   };
   const handleOnFinish = async () => {
@@ -154,15 +153,12 @@ export const Register: React.FC<{}> = () => {
           setIsSuccessRegiser(true);
         })
         .catch((e) => {
-          console.log(e);
           setIsOpenFailModal(true);
         })
         .finally(() => {
           setIsLoading(false);
         });
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   const renderRightSideContent = () => {

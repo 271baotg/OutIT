@@ -9,7 +9,6 @@ const ProtectedRoutes = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(auth);
     if (!auth) {
       navigate("/", { state: { from: location }, replace: true });
     }

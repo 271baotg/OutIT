@@ -156,21 +156,17 @@ const NormalModal: React.FC<modalProps> = (props) => {
         },
         data: listEnroll,
       });
-      console.log(response);
+
       setRequestCompleted(true);
       props.onReload();
     } catch (error) {
-      console.log(error);
     } finally {
       // Set loading to false after the API request is completed (whether it succeeds or fails)
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    console.log("List term: " + JSON.stringify(props.listTerm));
-    console.log("Available term: " + availableTerm());
-  }, []);
+  useEffect(() => {}, []);
 
   return createPortal(
     <Backdrop onClick={props.handleClose}>

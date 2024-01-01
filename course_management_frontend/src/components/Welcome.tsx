@@ -62,14 +62,12 @@ const Welcome = () => {
   const { auth } = useContext(AuthContext);
 
   if (auth) {
-    console.log(auth);
     return <Navigate to="/dashboard" />;
   }
 
-  const handleOnClickCreateAccount = () =>{
-
-    return navigate('register');
-  }
+  const handleOnClickCreateAccount = () => {
+    return navigate("register");
+  };
 
   return (
     <Wrapper className="container-fluid p-0">
@@ -81,7 +79,12 @@ const Welcome = () => {
           </h1>
 
           <div className="d-flex mt-5">
-            <LearnMoreButton onClick={handleOnClickCreateAccount} className="btn">Create Account </LearnMoreButton>
+            <LearnMoreButton
+              onClick={handleOnClickCreateAccount}
+              className="btn"
+            >
+              Create Account{" "}
+            </LearnMoreButton>
           </div>
         </div>
 

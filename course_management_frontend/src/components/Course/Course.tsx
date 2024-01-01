@@ -155,7 +155,6 @@ const Course = () => {
         },
       });
 
-      console.log(`All Enrollment: ${JSON.stringify(allEnerolment)}`);
       setAllEnrollment(allEnerolment);
     } catch (error) {}
   };
@@ -170,11 +169,9 @@ const Course = () => {
           term: selectedTerm,
         },
       });
-      console.log(`Term ${selectedTerm}: ${JSON.stringify(response)}`);
+
       setSelectedList(response);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   //Lấy danh sách toàn bộ khóa học
@@ -186,9 +183,7 @@ const Course = () => {
       });
       const list = response as Course[];
       setCourseList(list);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   //Lấy danh sách các kì và tổng số tín chỉ mỗi kì
@@ -199,10 +194,7 @@ const Course = () => {
         method: "get",
       });
       setListTerm(response);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const refreshAllState = () => {
@@ -227,7 +219,6 @@ const Course = () => {
   useEffect(() => {
     if (selectedTerm !== 0) {
       setFlipState(true);
-      console.log(selectedTerm);
     }
     loadCourseByTerm();
   }, [selectedTerm]);
@@ -257,11 +248,9 @@ const Course = () => {
             query: query,
           },
         });
-        console.log("Search result: " + JSON.stringify(response));
+
         setCourseList(response);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
     search(query);
   }, [debounce]);

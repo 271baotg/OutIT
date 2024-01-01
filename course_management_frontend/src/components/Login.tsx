@@ -255,19 +255,19 @@ const Login = () => {
           password: password,
         },
       });
-      console.log(response.data.token);
+
       setAuth({
         username: username,
         password: password,
         token: response.data.token,
       });
-      console.log(response);
+
       navigate("/dashboard");
     } catch (error) {
       setRequestCompleted(true);
       const err = error as AxiosError;
       const errResponse: any = err.response?.data;
-      console.log(errResponse.reason);
+
       setError(errResponse.reason);
     } finally {
       // Set loading to false after the API request is completed (whether it succeeds or fails)
