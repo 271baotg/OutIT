@@ -1,6 +1,7 @@
 import { Badge } from "@chakra-ui/react";
 import styles from "../styles/PlanTable.module.css";
 import React, { MouseEventHandler, useEffect, useState } from "react";
+import { getTitle } from "../../../hooks/getTypeColor";
 
 type componentProps = {
   data: Course;
@@ -8,7 +9,15 @@ type componentProps = {
 };
 
 const PlanRow: React.FC<componentProps> = (props) => {
-  const typeChuyenNghiep: String[] = ["CN", "CSN", "CNTC", "CSNN", "ĐC", "ĐA"];
+  const typeChuyenNghiep: String[] = [
+    "CN",
+    "CSN",
+    "CNTC",
+    "CSNN",
+    "ĐC",
+    "ĐA",
+    "CĐTN",
+  ];
   const [current, setCurrentType] = useState<String>(props.data.type);
 
   const handleItemSelect = (value: String) => {
@@ -17,14 +26,15 @@ const PlanRow: React.FC<componentProps> = (props) => {
   };
 
   return (
-    <Badge colorScheme="green" className={styles.dropdown}>
+    <div className={styles.dropdown}>
       <button
         type="button"
         className="dropdown-toggle"
         data-bs-toggle="dropdown"
         aria-expanded="false"
+        style={{ fontSize: "0.8rem" }}
       >
-        {current}
+        {getTitle(current.toString())}
       </button>
       <ul className="dropdown-menu animate">
         {typeChuyenNghiep
@@ -32,20 +42,20 @@ const PlanRow: React.FC<componentProps> = (props) => {
           .map((value) => {
             return (
               <li>
-                <Badge
-                  colorScheme="green"
+                <div
                   className="dropdown-item animate"
+                  style={{ fontSize: "0.8rem" }}
                   onClick={() => {
                     handleItemSelect(value);
                   }}
                 >
-                  {value}
-                </Badge>
+                  {getTitle(value.toString())}
+                </div>
               </li>
             );
           })}
       </ul>
-    </Badge>
+    </div>
   );
 };
 

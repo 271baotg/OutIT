@@ -7,6 +7,8 @@ export const getTypeColor = (type: string) => {
   if (type === "CNTC") return " #3ec1d3";
   if (type === "CSNN") return "#5be7a9";
   if (type === "others") return "#448ef6";
+  if (type === "ĐA") return "#e05e00";
+  if (type === "CĐTN") return "#5863b6";
 };
 
 export const getTitle = (type: string) => {

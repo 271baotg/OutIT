@@ -13,6 +13,7 @@ import DonutChart from "./DashboardComponents/DonutChart";
 import { AnimatePresence } from "framer-motion";
 import DashboardModal from "./DashboardComponents/DashboardModal";
 import { useNavigate } from "react-router-dom";
+import { baseURL } from "../../api/axios";
 
 const Wrapper = styled.div`
   min-height: calc(100vh - 83.5px);
@@ -71,7 +72,7 @@ const Dashboard = () => {
   const loadEnrollment = async () => {
     try {
       const response: Enrollment[] = await axiosPrivate({
-        url: "/enroll",
+        url: `${baseURL}/enroll`,
         method: "get",
         params: {
           username: auth?.username,
@@ -79,13 +80,13 @@ const Dashboard = () => {
       });
 
       setAllEnrollment(response);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const loadTarget = async () => {
     try {
       const response: Target[] = await axiosPrivate({
-        url: "/students/target",
+        url: `${baseURL}/students/target`,
         method: "get",
         params: {
           username: auth?.username,
@@ -93,7 +94,7 @@ const Dashboard = () => {
       });
       setListTarget(response);
       console.log(`Target: ${JSON.stringify(response)}`);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -130,7 +131,7 @@ const Dashboard = () => {
   }, [listTarget]);
 
   function handleOnClickGoToCourse(): void {
-    nav('/course');
+    nav("/course");
   }
 
   return (
@@ -164,11 +165,29 @@ const Dashboard = () => {
               <ScrollableDiv>
                 <EnrollmentTable data={allEnrollment} />
               </ScrollableDiv>
-              {allEnrollment.length <= 0 &&
+              {allEnrollment.length <= 0 && (
                 <div className="h-100 flex-column d-flex justify-content-center align-items-center">
-                  <h4><strong></strong>Bạn chưa đăng ký môn nào hết, xin vui lòng chuyển sang <strong><i><span role="button" onClick={handleOnClickGoToCourse}>Course</span></i></strong> để đăng ký</h4>
-                  <button onClick={handleOnClickGoToCourse} className="btn btn-primary m-4 w-50 fs-5" style={{ height: '15%' }}>Đi tới Course</button>
-                </div>}
+                  <h4>
+                    <strong></strong>Bạn chưa đăng ký môn nào hết, xin vui lòng
+                    chuyển sang{" "}
+                    <strong>
+                      <i>
+                        <span role="button" onClick={handleOnClickGoToCourse}>
+                          Course
+                        </span>
+                      </i>
+                    </strong>{" "}
+                    để đăng ký
+                  </h4>
+                  <button
+                    onClick={handleOnClickGoToCourse}
+                    className="btn btn-primary m-4 w-50 fs-5"
+                    style={{ height: "15%" }}
+                  >
+                    Đi tới Course
+                  </button>
+                </div>
+              )}
             </TableWrapper>
           </div>
           <div className="col-md-3 order-md-1">

@@ -45,6 +45,7 @@ import EditTargetModal from "./PlanComponents/EditTargetModal";
 import ConfirmModal from "./PlanComponents/ConfirmModal";
 import { BlobOptions } from "buffer";
 import { UserModal } from "../../model/UserModal";
+import { baseURL } from "../../api/axios";
 
 const Wrapper = styled.div`
   height: calc(100vh - 83.5px);
@@ -83,12 +84,12 @@ const Plan = () => {
   const loadTerm = async () => {
     try {
       const response: Term[] = await axiosPrivate({
-        url: `/enroll/terms/${auth?.username}`,
+        url: `${baseURL}/enroll/terms/${auth?.username}`,
         method: "get",
       });
       const result = response.sort((a, b) => a.term - b.term);
       setListTerm(result);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   //Lấy danh sách mục tiêu của sinh viên
@@ -96,7 +97,7 @@ const Plan = () => {
     try {
       const response: Target[] = await axiosPrivate({
         method: "get",
-        url: `/students/target`,
+        url: `${baseURL}/students/target`,
         params: {
           username: auth?.username,
         },
@@ -111,8 +112,8 @@ const Plan = () => {
   const loadUserDetail = async () => {
     try {
       const response: UserModal = await axiosPrivate({
-        method: "get",
-        url: `/students/detail`,
+        method: `get`,
+        url: `${baseURL}/students/detail`,
         params: {
           username: auth?.username,
         },
@@ -127,7 +128,7 @@ const Plan = () => {
   const loadCourseByTerm = async () => {
     try {
       const response: Course[] = await axiosPrivate({
-        url: `/enroll/${auth?.username}`,
+        url: `${baseURL}/enroll/${auth?.username}`,
         method: "get",
         params: {
           term: selectedTerm,
@@ -144,7 +145,7 @@ const Plan = () => {
     setSelectedTerm(term);
   };
 
-  const loadProfile = () => { };
+  const loadProfile = () => {};
 
   const refreshAllState = () => {
     loadTarget();
@@ -337,10 +338,14 @@ const Plan = () => {
                     </Tbody>
                   </Table>
                 </TableContainer>
-                {listTarget.length <= 0 &&
-                    <div className="h-100 flex-column p-1 d-flex justify-content-center align-items-center">
-                      <h4 className="text-center">Vui lòng ấn vào nút <strong>EDIT</strong> để cài dặt tín chỉ của bạn</h4>
-                    </div>}
+                {listTarget.length <= 0 && (
+                  <div className="h-100 flex-column p-1 d-flex justify-content-center align-items-center">
+                    <h4 className="text-center">
+                      Vui lòng ấn vào nút <strong>EDIT</strong> để cài dặt tín
+                      chỉ của bạn
+                    </h4>
+                  </div>
+                )}
               </div>
               <div
                 style={{

@@ -2,6 +2,7 @@ import React from "react";
 import styles from "../styles/ConstraintProgress.module.css";
 import { motion } from "framer-motion";
 import { Target } from "../../../model/Target";
+import { getTypeColor } from "../../../hooks/getTypeColor";
 
 interface componentProps {
   data: Target;
@@ -9,15 +10,6 @@ interface componentProps {
 
 const ConstraintProgress: React.FC<componentProps> = (props) => {
   const percentage = (props.data.total / props.data.goal) * 100;
-
-  const getColor = () => {
-    if (props.data.type == "CN") return "var(--cn-type-color)";
-    if (props.data.type == "CSN") return "var(--csn-type-color)";
-    if (props.data.type == "ĐC") return "var(--dc-type-color)";
-    if (props.data.type == "CNTC") return "var(--cntc-type-color)";
-    if (props.data.type == "CSNN") return "var(--csnn-type-color)";
-    if (props.data.type == "others") return "var(--other-type-color)";
-  };
 
   const progressBarVariant = {
     hidden: { opacity: 0, width: "0%" },
@@ -50,7 +42,7 @@ const ConstraintProgress: React.FC<componentProps> = (props) => {
       >
         <motion.div
           className={styles.progress_bar_fill}
-          style={{ backgroundColor: getColor() }}
+          style={{ backgroundColor: getTypeColor(props.data.type) }}
           initial="hidden"
           animate="visible"
           variants={fillVariant}

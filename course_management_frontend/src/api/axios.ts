@@ -1,12 +1,13 @@
 import axios from "axios";
 import { APP_BASE_URL } from "../utils/ApiConfig";
 
+export const baseURL = "http://localhost:8081";
 const instance = axios.create({
-  baseURL: APP_BASE_URL,
+  baseURL: `${baseURL}`,
 });
 
 export const axiosPrivate = axios.create({
-  baseURL: APP_BASE_URL,
+  baseURL: `${baseURL}`,
 });
 
 // axios.interceptors.request.use(

@@ -21,6 +21,7 @@ import { AxiosInstance } from "axios";
 import Backdrop from "../../Backdrop";
 import AuthContext from "../../../auth/AuthProvider";
 import { Target } from "../../../model/Target";
+import { baseURL } from "../../../api/axios";
 
 const bubble = {
   hidden: {
@@ -96,7 +97,8 @@ const ConfirmModal: React.FC<modalProps> = (props) => {
       //Update the enrollment by term
       const response: Target[] = await props.axiosPrivate({
         method: "put",
-        url: "/student/target",
+
+        url: `${baseURL}/student/target`,
         params: {
           username: auth?.username,
         },
