@@ -5,7 +5,7 @@ export const loadAllCourse = async (axiosPrivate: AxiosInstance) => {
   try {
     const response: Course[] = await axiosPrivate({
       method: "get",
-      url: "http://localhost:8081/course",
+      url: "/course",
     });
 
     console.log(response);
@@ -18,7 +18,7 @@ export const loadAllCourse = async (axiosPrivate: AxiosInstance) => {
 export const loadAllEnrollment = async (username: any, axiosPrivate: any) => {
   try {
     const response = await axiosPrivate({
-      url: "http://localhost:8081/enroll",
+      url: "/enroll",
       method: "get",
       params: {
         username,

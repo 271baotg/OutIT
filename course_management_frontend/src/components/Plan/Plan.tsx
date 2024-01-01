@@ -334,6 +334,14 @@ const Plan = () => {
                     </Tbody>
                   </Table>
                 </TableContainer>
+                {listTarget.length <= 0 && (
+                  <div className="h-100 flex-column p-1 d-flex justify-content-center align-items-center">
+                    <h4 className="text-center">
+                      Vui lòng ấn vào nút <strong>EDIT</strong> để thêm số lượng
+                      yêu cầu với mỗi loại tín chỉ của bạn
+                    </h4>
+                  </div>
+                )}
               </div>
               <div
                 style={{

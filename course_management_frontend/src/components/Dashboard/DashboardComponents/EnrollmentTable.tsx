@@ -14,12 +14,14 @@ import {
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import TypeBadge from "./TypeBadge";
+import { useNavigate } from "react-router-dom";
 
 interface componentProps {
   data: Enrollment[];
 }
 
 const EnrollmentTable: React.FC<componentProps> = (props) => {
+  const navigate = useNavigate();
   const tableVariant = {
     hidden: { opacity: 0, y: -20 },
     visible: { opacity: 1, y: 0, transition: { duration: 1 } },
@@ -35,6 +37,10 @@ const EnrollmentTable: React.FC<componentProps> = (props) => {
     if (type == "TTTN") return "Thực tập tốt nghiệp";
     if (type == "ĐA") return "Đồ án";
   };
+  const handleOnClickGoToCourse = () => {
+    navigate("/course");
+  }
+
   return (
     <>
       <motion.div initial="hidden" animate="visible" variants={tableVariant}>
@@ -80,9 +86,12 @@ const EnrollmentTable: React.FC<componentProps> = (props) => {
                 </Tr>
               ))}
             </Tbody>
+
           </Table>
+
         </TableContainer>
       </motion.div>
+
     </>
   );
 };

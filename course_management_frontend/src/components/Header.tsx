@@ -70,7 +70,7 @@ const Header = () => {
         <a
           className="navbar-brand fs-2 px-5 col-3 p-0"
           style={{ color: "black" }}
-          href="#"
+          href="/"
         >
           Out<span style={{ color: "var(--button-color)" }}>IT</span>
         </a>

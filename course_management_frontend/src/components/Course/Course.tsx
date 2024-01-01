@@ -148,7 +148,7 @@ const Course = () => {
   const loadEnrollment = async () => {
     try {
       const allEnerolment: Enrollment[] = await axiosPrivate({
-        url: "http://localhost:8081/enroll",
+        url: "/enroll",
         method: "get",
         params: {
           username: auth?.username,
@@ -252,7 +252,7 @@ const Course = () => {
 
         const response: Course[] = await axiosPrivate({
           method: "get",
-          url: "http://localhost:8081/course/search",
+          url: "/course/search",
           params: {
             query: query,
           },

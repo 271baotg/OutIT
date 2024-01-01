@@ -4,6 +4,7 @@ import styled from "styled-components";
 import styles from "../styles/TermLayout.module.css";
 import TermItem from "./TermItem";
 import TermDetail from "./TermDetail";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -32,6 +33,7 @@ interface componentProps {
 }
 
 const TermLayout: React.FC<componentProps> = (props) => {
+  const nav = useNavigate();
   const [selectedId, setSelectedId] = useState(null);
   const handleCardClick = (cardId: any) => {
     setSelectedId(selectedId === cardId ? null : cardId);
@@ -39,9 +41,17 @@ const TermLayout: React.FC<componentProps> = (props) => {
   const handleOverlayClick = () => {
     setSelectedId(null); // Collapse the currently expanded card
   };
+  function handleOnClickGoToCourse(): void {
+    nav('/course');
+  }
 
   return (
     <Wrapper>
+      {props.data.length <= 0 &&
+                    <div className="h-100 flex-column d-flex justify-content-center align-items-center">
+                      <h4 className="text-center">Bạn chưa đăng ký môn nào hết, xin vui lòng chuyển sang Course để đăng ký</h4>
+                      <button onClick={handleOnClickGoToCourse} className="btn btn-primary m-4 w-50 fs-5" style={{height: '15%'}}>Đi tới Course</button>
+                    </div>}
       {props.data.map((term, i) => (
         <motion.div
           className={
