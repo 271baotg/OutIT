@@ -4,16 +4,18 @@ FROM maven:3.9-amazoncorretto-17 AS build
 WORKDIR /app
 # Copy the pom.xml and the project files to the container
 COPY pom.xml .
+
 COPY src ./src
 # Build the application using Maven
 RUN mvn clean package -DskipTests
 
 
+# RUN STAGE
 FROM openjdk:17-oracle
 
 # Set the working directory in the container
 WORKDIR /app
 # Copy the built JAR file from the previous stage to the container
-COPY --from=build /app/target/course_management-0.0.1-SNAPSHOT.jar .
+COPY --from=build /app/target/*.jar app.jar
 # Set the command to run the application
-CMD ["java", "-jar", "course_management-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "app.jar"]
