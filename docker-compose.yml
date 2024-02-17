@@ -1,0 +1,36 @@
+services:
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: giabao2017
+      MYSQL_PASSWORD: giabao2017
+      MYSQL_DATABASE: outit
+
+    volumes:
+      - mysql-volume:/var/lib/mysql
+
+  outit_backend:
+    build:
+      context: ./outit_backend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/outit
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: giabao2017
+
+  outit-frontend:
+    build:
+      context: ./outit_frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+
+volumes:
+  mysql-volume:
